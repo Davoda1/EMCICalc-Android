@@ -1,0 +1,17 @@
+[
+  {
+    "file": "SourceSans3-Regular.ttf",
+    "url": "https://raw.githubusercontent.com/adobe-fonts/source-sans/3.052R/TTF/SourceSans3-Regular.ttf",
+    "sha256": "4644c81b86ec9caaa76b634889968ed3c4f4f52f054855933acc7c2b21e53b0f"
+  },
+  {
+    "file": "SourceSans3-Semibold.ttf",
+    "url": "https://raw.githubusercontent.com/adobe-fonts/source-sans/3.052R/TTF/SourceSans3-Semibold.ttf",
+    "sha256": "a3f4f8dcf343a8f24dc61951de93f3ba1558b15cd250ba24af8a40e957081b7d"
+  },
+  {
+    "file": "SourceSans3-Bold.ttf",
+    "url": "https://raw.githubusercontent.com/adobe-fonts/source-sans/3.052R/TTF/SourceSans3-Bold.ttf",
+    "sha256": "9214b9d95e4231c609802815c2646c98174e2102d0d37f88978a7f8e71006e6a"
+  }
+]

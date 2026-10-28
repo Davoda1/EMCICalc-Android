@@ -1,0 +1,8 @@
+Android navigation triangle SVGs
+
+arrow-left.svg and arrow-right.svg are the original files provided by the user from Wikimedia Commons, authored by Sarang (left SVG later styling by Antonsusi). Both file description pages mark the simple geometric shapes public domain (PD-shape). Retrieved 2026-10-06 UTC.
+
+https://commons.wikimedia.org/wiki/File:U%2B25C0.svg
+https://commons.wikimedia.org/wiki/File:U%2B25B6.svg
+
+Original SVG bytes are retained. The application scales and colors their vector geometry to match the selected theme. Source URLs and SHA-256 values are recorded in SOURCES.json.

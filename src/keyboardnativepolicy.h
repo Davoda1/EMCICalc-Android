@@ -1,0 +1,204 @@
+// SPDX-License-Identifier: MIT
+#pragma once
+#include <QHash>
+#include <QSet>
+#include <QString>
+#include <Qt>
+
+// Platform-independent policy for Windows queue messages. The native adapter
+// runs this BEFORE TranslateMessage, so consumed Alt+numpad messages never
+// become an Alt-code character. A second guard rejects only character messages
+// attributed to an owned stroke, never a blacklist of character values.
+namespace CalculatorKeyboardNative {
+struct Message {
+    bool press = true;
+    bool repeat = false;
+    quint32 virtualKey = 0;
+    quint32 scanCode = 0;
+    bool extended = false;
+    Qt::KeyboardModifiers modifiers = Qt::NoModifier;
+    bool simulated = false;
+};
+struct Decision {
+    bool consumed = false;
+    bool dispatch = false;
+    int key = 0;
+    Qt::KeyboardModifiers modifiers = Qt::NoModifier;
+    QString text;
+};
+inline bool keypad(const Message &message) {
+    const auto scan = message.scanCode & 0xff;
+    return (!message.extended && ((scan >= 0x47 && scan <= 0x53) || scan == 0x37)) ||
+           (message.extended && (scan == 0x35 || scan == 0x1c)) ||
+           (message.virtualKey >= 0x60 && message.virtualKey <= 0x6f);
+}
+inline int key(const Message &message) {
+    const auto scan = message.scanCode & 0xff;
+    if (!message.extended) switch (scan) {
+    case 0x52: return Qt::Key_0;
+    case 0x4f: return Qt::Key_1;
+    case 0x50: return Qt::Key_2;
+    case 0x51: return Qt::Key_3;
+    case 0x4b: return Qt::Key_4;
+    case 0x4c: return Qt::Key_5;
+    case 0x4d: return Qt::Key_6;
+    case 0x47: return Qt::Key_7;
+    case 0x48: return Qt::Key_8;
+    case 0x49: return Qt::Key_9;
+    case 0x53: return Qt::Key_Period;
+    case 0x4a: return Qt::Key_Minus;
+    case 0x4e: return Qt::Key_Plus;
+    case 0x37: return Qt::Key_Asterisk;
+    default: break;
+    }
+    if (message.extended && scan == 0x35) return Qt::Key_Slash;
+    if (message.extended && scan == 0x1c) return Qt::Key_Enter;
+    if (message.virtualKey >= 0x30 && message.virtualKey <= 0x39) return int(message.virtualKey);
+    if (scan >= 2 && scan <= 11) return Qt::Key_0 + int((scan - 1) % 10);
+    if (message.virtualKey >= 0x60 && message.virtualKey <= 0x69) return Qt::Key_0 + int(message.virtualKey - 0x60);
+    if (message.virtualKey >= 0x41 && message.virtualKey <= 0x5a) return int(message.virtualKey);
+    switch (message.virtualKey) {
+    case 0x10: case 0xa0: case 0xa1: return Qt::Key_Shift;
+    case 0x12: case 0xa4: case 0xa5: return Qt::Key_Alt;
+    case 0x08: return Qt::Key_Backspace;
+    case 0x09: return Qt::Key_Tab;
+    case 0x0d: return Qt::Key_Return;
+    case 0x1b: return Qt::Key_Escape;
+    case 0x20: return Qt::Key_Space;
+    case 0x21: return Qt::Key_PageUp;
+    case 0x22: return Qt::Key_PageDown;
+    case 0x23: return Qt::Key_End;
+    case 0x24: return Qt::Key_Home;
+    case 0x25: return Qt::Key_Left;
+    case 0x26: return Qt::Key_Up;
+    case 0x27: return Qt::Key_Right;
+    case 0x28: return Qt::Key_Down;
+    case 0x2d: return Qt::Key_Insert;
+    case 0x2e: return Qt::Key_Delete;
+    case 0x6a: return Qt::Key_Asterisk;
+    case 0x6b: return Qt::Key_Plus;
+    case 0x6d: return Qt::Key_Minus;
+    case 0x6e: return Qt::Key_Period;
+    case 0x6f: return Qt::Key_Slash;
+    case 0xbb: return Qt::Key_Equal;
+    case 0xbc: return Qt::Key_Comma;
+    case 0xbd: return Qt::Key_Minus;
+    case 0xbe: return Qt::Key_Period;
+    case 0xbf: return Qt::Key_Slash;
+    default: return 0;
+    }
+}
+inline quint32 identity(const Message &message) {
+    return message.scanCode ? ((message.scanCode & 0xff) | (message.extended ? 0x100u : 0u))
+                            : 0x10000u | message.virtualKey;
+}
+class Policy {
+public:
+    void clear() { owned_.clear(); characterScans_.clear(); altCodePending_ = false; }
+    bool consumeCharacter(quint32 scanCode, bool extended, bool calculatorTarget) const {
+        if (!calculatorTarget) return false;
+        const auto scan = (scanCode & 0xff) | (extended ? 0x100u : 0u);
+        return characterScans_.contains(scan) ||
+            (altCodePending_ && (scan == 0 || scan == 0x38));
+    }
+    Decision route(const Message &message, bool calculatorTarget, int heldModifier, bool registerLayer = false) {
+        // Windows temporarily releases/represses Shift to reverse Num Lock.
+        // The SDK marks these queue messages FAKE_KEYSTROKE (lParam bit 25);
+        // Qt removes that bit, so handle them before Qt sees a false release.
+        if (message.simulated && key(message) == Qt::Key_Shift && heldModifier == Qt::Key_Shift) {
+            Decision result;
+            result.consumed = true;
+            return result;
+        }
+        const auto id = identity(message);
+        auto existing = owned_.constFind(id);
+        // A new nonrepeat down is a new physical stroke, even if an earlier
+        // release was lost while focus left the app. Only the Shift restore
+        // generated by Num Lock may repeat the modifier's original down.
+        if (existing != owned_.cend() && message.press && !message.repeat &&
+            !((existing->key == Qt::Key_Shift || existing->key == Qt::Key_Alt) && existing->key == heldModifier)) {
+            owned_.remove(id);
+            existing = owned_.cend();
+        }
+        if (existing != owned_.cend()) {
+            auto result = existing.value();
+            if (!message.press) owned_.remove(id);
+            const bool incompatible = message.modifiers.testFlag(Qt::ControlModifier) ||
+                message.modifiers.testFlag(Qt::MetaModifier) || message.modifiers.testFlag(Qt::GroupSwitchModifier);
+            result.dispatch = calculatorTarget && (!message.press || ((heldModifier || registerLayer) && !incompatible));
+            // Retain the initiating layer even when Windows changed the
+            // translated identity or cleared its Shift flag for Num Lock.
+            return result;
+        }
+        if (!calculatorTarget || !message.press) {
+            if (message.press) {
+                characterScans_.clear();
+                altCodePending_ = false;
+            }
+            return {};
+        }
+        const auto modifiers = message.modifiers & ~Qt::KeypadModifier;
+        if (modifiers.testFlag(Qt::ControlModifier) || modifiers.testFlag(Qt::MetaModifier) ||
+            modifiers.testFlag(Qt::GroupSwitchModifier)) {
+            characterScans_.clear();
+            altCodePending_ = false;
+            return {};
+        }
+        const int code = key(message);
+        bool own = false;
+        if(registerLayer) {
+            const bool printableVirtual=(message.virtualKey>=0x30&&message.virtualKey<=0x5a)||
+                (message.virtualKey>=0x60&&message.virtualKey<=0x6f)||
+                (message.virtualKey>=0xba&&message.virtualKey<=0xe2)||message.virtualKey==0x20;
+            own=keypad(message)||printableVirtual||code==Qt::Key_Shift||code==Qt::Key_Alt||
+                code==Qt::Key_Escape||code==Qt::Key_Return||code==Qt::Key_Enter;
+        } else if (code == Qt::Key_Shift || code == Qt::Key_Alt) {
+            const auto ownModifier = code == Qt::Key_Shift ? Qt::ShiftModifier : Qt::AltModifier;
+            own = (modifiers & ~ownModifier) == Qt::NoModifier;
+            if (!heldModifier) {
+                characterScans_.clear();
+                altCodePending_ = false;
+            }
+        } else if (heldModifier) {
+            const auto expected = heldModifier == Qt::Key_Shift ? Qt::ShiftModifier : Qt::AltModifier;
+            if (modifiers != expected && !(keypad(message) && modifiers == Qt::NoModifier)) return {};
+            // Dedicated navigation, Tab/Escape and Shift+Enter remain native
+            // editing/OS chords. Their nonextended keypad twins are owned.
+            const bool navigation = code >= Qt::Key_Home && code <= Qt::Key_PageDown;
+            const bool enter = code == Qt::Key_Return || code == Qt::Key_Enter;
+            const bool editing = code == Qt::Key_Tab || code == Qt::Key_Escape ||
+                (!keypad(message) && navigation) || (heldModifier == Qt::Key_Shift && enter);
+            const bool printableVirtual = (message.virtualKey >= 0x30 && message.virtualKey <= 0x5a) ||
+                (message.virtualKey >= 0x60 && message.virtualKey <= 0x6f) ||
+                (message.virtualKey >= 0xba && message.virtualKey <= 0xe2) || message.virtualKey == 0x20;
+            own = !editing && (keypad(message) || printableVirtual || code == Qt::Key_Backspace);
+        }
+        if (!own) {
+            // A new native editing/text stroke ends the previous chord's
+            // trailing-character guard. IME/paste/unrelated text remain native.
+            characterScans_.clear();
+            altCodePending_ = false;
+            return {};
+        }
+        Decision result;
+        result.consumed = result.dispatch = true;
+        result.key = code ? code : Qt::Key_unknown;
+        result.modifiers = message.modifiers;
+        if (heldModifier) result.modifiers |= heldModifier == Qt::Key_Shift ? Qt::ShiftModifier : Qt::AltModifier;
+        if (keypad(message)) result.modifiers |= Qt::KeypadModifier;
+        if (code >= Qt::Key_A && code <= Qt::Key_Z) result.text = QString(QChar(code).toLower());
+        else if (code >= 0x20 && code < 0x7f) result.text = QString(QChar(code));
+        owned_.insert(id, result);
+        if ((heldModifier || registerLayer) && code != Qt::Key_Shift && code != Qt::Key_Alt) {
+            characterScans_.insert((message.scanCode & 0xff) | (message.extended ? 0x100u : 0u));
+            if (heldModifier == Qt::Key_Alt && keypad(message) && code >= Qt::Key_0 && code <= Qt::Key_9)
+                altCodePending_ = true;
+        }
+        return result;
+    }
+private:
+    QHash<quint32, Decision> owned_;
+    QSet<quint32> characterScans_;
+    bool altCodePending_ = false;
+};
+}

@@ -1,0 +1,968 @@
+{
+  "0 = actual/365; 1 = actual/360; 2 = actual/actual; 3 = 30/360 (European 30E/360).": [
+    "0 = actual/365; 1 = actual/360; 2 = actual/actual; 3 = 30/360 (europeo 30E/360).",
+    "0 = actual/365; 1 = actual/360; 2 = actual/actual; 3 = 30/360 (европейский 30E/360).",
+    "0 = 实际天数/365；1 = 实际天数/360；2 = 实际天数/实际年天数；3 = 30/360（欧洲 30E/360）。",
+    "0 = 実日数/365、1 = 実日数/360、2 = 実日数/実年日数、3 = 30/360（欧州式 30E/360）。"
+  ],
+  "0 = end-of-period payments; 1 = beginning-of-period payments.": [
+    "0 = pagamenti a fine periodo; 1 = pagamenti a inizio periodo.",
+    "0 = платежи в конце периода; 1 = платежи в начале периода.",
+    "0 = 期末付款；1 = 期初付款。",
+    "0 = 期末払い、1 = 期首払い。"
+  ],
+  "0 = tax cannot fall below zero; 1 = unused credit may be refunded.": [
+    "0 = l'imposta non può essere negativa; 1 = il credito inutilizzato può essere rimborsato.",
+    "0 = налог не может быть отрицательным; 1 = неиспользованный налоговый вычет может быть возвращён.",
+    "0 = 税额不能低于零；1 = 未用完的税额抵免可以退还。",
+    "0 = 税額の下限はゼロ、1 = 未使用の税額控除を還付可能。"
+  ],
+  "Add tax to a net amount; use the same currency throughout.": [
+    "Aggiunge l'imposta all'importo netto; usa la stessa valuta per tutti gli importi.",
+    "Добавляет налог к сумме без налога; используйте одну валюту для всех сумм.",
+    "在未税金额上加税；所有金额使用同一种货币。",
+    "税抜金額に税を加えます。すべての金額に同じ通貨を使用してください。"
+  ],
+  "Additional fraction from 0 to 1 deducted from gross income; combined tax and deduction rates must be below 1.": [
+    "Ulteriore quota da 0 a 1 dedotta dal reddito lordo; la somma delle aliquote fiscali e delle trattenute deve essere inferiore a 1.",
+    "Дополнительная доля от 0 до 1, удерживаемая из валового дохода; сумма налоговых ставок и ставок удержаний должна быть меньше 1.",
+    "从税前收入中扣除的额外比例，范围为 0 到 1；税率与各扣除比例之和必须小于 1。",
+    "総収入から差し引く追加割合（0～1）。税率と控除率の合計は 1 未満にしてください。"
+  ],
+  "Allocate an amount in currency minor units by nonnegative weights, using largest remainders; the vector total equals the original amount. Credits mirror positive allocations.": [
+    "Ripartisce un importo in unità monetarie minime secondo pesi non negativi con il metodo dei maggiori resti; la somma del vettore coincide con l'importo originale. Gli accrediti rispecchiano le ripartizioni positive.",
+    "Распределяет сумму в минимальных денежных единицах по неотрицательным весам методом наибольших остатков; сумма вектора равна исходной сумме. Отрицательные суммы распределяются зеркально положительным.",
+    "按非负权重，以最大余数法分配金额的最小货币单位；向量总和等于原金额。负数贷项与正数分配对称。",
+    "非負の重みに従い、最大剰余法で最小通貨単位まで配分します。ベクトルの合計は元の金額と一致します。負の返金額は正の配分と対称になります。"
+  ],
+  "Amount": [
+    "Importo",
+    "Сумма",
+    "金额",
+    "金額"
+  ],
+  "Amount before tax. A negative amount represents a credit.": [
+    "Importo prima delle imposte. Un importo negativo rappresenta un accredito.",
+    "Сумма до налога. Отрицательная сумма означает возврат или сторнирование.",
+    "税前金额。负数表示贷项或冲销。",
+    "税抜金額。負の金額は返金・取消分を表します。"
+  ],
+  "Amount in starting-period currency units.": [
+    "Importo espresso nella valuta del periodo iniziale.",
+    "Сумма в денежных единицах начального периода.",
+    "以起始期间货币单位表示的金额。",
+    "開始時点の通貨単位で表した金額。"
+  ],
+  "Amount to allocate": [
+    "Importo da ripartire",
+    "Распределяемая сумма",
+    "待分配金额",
+    "配分する金額"
+  ],
+  "Annual discount rate": [
+    "Tasso di sconto annuo",
+    "Годовая ставка дисконтирования",
+    "年折现率",
+    "年間割引率"
+  ],
+  "Annual fractional discount rate greater than -1; day-count basis determines fractional years.": [
+    "Tasso di sconto annuo frazionario maggiore di -1; la convenzione di conteggio dei giorni determina le frazioni d'anno.",
+    "Годовая ставка дисконтирования в долях единицы, больше -1; база расчёта дней определяет долю года.",
+    "以小数表示的年折现率，必须大于 -1；计息天数规则决定年度分数。",
+    "小数で表した年間割引率（-1 より大）。日数計算方式により年の端数を求めます。"
+  ],
+  "Argument %1": [
+    "Argomento %1",
+    "Аргумент %1",
+    "参数 %1",
+    "引数 %1"
+  ],
+  "Beginning payment": [
+    "Pagamento anticipato",
+    "Платёж в начале периода",
+    "期初付款",
+    "期首払い"
+  ],
+  "Break-even divisible units. Apply ceil to require whole units.": [
+    "Unità frazionabili per il pareggio. Usa ceil per ottenere unità intere.",
+    "Дробное число единиц для безубыточности. Используйте ceil для округления до целых единиц вверх.",
+    "达到盈亏平衡所需的可分割单位数。整件数量请用 ceil 向上取整。",
+    "損益分岐点に必要な分割可能数量。整数個が必要な場合は ceil で切り上げます。"
+  ],
+  "Calendar month from 1 through 12.": [
+    "Mese del calendario da 1 a 12.",
+    "Календарный месяц от 1 до 12.",
+    "日历月份，范围为 1 到 12。",
+    "暦月（1～12）。"
+  ],
+  "Cash runway in the periods used for burn. For zero or negative burn use the worksheet's no-exhaustion result.": [
+    "Autonomia di cassa nei periodi usati per il consumo. Per consumo nullo o negativo usa il risultato senza esaurimento del foglio di calcolo.",
+    "Срок до исчерпания денежных средств в периодах расходования. При нулевом или отрицательном расходе используйте результат «не исчерпывается» на рабочей странице.",
+    "现金可维持的期间数，与消耗率使用相同期间。消耗为零或负数时，请使用工作表中的“不耗尽”结果。",
+    "支出率と同じ期間単位で求める資金の持続期間。純支出がゼロまたは負の場合はワークシートの「枯渇なし」を使用してください。"
+  ],
+  "Cash-flow vector": [
+    "Vettore dei flussi di cassa",
+    "Вектор денежных потоков",
+    "现金流向量",
+    "キャッシュフローベクトル"
+  ],
+  "Compound annual growth rate, returned as a fraction.": [
+    "Tasso di crescita annuo composto, restituito come frazione.",
+    "Среднегодовой темп роста, выраженный в долях единицы.",
+    "复合年增长率，以小数比例返回。",
+    "年平均成長率を小数の比率で返します。"
+  ],
+  "Compute a selling price from cost and margin.": [
+    "Calcola il prezzo di vendita da costo e margine.",
+    "Вычисляет цену продажи по себестоимости и марже.",
+    "由成本和利润率计算售价。",
+    "原価と利益率から販売価格を計算します。"
+  ],
+  "Compute a selling price from cost and markup.": [
+    "Calcola il prezzo di vendita da costo e ricarico.",
+    "Вычисляет цену продажи по себестоимости и наценке.",
+    "由成本和加价率计算售价。",
+    "原価と値入率から販売価格を計算します。"
+  ],
+  "Contribution rate": [
+    "Aliquota contributiva",
+    "Ставка взносов",
+    "缴费比例",
+    "拠出率"
+  ],
+  "Convert a valid Gregorian calendar date to its Julian-day integer for XNPV/XIRR date vectors.": [
+    "Converte una data gregoriana valida nel numero intero del giorno giuliano per i vettori di date XNPV/XIRR.",
+    "Преобразует корректную григорианскую дату в целое число юлианского дня для векторов дат XNPV/XIRR.",
+    "将有效公历日期转换为儒略日整数，供 XNPV/XIRR 日期向量使用。",
+    "有効なグレゴリオ暦の日付を、XNPV/XIRR の日付ベクトル用ユリウス日整数に変換します。"
+  ],
+  "Cost": [
+    "Costo",
+    "Себестоимость",
+    "成本",
+    "原価"
+  ],
+  "Currency precision": [
+    "Precisione monetaria",
+    "Точность денежных сумм",
+    "货币精度",
+    "通貨の小数桁数"
+  ],
+  "Data or X values": [
+    "Dati o valori X",
+    "Данные или значения X",
+    "数据或 X 值",
+    "データまたは X 値"
+  ],
+  "Dated annual internal rate of return. Supply matching flow and Julian-date vectors with at least one positive and one negative flow. Multiple roots or nonconvergence are reported.": [
+    "Tasso interno di rendimento annuo con date. Inserisci vettori corrispondenti di flussi e giorni giuliani con almeno un flusso positivo e uno negativo. Vengono segnalate radici multiple o mancata convergenza.",
+    "Годовая внутренняя норма доходности по датам. Задайте согласованные векторы потоков и юлианских дней хотя бы с одним положительным и одним отрицательным потоком. Сообщается о нескольких корнях или отсутствии сходимости.",
+    "带日期的年内部收益率。输入一一对应的现金流和儒略日向量，至少包含一笔正现金流和一笔负现金流。多解或不收敛时会给出提示。",
+    "日付付きの年間内部収益率。対応するキャッシュフローとユリウス日のベクトルを指定し、正負それぞれ最低 1 件を含めてください。複数解や未収束は通知されます。"
+  ],
+  "Dated discounted value. Cash-flow and Julian-date vectors have equal lengths and include the initial valuation-date flow. Rate is annual under the selected day-count basis.": [
+    "Valore attualizzato con date. I vettori dei flussi e dei giorni giuliani hanno la stessa lunghezza e includono il flusso iniziale alla data di valutazione. Il tasso è annuo secondo la convenzione scelta.",
+    "Дисконтированная стоимость по датам. Векторы потоков и юлианских дней должны иметь одинаковую длину и включать начальный поток на дату оценки. Ставка годовая по выбранной базе расчёта дней.",
+    "带日期的折现值。现金流和儒略日向量长度必须相同，并包含估值日的初始现金流。利率为所选计息天数规则下的年利率。",
+    "日付付きの現在価値。キャッシュフローとユリウス日のベクトルは同じ長さとし、評価日の初期フローを含めます。利率は選択した日数計算方式の年率です。"
+  ],
+  "Day": [
+    "Giorno",
+    "День",
+    "日",
+    "日"
+  ],
+  "Day-count basis": [
+    "Convenzione di conteggio dei giorni",
+    "База расчёта дней",
+    "计息天数规则",
+    "日数計算方式"
+  ],
+  "Decimal places in minor units, from 0 through 8.": [
+    "Cifre decimali delle unità monetarie minime, da 0 a 8.",
+    "Число десятичных знаков минимальной денежной единицы: от 0 до 8.",
+    "最小货币单位的小数位数，范围为 0 到 8。",
+    "最小通貨単位の小数桁数（0～8）。"
+  ],
+  "Decimal places used for transaction rounding, from 0 through 8.": [
+    "Cifre decimali per l'arrotondamento delle transazioni, da 0 a 8.",
+    "Число десятичных знаков для округления операций: от 0 до 8.",
+    "交易舍入使用的小数位数，范围为 0 到 8。",
+    "取引の丸めに使う小数桁数（0～8）。"
+  ],
+  "Deduct the source fee, convert at destination units per source unit, apply spread, then deduct the destination fee. Destination fee cannot exceed converted proceeds.": [
+    "Deduce la commissione nella valuta di origine, converte in unità della valuta di destinazione per unità di origine, applica lo spread e poi deduce la commissione di destinazione. Quest'ultima non può superare il ricavato convertito.",
+    "Сначала вычитается комиссия в исходной валюте, затем выполняется перевод по курсу единиц целевой валюты за единицу исходной, применяется спред и вычитается комиссия в целевой валюте. Последняя не должна превышать полученную сумму.",
+    "先扣除源货币手续费，按每单位源货币对应的目标货币单位数换算，再扣除价差和目标货币手续费。目标货币手续费不得超过换算所得金额。",
+    "元通貨の手数料を差し引き、元通貨 1 単位あたりの交換先通貨単位で換算し、スプレッドを適用してから交換先通貨の手数料を差し引きます。後者は換算後の受取額以下にしてください。"
+  ],
+  "Deducted source fee": [
+    "Commissione dedotta all'origine",
+    "Удерживаемая комиссия в исходной валюте",
+    "扣除的源货币手续费",
+    "差し引く元通貨の手数料"
+  ],
+  "Deduction": [
+    "Deduzione",
+    "Вычет",
+    "扣除额",
+    "所得控除"
+  ],
+  "Destination fee": [
+    "Commissione di destinazione",
+    "Комиссия в целевой валюте",
+    "目标货币手续费",
+    "交換先通貨の手数料"
+  ],
+  "Destination per source": [
+    "Destinazione per origine",
+    "Целевая валюта за единицу исходной",
+    "每单位源货币的目标货币量",
+    "元通貨あたりの交換先通貨"
+  ],
+  "Discount rate per period": [
+    "Tasso di sconto per periodo",
+    "Ставка дисконтирования за период",
+    "每期折现率",
+    "期間あたりの割引率"
+  ],
+  "Discounted value including a first cash flow at time zero.": [
+    "Valore attualizzato con il primo flusso al tempo zero.",
+    "Дисконтированная стоимость с первым потоком в момент времени ноль.",
+    "包含零时点首笔现金流的折现值。",
+    "初回フローを時点ゼロとする現在価値。"
+  ],
+  "Discounted value of periodic flows; the first vector element occurs at period one.": [
+    "Valore attualizzato dei flussi periodici; il primo elemento del vettore è al periodo uno.",
+    "Дисконтированная стоимость периодических потоков; первый элемент вектора относится к первому периоду.",
+    "周期现金流的折现值；向量的首个元素发生在第 1 期。",
+    "定期フローの現在価値。ベクトルの最初の要素は第 1 期に発生します。"
+  ],
+  "Divisible units required for the target profit. Apply ceil for whole units.": [
+    "Unità frazionabili richieste per l'utile obiettivo. Usa ceil per unità intere.",
+    "Дробное число единиц для целевой прибыли. Используйте ceil для целого числа единиц.",
+    "达到目标利润所需的可分割单位数。整件数量请用 ceil 向上取整。",
+    "目標利益に必要な分割可能数量。整数個が必要な場合は ceil で切り上げます。"
+  ],
+  "Ending value": [
+    "Valore finale",
+    "Конечное значение",
+    "期末值",
+    "終了値"
+  ],
+  "Expression": [
+    "Espressione",
+    "Выражение",
+    "表达式",
+    "式"
+  ],
+  "Find gross pay for target net pay under progressive tax. Optional arguments are positional; include preceding defaults to choose a later option.": [
+    "Trova il lordo per il netto obiettivo con imposta progressiva. Gli argomenti facoltativi sono posizionali; per scegliere un'opzione successiva includi i valori predefiniti precedenti.",
+    "Находит валовую оплату для целевой чистой суммы при прогрессивном налоге. Необязательные аргументы позиционные; для последующего параметра укажите предшествующие значения по умолчанию.",
+    "在累进税制下求达到目标税后工资所需的税前工资。可选参数按位置解释；选择后面的选项时须填入前面的默认值。",
+    "累進税の下で目標手取り額に必要な総支給額を求めます。省略可能な引数も位置で決まるため、後の項目を指定する場合は手前の既定値を入れてください。"
+  ],
+  "Find gross pay required for target net pay, using transaction rounding and the chosen deductions. Optional arguments are positional; include preceding defaults to choose a later option.": [
+    "Trova il lordo necessario per il netto obiettivo, con arrotondamento delle transazioni e trattenute scelte. Gli argomenti facoltativi sono posizionali; per un'opzione successiva includi i valori predefiniti precedenti.",
+    "Находит валовую оплату для целевой чистой суммы с округлением операций и выбранными удержаниями. Необязательные аргументы позиционные; для последующего параметра укажите предшествующие значения по умолчанию.",
+    "按交易舍入和所选扣除项，求达到目标税后工资所需的税前工资。可选参数按位置解释；选择后面的选项时须填入前面的默认值。",
+    "取引の丸めと指定した控除を適用し、目標手取り額に必要な総支給額を求めます。省略可能な引数も位置で決まるため、後の項目には手前の既定値も必要です。"
+  ],
+  "Finite real number": [
+    "Numero reale finito",
+    "Конечное действительное число",
+    "有限实数",
+    "有限実数"
+  ],
+  "Fixed costs": [
+    "Costi fissi",
+    "Постоянные затраты",
+    "固定成本",
+    "固定費"
+  ],
+  "Fixed deduction": [
+    "Trattenuta fissa",
+    "Фиксированное удержание",
+    "固定扣除额",
+    "固定控除額"
+  ],
+  "Fraction from 0 to 1 deducted from converted proceeds; 0.01 means 1%.": [
+    "Frazione da 0 a 1 dedotta dal ricavato convertito; 0.01 significa 1%.",
+    "Доля от 0 до 1, вычитаемая из конвертированной суммы; 0.01 означает 1%.",
+    "从换算所得金额中扣除的比例，范围为 0 到 1；0.01 表示 1%。",
+    "換算後の金額から差し引く割合（0～1）。0.01 は 1% を表します。"
+  ],
+  "Fraction from 0 to 1 deducted from gross income; combined tax and deduction rates must be below 1.": [
+    "Quota da 0 a 1 dedotta dal reddito lordo; la somma di aliquote fiscali e trattenute deve essere inferiore a 1.",
+    "Доля от 0 до 1, удерживаемая из валового дохода; сумма налоговых ставок и ставок удержаний должна быть меньше 1.",
+    "从税前收入中扣除的比例，范围为 0 到 1；税率与各扣除比例之和必须小于 1。",
+    "総収入から差し引く割合（0～1）。税率と控除率の合計は 1 未満にしてください。"
+  ],
+  "Fractional discount rate greater than -1. Use the same period as the cash flows.": [
+    "Tasso di sconto frazionario maggiore di -1. Usa lo stesso periodo dei flussi di cassa.",
+    "Ставка дисконтирования в долях единицы, больше -1. Период должен совпадать с периодом денежных потоков.",
+    "以小数表示的折现率，必须大于 -1。期间须与现金流一致。",
+    "小数で表した割引率（-1 より大）。キャッシュフローと同じ期間を使用してください。"
+  ],
+  "Fractional inflation for one period; greater than -1.": [
+    "Inflazione frazionaria per un periodo; maggiore di -1.",
+    "Инфляция за один период в долях единицы; больше -1.",
+    "单期通胀率，以小数表示，必须大于 -1。",
+    "1 期間のインフレ率を小数で指定（-1 より大）。"
+  ],
+  "Fractional inflation over the same period; greater than -1.": [
+    "Inflazione frazionaria nello stesso periodo; maggiore di -1.",
+    "Инфляция за тот же период в долях единицы; больше -1.",
+    "同一期间的通胀率，以小数表示，必须大于 -1。",
+    "同じ期間のインフレ率を小数で指定（-1 より大）。"
+  ],
+  "Fractional interest per payment period, greater than -1. For monthly payments at 12% nominal annual, enter 0.12/12.": [
+    "Interesse frazionario per periodo di pagamento, maggiore di -1. Per rate mensili al 12% nominale annuo inserisci 0.12/12.",
+    "Процент за платёжный период в долях единицы, больше -1. Для ежемесячных платежей при номинальных 12% годовых введите 0.12/12.",
+    "每个付款期间的利率，以小数表示且大于 -1。名义年利率为 12% 的月付款请输入 0.12/12。",
+    "支払期間あたりの利率を小数で指定（-1 より大）。名目年率 12% の月払いなら 0.12/12 を入力します。"
+  ],
+  "Fractional nominal return, at least -1 (-100%).": [
+    "Rendimento nominale frazionario, almeno -1 (-100%).",
+    "Номинальная доходность в долях единицы, не меньше -1 (-100%).",
+    "名义收益率，以小数表示，不低于 -1（-100%）。",
+    "名目収益率を小数で指定。下限は -1（-100%）。"
+  ],
+  "Fractional profit relative to cost; greater than -1.": [
+    "Utile frazionario rispetto al costo; maggiore di -1.",
+    "Прибыль относительно себестоимости в долях единицы; больше -1.",
+    "相对于成本的利润比例，必须大于 -1。",
+    "原価に対する利益の割合（-1 より大）。"
+  ],
+  "Fractional profit relative to selling price; must be below 1 (100%).": [
+    "Utile frazionario rispetto al prezzo di vendita; deve essere inferiore a 1 (100%).",
+    "Прибыль относительно цены продажи в долях единицы; должна быть меньше 1 (100%).",
+    "相对于售价的利润比例，必须小于 1（100%）。",
+    "販売価格に対する利益の割合。1（100%）未満にしてください。"
+  ],
+  "Full quantity": [
+    "Quantità totale",
+    "Полное количество",
+    "总数量",
+    "全数量"
+  ],
+  "Future amount required to preserve purchasing power under constant inflation.": [
+    "Importo futuro necessario a preservare il potere d'acquisto con inflazione costante.",
+    "Будущая сумма, необходимая для сохранения покупательной способности при постоянной инфляции.",
+    "在恒定通胀率下保持购买力所需的未来金额。",
+    "一定のインフレ率の下で購買力を保つために必要な将来の金額。"
+  ],
+  "Gregorian calendar year from 1 through 9999.": [
+    "Anno gregoriano da 1 a 9999.",
+    "Год григорианского календаря от 1 до 9999.",
+    "公历年份，范围为 1 到 9999。",
+    "グレゴリオ暦の年（1～9999）。"
+  ],
+  "Gross amount": [
+    "Importo lordo",
+    "Сумма с налогом",
+    "含税金额",
+    "税込金額"
+  ],
+  "Horizontal coordinate; supplied second. Result uses the selected angle unit.": [
+    "Coordinata orizzontale, fornita per seconda. Il risultato usa l'unità angolare selezionata.",
+    "Горизонтальная координата, второй аргумент. Результат выражается в выбранной единице угла.",
+    "横坐标，作为第二个参数。结果使用所选角度单位。",
+    "水平座標。2 番目に指定します。結果は選択した角度単位を使用します。"
+  ],
+  "Income": [
+    "Reddito",
+    "Доход",
+    "收入",
+    "所得"
+  ],
+  "Inflation": [
+    "Inflazione",
+    "Инфляция",
+    "通货膨胀",
+    "インフレ"
+  ],
+  "Inflation per period": [
+    "Inflazione per periodo",
+    "Инфляция за период",
+    "每期通胀率",
+    "期間あたりのインフレ率"
+  ],
+  "Inflation-adjusted return; both rates refer to the same period.": [
+    "Rendimento corretto per l'inflazione; entrambi i tassi si riferiscono allo stesso periodo.",
+    "Доходность с поправкой на инфляцию; обе ставки относятся к одному периоду.",
+    "通胀调整后的收益率；两个利率须对应同一期间。",
+    "インフレ調整後の収益率。両方の率は同じ期間を対象にします。"
+  ],
+  "Integer": [
+    "Intero",
+    "Целое число",
+    "整数",
+    "整数"
+  ],
+  "Integer 0 or 1": [
+    "Intero 0 o 1",
+    "Целое число 0 или 1",
+    "整数 0 或 1",
+    "整数 0 または 1"
+  ],
+  "Integer 0 to 3": [
+    "Intero da 0 a 3",
+    "Целое число от 0 до 3",
+    "0 到 3 的整数",
+    "0～3 の整数"
+  ],
+  "Integer 0 to 8": [
+    "Intero da 0 a 8",
+    "Целое число от 0 до 8",
+    "0 到 8 的整数",
+    "0～8 の整数"
+  ],
+  "Integer 1 to 12": [
+    "Intero da 1 a 12",
+    "Целое число от 1 до 12",
+    "1 到 12 的整数",
+    "1～12 の整数"
+  ],
+  "Integer 1 to 31": [
+    "Intero da 1 a 31",
+    "Целое число от 1 до 31",
+    "1 到 31 的整数",
+    "1～31 の整数"
+  ],
+  "Integer 1 to 9999": [
+    "Intero da 1 a 9999",
+    "Целое число от 1 до 9999",
+    "1 到 9999 的整数",
+    "1～9999 の整数"
+  ],
+  "Julian-date vector": [
+    "Vettore delle date giuliane",
+    "Вектор юлианских дат",
+    "儒略日期向量",
+    "ユリウス日のベクトル"
+  ],
+  "Julian-day integer vector": [
+    "Vettore di giorni giuliani interi",
+    "Вектор целых юлианских дней",
+    "儒略日整数向量",
+    "ユリウス日整数のベクトル"
+  ],
+  "Lower numerical-search bound, strictly greater than -1 and below the upper bound.": [
+    "Limite inferiore della ricerca numerica, strettamente maggiore di -1 e inferiore al limite superiore.",
+    "Нижняя граница численного поиска, строго больше -1 и меньше верхней границы.",
+    "数值搜索下限，必须严格大于 -1 且小于上限。",
+    "数値探索の下限。-1 より大きく、上限より小さくしてください。"
+  ],
+  "Maximum search rate": [
+    "Tasso massimo di ricerca",
+    "Максимальная ставка поиска",
+    "搜索利率上限",
+    "探索する利率の上限"
+  ],
+  "Minimum search rate": [
+    "Tasso minimo di ricerca",
+    "Минимальная ставка поиска",
+    "搜索利率下限",
+    "探索する利率の下限"
+  ],
+  "Month": [
+    "Mese",
+    "Месяц",
+    "月",
+    "月"
+  ],
+  "Net amount": [
+    "Importo netto",
+    "Сумма без налога",
+    "未税金额",
+    "税抜金額"
+  ],
+  "No additional argument restrictions are supplied by this function's engine metadata.": [
+    "I metadati del motore per questa funzione non specificano ulteriori restrizioni sull'argomento.",
+    "Метаданные движка для этой функции не задают дополнительных ограничений аргумента.",
+    "此函数的引擎元数据未提供额外的参数限制。",
+    "この関数のエンジンメタデータには、追加の引数制約が指定されていません。"
+  ],
+  "Nominal return": [
+    "Rendimento nominale",
+    "Номинальная доходность",
+    "名义收益率",
+    "名目収益率"
+  ],
+  "Nonempty vector of nonnegative weights with a positive total; up to 10000 recipients.": [
+    "Vettore non vuoto di pesi non negativi con somma positiva; fino a 10000 destinatari.",
+    "Непустой вектор неотрицательных весов с положительной суммой; до 10000 получателей.",
+    "非空的非负权重向量，总和必须为正；最多 10000 个接收方。",
+    "合計が正となる、空でない非負の重みベクトル。配分先は最大 10000 件。"
+  ],
+  "Nonnegative amount deducted from calculated tax.": [
+    "Importo non negativo dedotto dall'imposta calcolata.",
+    "Неотрицательная сумма, вычитаемая из рассчитанного налога.",
+    "从已计算税额中扣除的非负金额。",
+    "計算済み税額から差し引く非負の金額。"
+  ],
+  "Nonnegative amount reducing calculated tax.": [
+    "Importo non negativo che riduce l'imposta calcolata.",
+    "Неотрицательная сумма, уменьшающая рассчитанный налог.",
+    "用于减少已计算税额的非负金额。",
+    "計算済み税額を減らす非負の金額。"
+  ],
+  "Nonnegative amount reducing taxable income.": [
+    "Importo non negativo che riduce il reddito imponibile.",
+    "Неотрицательная сумма, уменьшающая налогооблагаемый доход.",
+    "用于减少应税收入的非负金额。",
+    "課税所得を減らす非負の金額。"
+  ],
+  "Nonnegative amount subtracted before applying tax brackets.": [
+    "Importo non negativo sottratto prima di applicare gli scaglioni d'imposta.",
+    "Неотрицательная сумма, вычитаемая перед применением налоговых ступеней.",
+    "应用税率档次之前扣除的非负金额。",
+    "税率区分を適用する前に差し引く非負の金額。"
+  ],
+  "Nonnegative available cash.": [
+    "Liquidità disponibile non negativa.",
+    "Неотрицательная сумма доступных денежных средств.",
+    "非负的可用现金。",
+    "利用可能な非負の現金額。"
+  ],
+  "Nonnegative cost per unit, in the same currency as unit price.": [
+    "Costo unitario non negativo, nella stessa valuta del prezzo unitario.",
+    "Неотрицательные затраты на единицу в той же валюте, что и цена единицы.",
+    "非负的单位成本，货币与单价一致。",
+    "単価と同じ通貨で表した非負の単位原価。"
+  ],
+  "Nonnegative desired profit after fixed and variable costs.": [
+    "Utile desiderato non negativo dopo i costi fissi e variabili.",
+    "Неотрицательная целевая прибыль после постоянных и переменных затрат.",
+    "扣除固定和变动成本后期望获得的非负利润。",
+    "固定費と変動費を差し引いた後の、非負の目標利益。"
+  ],
+  "Nonnegative fee in destination currency, deducted after conversion and spread.": [
+    "Commissione non negativa nella valuta di destinazione, dedotta dopo conversione e spread.",
+    "Неотрицательная комиссия в целевой валюте, вычитаемая после конвертации и спреда.",
+    "以目标货币计价的非负手续费，在换算和价差之后扣除。",
+    "換算とスプレッド適用後に差し引く、交換先通貨建ての非負の手数料。"
+  ],
+  "Nonnegative fee in source currency, no greater than the source budget.": [
+    "Commissione non negativa nella valuta di origine, non superiore al budget di origine.",
+    "Неотрицательная комиссия в исходной валюте, не превышающая исходный бюджет.",
+    "以源货币计价的非负手续费，不得超过源货币预算。",
+    "元通貨予算以下となる、元通貨建ての非負の手数料。"
+  ],
+  "Nonnegative final value.": [
+    "Valore finale non negativo.",
+    "Неотрицательное конечное значение.",
+    "非负的期末值。",
+    "非負の終了値。"
+  ],
+  "Nonnegative fixed deduction from gross pay.": [
+    "Trattenuta fissa non negativa dal lordo.",
+    "Неотрицательное фиксированное удержание из валовой оплаты.",
+    "从税前工资中扣除的非负固定金额。",
+    "総支給額から差し引く非負の固定控除額。"
+  ],
+  "Nonnegative fractional tax rate. 0.27 or 27% means 27%.": [
+    "Aliquota fiscale frazionaria non negativa. 0.27 o 27% significa 27%.",
+    "Неотрицательная налоговая ставка в долях единицы. 0.27 или 27% означает 27%.",
+    "非负税率，以小数比例表示。0.27 或 27% 都表示 27%。",
+    "税率を非負の小数で指定。0.27 または 27% はいずれも 27% を表します。"
+  ],
+  "Nonnegative income in matching currency units.": [
+    "Reddito non negativo nella stessa valuta.",
+    "Неотрицательный доход в согласованных денежных единицах.",
+    "以一致货币单位表示的非负收入。",
+    "統一した通貨単位で表した非負の所得。"
+  ],
+  "Nonnegative number of periods matching the rate period.": [
+    "Numero non negativo di periodi coerenti con il periodo del tasso.",
+    "Неотрицательное число периодов, соответствующих периоду ставки.",
+    "非负的期间数，期间须与利率期间一致。",
+    "利率の期間に対応する、非負の期間数。"
+  ],
+  "Nonnegative part of the full quantity.": [
+    "Parte non negativa della quantità totale.",
+    "Неотрицательная часть полного количества.",
+    "总数量中的非负部分。",
+    "全数量のうち非負の使用部分。"
+  ],
+  "Nonnegative required take-home amount after deductions and tax.": [
+    "Netto richiesto non negativo dopo trattenute e imposte.",
+    "Неотрицательная требуемая сумма на руки после удержаний и налога.",
+    "扣除各项费用和税款后要求获得的非负实收金额。",
+    "控除と税を差し引いた後に必要な、非負の手取り額。"
+  ],
+  "Nonnegative starting loan balance.": [
+    "Saldo iniziale del prestito non negativo.",
+    "Неотрицательный начальный остаток долга.",
+    "非负的初始贷款余额。",
+    "非負の初期借入残高。"
+  ],
+  "Nonnegative total fixed costs in the chosen currency.": [
+    "Costi fissi totali non negativi nella valuta scelta.",
+    "Неотрицательные суммарные постоянные затраты в выбранной валюте.",
+    "以所选货币表示的非负固定成本总额。",
+    "選択した通貨で表した非負の固定費合計。"
+  ],
+  "Number of periods": [
+    "Numero di periodi",
+    "Число периодов",
+    "期间数",
+    "期間数"
+  ],
+  "Numeric vector": [
+    "Vettore numerico",
+    "Числовой вектор",
+    "数值向量",
+    "数値ベクトル"
+  ],
+  "Numeric vector in time order. First flow is at period 1, then 2, 3, ... .": [
+    "Vettore numerico in ordine temporale. Il primo flusso è al periodo 1, poi 2, 3, ... .",
+    "Числовой вектор в хронологическом порядке. Первый поток относится к периоду 1, затем 2, 3, ... .",
+    "按时间顺序排列的数值向量。首笔现金流发生在第 1 期，之后为第 2、3……期。",
+    "時系列順の数値ベクトル。最初のフローは第 1 期、その後は第 2、3…期です。"
+  ],
+  "Numeric vector including the initial flow at time zero, followed by later flows. Negative means paid; positive means received.": [
+    "Vettore numerico con il flusso iniziale al tempo zero, seguito dai flussi successivi. Negativo = pagato; positivo = ricevuto.",
+    "Числовой вектор с начальным потоком в момент времени ноль и последующими потоками. Отрицательное значение — выплата, положительное — поступление.",
+    "数值向量，包含零时点的初始现金流，后接各期现金流。负数表示支出，正数表示收入。",
+    "時点ゼロの初期フローに後続フローを並べた数値ベクトル。負は支払、正は受取を表します。"
+  ],
+  "One datejd(year,month,day) integer per cash flow, in matching order. Dates must be in nondecreasing order; first date is the valuation date.": [
+    "Un intero datejd(year,month,day) per ciascun flusso, nello stesso ordine. Le date devono essere non decrescenti; la prima è la data di valutazione.",
+    "Одно целое datejd(year,month,day) на каждый поток в соответствующем порядке. Даты должны идти по неубыванию; первая дата — дата оценки.",
+    "每笔现金流对应一个 datejd(year,month,day) 整数，顺序须一致。日期必须非递减排列；首个日期为估值日。",
+    "各フローに対応する datejd(year,month,day) 整数を同じ順で指定します。日付は古い順（同日可）とし、最初を評価日とします。"
+  ],
+  "One vector of Y samples at X=1,2,…; or a two-column X/Y matrix; or X values when the optional Y vector is supplied.": [
+    "Un vettore di campioni Y in X=1,2,…; oppure una matrice X/Y a due colonne; oppure i valori X se viene fornito il vettore Y facoltativo.",
+    "Вектор отсчётов Y при X=1,2,…; либо двухстолбцовая матрица X/Y; либо значения X, если задан необязательный вектор Y.",
+    "可以是 X=1,2,… 处的 Y 样本向量，也可以是两列 X/Y 矩阵；提供可选 Y 向量时，此处填写 X 值。",
+    "X=1,2,… における Y 標本ベクトル、X/Y の 2 列行列、または省略可能な Y ベクトルを指定した場合の X 値。"
+  ],
+  "Optional Y vector matching the X vector. Omit it (default []) for sequential samples or a two-column matrix.": [
+    "Vettore Y facoltativo corrispondente al vettore X. Omettilo (predefinito []) per campioni sequenziali o una matrice a due colonne.",
+    "Необязательный вектор Y, соответствующий вектору X. Опустите его (по умолчанию []) для последовательных отсчётов или двухстолбцовой матрицы.",
+    "与 X 向量对应的可选 Y 向量。顺序样本或两列矩阵请省略此参数（默认 []）。",
+    "X ベクトルに対応する省略可能な Y ベクトル。連番の標本や 2 列行列の場合は省略します（既定値 []）。"
+  ],
+  "Original amount; negative amounts represent credits.": [
+    "Importo originale; gli importi negativi rappresentano accrediti.",
+    "Исходная сумма; отрицательные суммы означают возвраты или сторнирования.",
+    "原始金额；负数表示贷项或冲销。",
+    "元の金額。負の金額は返金・取消分を表します。"
+  ],
+  "Other deduction rate": [
+    "Altra aliquota di trattenuta",
+    "Ставка прочих удержаний",
+    "其他扣除比例",
+    "その他の控除率"
+  ],
+  "Parameter %1 of the saved pure function %2.": [
+    "Parametro %1 della funzione pura salvata %2.",
+    "Параметр %1 сохранённой чистой функции %2.",
+    "已保存纯函数 %2 的参数 %1。",
+    "保存された純粋関数 %2 のパラメーター %1。"
+  ],
+  "Periodic internal rate of return. Include time-zero cash flow and at least one positive and one negative flow. The worksheet gives numerical-search details.": [
+    "Tasso interno di rendimento periodico. Includi il flusso al tempo zero e almeno un flusso positivo e uno negativo. Il foglio di calcolo offre i dettagli della ricerca numerica.",
+    "Периодическая внутренняя норма доходности. Включите поток в момент времени ноль, хотя бы один положительный и один отрицательный поток. Подробности численного поиска доступны на рабочей странице.",
+    "周期内部收益率。包含零时点现金流，并至少包含一笔正现金流和一笔负现金流。工作表提供数值搜索详情。",
+    "期間ごとの内部収益率。時点ゼロのフローと、正負それぞれ最低 1 件を含めます。数値探索の詳細はワークシートで確認できます。"
+  ],
+  "Periods": [
+    "Periodi",
+    "Периоды",
+    "期间",
+    "期間"
+  ],
+  "Positive constant payment. Rate is per payment period, not automatically annual. Fees and balloon payments belong in the loan worksheet.": [
+    "Pagamento costante positivo. Il tasso è per periodo di pagamento, non automaticamente annuo. Commissioni e maxirate finali vanno nel foglio prestiti.",
+    "Положительный постоянный платёж. Ставка задаётся за платёжный период, а не автоматически за год. Комиссии и крупный заключительный платёж задаются на странице кредита.",
+    "正值的固定付款额。利率按每个付款期间计算，不会自动视为年利率。手续费和期末大额还款请使用贷款工作表。",
+    "正の定額支払。利率は支払期間あたりで指定し、自動的に年率とは扱いません。手数料や最終一括払いはローンのワークシートで指定します。"
+  ],
+  "Positive cost per item, in the same currency as price.": [
+    "Costo positivo per articolo, nella stessa valuta del prezzo.",
+    "Положительная себестоимость единицы в той же валюте, что и цена.",
+    "正值的每件成本，货币与售价一致。",
+    "価格と同じ通貨で表した、正の品目あたり原価。"
+  ],
+  "Positive destination-currency units received per one source-currency unit.": [
+    "Unità positive di valuta di destinazione ricevute per un'unità della valuta di origine.",
+    "Положительное число единиц целевой валюты, получаемых за одну единицу исходной.",
+    "每一单位源货币可换得的目标货币单位数，必须为正。",
+    "元通貨 1 単位に対して受け取る、正の交換先通貨単位数。"
+  ],
+  "Positive full quantity, in the same units as the used quantity.": [
+    "Quantità totale positiva, nelle stesse unità della quantità usata.",
+    "Положительное полное количество в тех же единицах, что и использованное количество.",
+    "正值的总数量，单位与已用数量一致。",
+    "使用数量と同じ単位で表した、正の全数量。"
+  ],
+  "Positive integer payment count.": [
+    "Numero intero positivo di pagamenti.",
+    "Положительное целое число платежей.",
+    "正整数付款次数。",
+    "正の整数で指定する支払回数。"
+  ],
+  "Positive net burn": [
+    "Consumo netto positivo",
+    "Положительный чистый расход",
+    "正值净消耗",
+    "正の純支出"
+  ],
+  "Positive selling price per item, in the same currency as cost.": [
+    "Prezzo di vendita positivo per articolo, nella stessa valuta del costo.",
+    "Положительная цена продажи единицы в той же валюте, что и себестоимость.",
+    "正值的每件售价，货币与成本一致。",
+    "原価と同じ通貨で表した、正の品目あたり販売価格。"
+  ],
+  "Positive total budget in source-currency units, including the source fee.": [
+    "Budget totale positivo nella valuta di origine, inclusa la commissione di origine.",
+    "Положительный общий бюджет в исходной валюте, включая комиссию в ней.",
+    "以源货币计价的正值总预算，包含源货币手续费。",
+    "元通貨の手数料を含む、元通貨建ての正の総予算。"
+  ],
+  "Principal": [
+    "Capitale",
+    "Основная сумма долга",
+    "本金",
+    "元金"
+  ],
+  "Profit divided by cost, returned as a fraction.": [
+    "Utile diviso per il costo, restituito come frazione.",
+    "Прибыль, делённая на себестоимость, в долях единицы.",
+    "利润除以成本，以小数比例返回。",
+    "利益を原価で割った値を小数の比率で返します。"
+  ],
+  "Profit divided by selling price, returned as a fraction.": [
+    "Utile diviso per il prezzo di vendita, restituito come frazione.",
+    "Прибыль, делённая на цену продажи, в долях единицы.",
+    "利润除以售价，以小数比例返回。",
+    "利益を販売価格で割った値を小数の比率で返します。"
+  ],
+  "Progressive marginal tax on income after the deduction, minus tax credit.": [
+    "Imposta marginale progressiva sul reddito dopo la deduzione, meno il credito d'imposta.",
+    "Прогрессивный налог по предельным ставкам на доход после вычета, за минусом налогового кредита.",
+    "对扣除后的收入按累进边际税率计税，再减去税额抵免。",
+    "所得控除後の所得に累進限界税率を適用し、税額控除を差し引きます。"
+  ],
+  "Rate per payment period": [
+    "Tasso per periodo di pagamento",
+    "Ставка за платёжный период",
+    "每个付款期间的利率",
+    "支払期間あたりの利率"
+  ],
+  "Refundable credit": [
+    "Credito rimborsabile",
+    "Возмещаемый налоговый кредит",
+    "可退还税额抵免",
+    "還付可能な税額控除"
+  ],
+  "Remove the tax included in a gross amount.": [
+    "Rimuove l'imposta inclusa in un importo lordo.",
+    "Убирает налог, включённый в сумму с налогом.",
+    "从含税金额中去除所含税款。",
+    "税込金額から含まれる税を除きます。"
+  ],
+  "Return only the tax included in a gross amount.": [
+    "Restituisce solo l'imposta inclusa in un importo lordo.",
+    "Возвращает только налог, включённый в сумму с налогом.",
+    "仅返回含税金额中所含的税款。",
+    "税込金額に含まれる税額だけを返します。"
+  ],
+  "Scale an amount by part divided by total; part and total must use matching units.": [
+    "Moltiplica l'importo per la parte divisa per il totale; parte e totale devono usare le stesse unità.",
+    "Умножает сумму на отношение части к целому; часть и целое должны иметь одинаковые единицы.",
+    "将金额乘以部分除以总量的比例；部分与总量的单位必须一致。",
+    "金額に「部分量÷全数量」を掛けます。部分量と全数量は同じ単位で指定してください。"
+  ],
+  "Selling price": [
+    "Prezzo di vendita",
+    "Цена продажи",
+    "售价",
+    "販売価格"
+  ],
+  "Selling price per unit; must exceed variable cost per unit.": [
+    "Prezzo di vendita unitario; deve superare il costo variabile unitario.",
+    "Цена продажи единицы; должна превышать переменные затраты на единицу.",
+    "每单位售价，必须高于单位变动成本。",
+    "単位あたりの販売価格。単位変動費を上回る必要があります。"
+  ],
+  "Source budget": [
+    "Budget di origine",
+    "Бюджет в исходной валюте",
+    "源货币预算",
+    "元通貨の予算"
+  ],
+  "Spread fraction": [
+    "Frazione di spread",
+    "Доля спреда",
+    "价差比例",
+    "スプレッド率"
+  ],
+  "Starting amount": [
+    "Importo iniziale",
+    "Начальная сумма",
+    "初始金额",
+    "開始金額"
+  ],
+  "Starting cash": [
+    "Liquidità iniziale",
+    "Начальные денежные средства",
+    "初始现金",
+    "開始時の現金"
+  ],
+  "Starting value": [
+    "Valore iniziale",
+    "Начальное значение",
+    "期初值",
+    "開始値"
+  ],
+  "Strictly positive cash consumed per period; result uses the same period.": [
+    "Consumo di cassa per periodo strettamente positivo; il risultato usa lo stesso periodo.",
+    "Строго положительный расход денежных средств за период; результат выражается в тех же периодах.",
+    "每期现金消耗必须严格为正；结果使用相同的期间单位。",
+    "期間あたりの現金消費額は正にしてください。結果も同じ期間単位です。"
+  ],
+  "Strictly positive duration measured in years.": [
+    "Durata strettamente positiva misurata in anni.",
+    "Строго положительная длительность в годах.",
+    "以年为单位的时长，必须严格为正。",
+    "年で測った正の期間。"
+  ],
+  "Strictly positive initial value.": [
+    "Valore iniziale strettamente positivo.",
+    "Строго положительное начальное значение.",
+    "严格为正的初始值。",
+    "正の初期値。"
+  ],
+  "Target margin": [
+    "Margine obiettivo",
+    "Целевая маржа",
+    "目标利润率",
+    "目標利益率"
+  ],
+  "Target markup": [
+    "Ricarico obiettivo",
+    "Целевая наценка",
+    "目标加价率",
+    "目標値入率"
+  ],
+  "Target net pay": [
+    "Netto obiettivo",
+    "Целевая сумма на руки",
+    "目标税后工资",
+    "目標手取り額"
+  ],
+  "Target profit": [
+    "Utile obiettivo",
+    "Целевая прибыль",
+    "目标利润",
+    "目標利益"
+  ],
+  "Tax allowance": [
+    "Franchigia fiscale",
+    "Налоговый вычет из базы",
+    "应税收入扣除额",
+    "所得控除額"
+  ],
+  "Tax credit": [
+    "Credito d'imposta",
+    "Налоговый кредит",
+    "税额抵免",
+    "税額控除"
+  ],
+  "Tax rate": [
+    "Aliquota fiscale",
+    "Налоговая ставка",
+    "税率",
+    "税率"
+  ],
+  "Tax-inclusive amount. A negative amount represents a credit.": [
+    "Importo comprensivo d'imposta. Un importo negativo rappresenta un accredito.",
+    "Сумма с налогом. Отрицательная сумма означает возврат или сторнирование.",
+    "含税金额。负数表示贷项或冲销。",
+    "税込金額。負の金額は返金・取消分を表します。"
+  ],
+  "Threshold/rate matrix": [
+    "Matrice soglie/aliquote",
+    "Матрица порогов и ставок",
+    "门槛/税率矩阵",
+    "下限額・税率行列"
+  ],
+  "Total amount or credit, exactly representable at the selected currency precision. Increase precision if needed.": [
+    "Importo totale o accredito, esattamente rappresentabile con la precisione monetaria scelta. Aumenta la precisione se necessario.",
+    "Общая сумма или возврат, точно представимые с выбранной денежной точностью. При необходимости увеличьте точность.",
+    "总金额或贷项，必须能按所选货币精度精确表示。如有需要，请提高精度。",
+    "合計額または返金額は、選択した通貨精度で厳密に表せる値にしてください。必要なら小数桁数を増やします。"
+  ],
+  "Two-column matrix [lower threshold, fractional rate; ...]. Start at threshold 0, increase thresholds strictly, use rates from 0 to 1. For example [0,0.1;1000,0.2].": [
+    "Matrice a due colonne [soglia inferiore, aliquota frazionaria; ...]. Inizia dalla soglia 0, aumenta rigorosamente le soglie e usa aliquote da 0 a 1. Esempio: [0,0.1;1000,0.2].",
+    "Матрица из двух столбцов [нижний порог, ставка в долях; ...]. Первый порог — 0, последующие строго возрастают, ставки от 0 до 1. Например: [0,0.1;1000,0.2].",
+    "两列矩阵 [下限门槛, 小数税率; ...]。首个门槛为 0，之后严格递增，税率范围为 0 到 1。例如 [0,0.1;1000,0.2]。",
+    "2 列の行列 [下限額, 小数の税率; ...]。下限額は 0 から始め、必ず昇順にします。税率は 0～1。例：[0,0.1;1000,0.2]。"
+  ],
+  "Two-column numeric matrix": [
+    "Matrice numerica a due colonne",
+    "Числовая матрица из двух столбцов",
+    "两列数值矩阵",
+    "2 列の数値行列"
+  ],
+  "Unit price": [
+    "Prezzo unitario",
+    "Цена единицы",
+    "单价",
+    "単価"
+  ],
+  "Upper numerical-search bound, greater than the minimum. Multiple or absent roots produce a recoverable diagnostic.": [
+    "Limite superiore della ricerca numerica, maggiore del minimo. Radici multiple o assenti producono un messaggio recuperabile.",
+    "Верхняя граница численного поиска, больше нижней. При нескольких корнях или их отсутствии выводится диагностическое сообщение без прекращения работы.",
+    "数值搜索上限，必须大于下限。多解或无解会产生可恢复的诊断提示。",
+    "数値探索の上限。下限より大きくしてください。複数解や解なしの場合は、修正可能な診断が表示されます。"
+  ],
+  "Used quantity": [
+    "Quantità usata",
+    "Использованное количество",
+    "已用数量",
+    "使用数量"
+  ],
+  "Valid day of the chosen month and year.": [
+    "Giorno valido del mese e dell'anno scelti.",
+    "Корректный день выбранного месяца и года.",
+    "所选月份和年份中的有效日期。",
+    "指定した年月で有効な日。"
+  ],
+  "Variable unit cost": [
+    "Costo variabile unitario",
+    "Переменные затраты на единицу",
+    "单位变动成本",
+    "単位変動費"
+  ],
+  "Vertical coordinate; supplied first. Y and X cannot both be zero.": [
+    "Coordinata verticale, fornita per prima. Y e X non possono essere entrambi zero.",
+    "Вертикальная координата, первый аргумент. Y и X не могут одновременно равняться нулю.",
+    "纵坐标，作为第一个参数。Y 和 X 不能同时为零。",
+    "垂直座標。最初に指定します。Y と X を同時にゼロにはできません。"
+  ],
+  "Weight vector": [
+    "Vettore dei pesi",
+    "Вектор весов",
+    "权重向量",
+    "重みベクトル"
+  ],
+  "Year": [
+    "Anno",
+    "Год",
+    "年",
+    "年"
+  ],
+  "Years": [
+    "Anni",
+    "Годы",
+    "年数",
+    "年数"
+  ]
+}

@@ -1,0 +1,4189 @@
+{
+    "expression_helpers": [
+        "taxadd(net,rate)",
+        "taxremove(gross,rate)",
+        "taxpart(gross,rate)",
+        "markup(cost,price)",
+        "margin(cost,price)",
+        "pricefrommarkup(cost,rate)",
+        "pricefrommargin(cost,rate)",
+        "breakeven(fixed,price,variable)",
+        "targetsales(fixed,price,variable,profit)",
+        "prorate(amount,part,total)",
+        "runway(cash,positive_burn)",
+        "cagr(start,end,years)",
+        "realreturn(nominal,inflation)",
+        "inflationadjust(amount,rate,periods)",
+        "fxnet(amount,destination_per_source,spread,source_fee,destination_fee)",
+        "loanpayment(principal,periodic_rate,periods[,beginning=0])",
+        "brackettax(income,threshold_rate_matrix[,deduction=0,credit=0,refundable=0])",
+        "grossup(target,rate[,precision=2,contribution=0,fixed=0,allowance=0,credit=0,other_rate=0,refundable=0])",
+        "grossupbrackets(target,threshold_rate_matrix[,precision=2,contribution=0,fixed=0,allowance=0,credit=0,other_rate=0,refundable=0])",
+        "npv(rate,flows): first flow at period 1",
+        "npv0(rate,flows): first flow at period 0",
+        "irr(flows[,minimum=-0.9999,maximum=100]): first flow at 0",
+        "datejd(year,month,day)",
+        "xnpv(rate,flows,julian_dates[,basis=0])",
+        "xirr(flows,julian_dates[,basis=0,minimum=-0.9999,maximum=100])",
+        "allocate(amount,weights[,precision=2])"
+    ],
+    "revision": 21,
+    "tools": [
+        {
+            "assumptions": [
+                "All rates are fractions, e.g. 0.05 or 5%. Fees paid separately, deducted and financed have distinct cash-flow treatment.",
+                "Simple dated: nominal quote × day fraction; effective/periodic quotes first annualize. Compound dated: exact equivalent annual growth raised to the day fraction.",
+                "Dated changes apply from their date; a change on a payment date follows that payment. Periodic mode accepts only payment-date events.",
+                "Beginning timing starts at the loan start date. A contractual balloon forms part of the last payment. A final adjustment pays any remaining balance.",
+                "No national APR/THM or legal minimum-payment rule is assumed."
+            ],
+            "category": "Loans and borrowing",
+            "description": "Solve payment or duration and inspect reconciled loan cash flows, dated rate changes and the full repayment schedule.",
+            "example": {
+                "accrual": "periodic",
+                "adjust_final": true,
+                "amount": "10000",
+                "balance_after_payment": 12,
+                "balance_date": "2027-01-01",
+                "balloon": "500",
+                "compounding": 12,
+                "day_count": "actual/365",
+                "deducted_fees": "25",
+                "financed_fees": "100",
+                "frequency": 12,
+                "horizon": 1200,
+                "interest_only": 0,
+                "payment": "0",
+                "precision": 2,
+                "rate": "0.06",
+                "rate_change_policy": "keep_payment",
+                "rate_changes": [],
+                "rate_convention": "nominal",
+                "recurring_fee": "2",
+                "rounding": "transaction",
+                "solve": "term",
+                "start_date": "2026-01-01",
+                "term": 24,
+                "timing": "end",
+                "upfront_fees": "50"
+            },
+            "expression_example": "",
+            "fields": [
+                {
+                    "help": "Advance before deducted fees.",
+                    "key": "amount",
+                    "label": "Loan amount",
+                    "type": "number"
+                },
+                {
+                    "help": "Fractional rate: 0.05 or 5%, not 5.",
+                    "key": "rate",
+                    "label": "Interest rate",
+                    "type": "number"
+                },
+                {
+                    "choices": [
+                        "nominal",
+                        "effective",
+                        "periodic"
+                    ],
+                    "default": "nominal",
+                    "help": "",
+                    "key": "rate_convention",
+                    "label": "Rate convention",
+                    "type": "choice"
+                },
+                {
+                    "default": 12,
+                    "help": "",
+                    "key": "compounding",
+                    "label": "Nominal compounding per year",
+                    "type": "int"
+                },
+                {
+                    "default": 12,
+                    "help": "1, 2, 4, 12, 26, 52 or 365.",
+                    "key": "frequency",
+                    "label": "Payments per year",
+                    "type": "int"
+                },
+                {
+                    "choices": [
+                        "term",
+                        "payment"
+                    ],
+                    "default": "term",
+                    "help": "term: required payment; payment: payoff duration.",
+                    "key": "solve",
+                    "label": "Calculate from",
+                    "type": "choice"
+                },
+                {
+                    "default": 60,
+                    "help": "",
+                    "key": "term",
+                    "label": "Contractual term (payments)",
+                    "type": "int"
+                },
+                {
+                    "default": "0",
+                    "help": "Used for payment solving; excludes recurring fees.",
+                    "key": "payment",
+                    "label": "Specified regular payment",
+                    "type": "number"
+                },
+                {
+                    "default": 1200,
+                    "help": "",
+                    "key": "horizon",
+                    "label": "Simulation horizon (payments)",
+                    "type": "int"
+                },
+                {
+                    "choices": [
+                        "end",
+                        "beginning"
+                    ],
+                    "default": "end",
+                    "help": "",
+                    "key": "timing",
+                    "label": "Payment timing",
+                    "type": "choice"
+                },
+                {
+                    "default": "2026-01-01",
+                    "help": "",
+                    "key": "start_date",
+                    "label": "Loan start date",
+                    "type": "date"
+                },
+                {
+                    "choices": [
+                        "periodic",
+                        "simple_dated",
+                        "compound_dated"
+                    ],
+                    "default": "periodic",
+                    "help": "Dated models split every rate change and extra payment at its exact date.",
+                    "key": "accrual",
+                    "label": "Interest accrual",
+                    "type": "choice"
+                },
+                {
+                    "choices": [
+                        "actual/365",
+                        "actual/360",
+                        "actual/actual",
+                        "30/360"
+                    ],
+                    "default": "actual/365",
+                    "help": "30/360 means European 30E/360; actual/actual splits calendar years.",
+                    "key": "day_count",
+                    "label": "Dated day-count basis",
+                    "type": "choice"
+                },
+                {
+                    "default": "0",
+                    "help": "",
+                    "key": "upfront_fees",
+                    "label": "Fees paid separately upfront",
+                    "type": "number"
+                },
+                {
+                    "default": "0",
+                    "help": "",
+                    "key": "deducted_fees",
+                    "label": "Fees deducted from advance",
+                    "type": "number"
+                },
+                {
+                    "default": "0",
+                    "help": "",
+                    "key": "financed_fees",
+                    "label": "Fees added to loan balance",
+                    "type": "number"
+                },
+                {
+                    "default": "0",
+                    "help": "Paid separately from loan instalment.",
+                    "key": "recurring_fee",
+                    "label": "Fee per scheduled payment",
+                    "type": "number"
+                },
+                {
+                    "default": 0,
+                    "help": "",
+                    "key": "interest_only",
+                    "label": "Initial interest-only payments",
+                    "type": "int"
+                },
+                {
+                    "default": "0",
+                    "help": "Included in the final scheduled payment.",
+                    "key": "balloon",
+                    "label": "Final balloon",
+                    "type": "number"
+                },
+                {
+                    "default": true,
+                    "help": "Enabled: clear the remaining debt at term end. Disabled: show residual debt.",
+                    "key": "adjust_final",
+                    "label": "Adjust final contractual payment",
+                    "type": "bool"
+                },
+                {
+                    "choices": [
+                        "keep_payment",
+                        "recalculate"
+                    ],
+                    "default": "keep_payment",
+                    "help": "",
+                    "key": "rate_change_policy",
+                    "label": "On interest-rate change",
+                    "type": "choice"
+                },
+                {
+                    "columns": [
+                        {
+                            "help": "",
+                            "key": "date",
+                            "label": "Effective date",
+                            "type": "date"
+                        },
+                        {
+                            "help": "",
+                            "key": "rate",
+                            "label": "New rate",
+                            "type": "number"
+                        }
+                    ],
+                    "help": "Changes on payment dates apply after that payment.",
+                    "key": "rate_changes",
+                    "label": "Dated interest-rate changes",
+                    "type": "table"
+                },
+                {
+                    "default": 0,
+                    "help": "",
+                    "key": "balance_after_payment",
+                    "label": "Query balance after payment (0 disables)",
+                    "type": "int"
+                },
+                {
+                    "help": "",
+                    "key": "balance_date",
+                    "label": "Query balance at date (blank disables)",
+                    "type": "date"
+                },
+                {
+                    "default": 2,
+                    "help": "Choose the required currency precision, including zero, three or four decimal places where applicable.",
+                    "key": "precision",
+                    "label": "Monetary decimal places (explicit override)",
+                    "type": "int"
+                },
+                {
+                    "choices": [
+                        "display",
+                        "transaction"
+                    ],
+                    "default": "display",
+                    "help": "display keeps internal precision and rounds presentation only; transaction rounds each booked monetary amount, half away from zero.",
+                    "key": "rounding",
+                    "label": "Monetary rounding",
+                    "type": "choice"
+                }
+            ],
+            "id": "loansummary",
+            "title": "Loan summary"
+        },
+        {
+            "assumptions": [
+                "All rates are fractions, e.g. 0.05 or 5%. Fees paid separately, deducted and financed have distinct cash-flow treatment.",
+                "Simple dated: nominal quote × day fraction; effective/periodic quotes first annualize. Compound dated: exact equivalent annual growth raised to the day fraction.",
+                "Dated changes apply from their date; a change on a payment date follows that payment. Periodic mode accepts only payment-date events.",
+                "Beginning timing starts at the loan start date. A contractual balloon forms part of the last payment. A final adjustment pays any remaining balance.",
+                "No national APR/THM or legal minimum-payment rule is assumed."
+            ],
+            "category": "Loans and borrowing",
+            "description": "Solve payment or duration and inspect reconciled loan cash flows, dated rate changes and the full repayment schedule.",
+            "example": {
+                "accrual": "periodic",
+                "adjust_final": true,
+                "amount": "10000",
+                "balance_after_payment": 12,
+                "balance_date": "2027-01-01",
+                "balloon": "500",
+                "compounding": 12,
+                "day_count": "actual/365",
+                "deducted_fees": "25",
+                "financed_fees": "100",
+                "frequency": 12,
+                "horizon": 1200,
+                "interest_only": 0,
+                "payment": "0",
+                "precision": 2,
+                "rate": "0.06",
+                "rate_change_policy": "keep_payment",
+                "rate_changes": [],
+                "rate_convention": "nominal",
+                "recurring_fee": "2",
+                "rounding": "transaction",
+                "solve": "term",
+                "start_date": "2026-01-01",
+                "term": 24,
+                "timing": "end",
+                "upfront_fees": "50"
+            },
+            "expression_example": "",
+            "fields": [
+                {
+                    "help": "Advance before deducted fees.",
+                    "key": "amount",
+                    "label": "Loan amount",
+                    "type": "number"
+                },
+                {
+                    "help": "Fractional rate: 0.05 or 5%, not 5.",
+                    "key": "rate",
+                    "label": "Interest rate",
+                    "type": "number"
+                },
+                {
+                    "choices": [
+                        "nominal",
+                        "effective",
+                        "periodic"
+                    ],
+                    "default": "nominal",
+                    "help": "",
+                    "key": "rate_convention",
+                    "label": "Rate convention",
+                    "type": "choice"
+                },
+                {
+                    "default": 12,
+                    "help": "",
+                    "key": "compounding",
+                    "label": "Nominal compounding per year",
+                    "type": "int"
+                },
+                {
+                    "default": 12,
+                    "help": "1, 2, 4, 12, 26, 52 or 365.",
+                    "key": "frequency",
+                    "label": "Payments per year",
+                    "type": "int"
+                },
+                {
+                    "choices": [
+                        "term",
+                        "payment"
+                    ],
+                    "default": "term",
+                    "help": "term: required payment; payment: payoff duration.",
+                    "key": "solve",
+                    "label": "Calculate from",
+                    "type": "choice"
+                },
+                {
+                    "default": 60,
+                    "help": "",
+                    "key": "term",
+                    "label": "Contractual term (payments)",
+                    "type": "int"
+                },
+                {
+                    "default": "0",
+                    "help": "Used for payment solving; excludes recurring fees.",
+                    "key": "payment",
+                    "label": "Specified regular payment",
+                    "type": "number"
+                },
+                {
+                    "default": 1200,
+                    "help": "",
+                    "key": "horizon",
+                    "label": "Simulation horizon (payments)",
+                    "type": "int"
+                },
+                {
+                    "choices": [
+                        "end",
+                        "beginning"
+                    ],
+                    "default": "end",
+                    "help": "",
+                    "key": "timing",
+                    "label": "Payment timing",
+                    "type": "choice"
+                },
+                {
+                    "default": "2026-01-01",
+                    "help": "",
+                    "key": "start_date",
+                    "label": "Loan start date",
+                    "type": "date"
+                },
+                {
+                    "choices": [
+                        "periodic",
+                        "simple_dated",
+                        "compound_dated"
+                    ],
+                    "default": "periodic",
+                    "help": "Dated models split every rate change and extra payment at its exact date.",
+                    "key": "accrual",
+                    "label": "Interest accrual",
+                    "type": "choice"
+                },
+                {
+                    "choices": [
+                        "actual/365",
+                        "actual/360",
+                        "actual/actual",
+                        "30/360"
+                    ],
+                    "default": "actual/365",
+                    "help": "30/360 means European 30E/360; actual/actual splits calendar years.",
+                    "key": "day_count",
+                    "label": "Dated day-count basis",
+                    "type": "choice"
+                },
+                {
+                    "default": "0",
+                    "help": "",
+                    "key": "upfront_fees",
+                    "label": "Fees paid separately upfront",
+                    "type": "number"
+                },
+                {
+                    "default": "0",
+                    "help": "",
+                    "key": "deducted_fees",
+                    "label": "Fees deducted from advance",
+                    "type": "number"
+                },
+                {
+                    "default": "0",
+                    "help": "",
+                    "key": "financed_fees",
+                    "label": "Fees added to loan balance",
+                    "type": "number"
+                },
+                {
+                    "default": "0",
+                    "help": "Paid separately from loan instalment.",
+                    "key": "recurring_fee",
+                    "label": "Fee per scheduled payment",
+                    "type": "number"
+                },
+                {
+                    "default": 0,
+                    "help": "",
+                    "key": "interest_only",
+                    "label": "Initial interest-only payments",
+                    "type": "int"
+                },
+                {
+                    "default": "0",
+                    "help": "Included in the final scheduled payment.",
+                    "key": "balloon",
+                    "label": "Final balloon",
+                    "type": "number"
+                },
+                {
+                    "default": true,
+                    "help": "Enabled: clear the remaining debt at term end. Disabled: show residual debt.",
+                    "key": "adjust_final",
+                    "label": "Adjust final contractual payment",
+                    "type": "bool"
+                },
+                {
+                    "choices": [
+                        "keep_payment",
+                        "recalculate"
+                    ],
+                    "default": "keep_payment",
+                    "help": "",
+                    "key": "rate_change_policy",
+                    "label": "On interest-rate change",
+                    "type": "choice"
+                },
+                {
+                    "columns": [
+                        {
+                            "help": "",
+                            "key": "date",
+                            "label": "Effective date",
+                            "type": "date"
+                        },
+                        {
+                            "help": "",
+                            "key": "rate",
+                            "label": "New rate",
+                            "type": "number"
+                        }
+                    ],
+                    "help": "Changes on payment dates apply after that payment.",
+                    "key": "rate_changes",
+                    "label": "Dated interest-rate changes",
+                    "type": "table"
+                },
+                {
+                    "default": 0,
+                    "help": "",
+                    "key": "balance_after_payment",
+                    "label": "Query balance after payment (0 disables)",
+                    "type": "int"
+                },
+                {
+                    "help": "",
+                    "key": "balance_date",
+                    "label": "Query balance at date (blank disables)",
+                    "type": "date"
+                },
+                {
+                    "default": 2,
+                    "help": "Choose the required currency precision, including zero, three or four decimal places where applicable.",
+                    "key": "precision",
+                    "label": "Monetary decimal places (explicit override)",
+                    "type": "int"
+                },
+                {
+                    "choices": [
+                        "display",
+                        "transaction"
+                    ],
+                    "default": "display",
+                    "help": "display keeps internal precision and rounds presentation only; transaction rounds each booked monetary amount, half away from zero.",
+                    "key": "rounding",
+                    "label": "Monetary rounding",
+                    "type": "choice"
+                }
+            ],
+            "id": "loanschedule",
+            "title": "Repayment schedule"
+        },
+        {
+            "assumptions": [
+                "All rates are fractions, e.g. 0.05 or 5%. Fees paid separately, deducted and financed have distinct cash-flow treatment.",
+                "Simple dated: nominal quote × day fraction; effective/periodic quotes first annualize. Compound dated: exact equivalent annual growth raised to the day fraction.",
+                "Dated changes apply from their date; a change on a payment date follows that payment. Periodic mode accepts only payment-date events.",
+                "Beginning timing starts at the loan start date. A contractual balloon forms part of the last payment. A final adjustment pays any remaining balance.",
+                "No national APR/THM or legal minimum-payment rule is assumed."
+            ],
+            "category": "Loans and borrowing",
+            "description": "Compare recurring and dated extra payments, including recasting or a shorter term and early-repayment charges.",
+            "example": {
+                "accrual": "simple_dated",
+                "adjust_final": true,
+                "amount": "10000",
+                "balance_after_payment": 12,
+                "balance_date": "2027-01-01",
+                "balloon": "500",
+                "compounding": 12,
+                "day_count": "actual/365",
+                "deducted_fees": "25",
+                "extra_charge_fixed": "1",
+                "extra_charge_rate": "0.01",
+                "extra_payment": "50",
+                "extra_payments": [
+                    {
+                        "amount": "500",
+                        "date": "2026-06-15"
+                    }
+                ],
+                "extra_policy": "reduce_term",
+                "financed_fees": "100",
+                "frequency": 12,
+                "horizon": 1200,
+                "interest_only": 0,
+                "payment": "0",
+                "precision": 2,
+                "rate": "0.06",
+                "rate_change_policy": "keep_payment",
+                "rate_changes": [
+                    {
+                        "date": "2027-02-15",
+                        "rate": "0.065"
+                    }
+                ],
+                "rate_convention": "nominal",
+                "recurring_fee": "2",
+                "rounding": "transaction",
+                "solve": "term",
+                "start_date": "2026-01-01",
+                "term": 24,
+                "timing": "end",
+                "upfront_fees": "50"
+            },
+            "expression_example": "",
+            "fields": [
+                {
+                    "help": "Advance before deducted fees.",
+                    "key": "amount",
+                    "label": "Loan amount",
+                    "type": "number"
+                },
+                {
+                    "help": "Fractional rate: 0.05 or 5%, not 5.",
+                    "key": "rate",
+                    "label": "Interest rate",
+                    "type": "number"
+                },
+                {
+                    "choices": [
+                        "nominal",
+                        "effective",
+                        "periodic"
+                    ],
+                    "default": "nominal",
+                    "help": "",
+                    "key": "rate_convention",
+                    "label": "Rate convention",
+                    "type": "choice"
+                },
+                {
+                    "default": 12,
+                    "help": "",
+                    "key": "compounding",
+                    "label": "Nominal compounding per year",
+                    "type": "int"
+                },
+                {
+                    "default": 12,
+                    "help": "1, 2, 4, 12, 26, 52 or 365.",
+                    "key": "frequency",
+                    "label": "Payments per year",
+                    "type": "int"
+                },
+                {
+                    "choices": [
+                        "term",
+                        "payment"
+                    ],
+                    "default": "term",
+                    "help": "term: required payment; payment: payoff duration.",
+                    "key": "solve",
+                    "label": "Calculate from",
+                    "type": "choice"
+                },
+                {
+                    "default": 60,
+                    "help": "",
+                    "key": "term",
+                    "label": "Contractual term (payments)",
+                    "type": "int"
+                },
+                {
+                    "default": "0",
+                    "help": "Used for payment solving; excludes recurring fees.",
+                    "key": "payment",
+                    "label": "Specified regular payment",
+                    "type": "number"
+                },
+                {
+                    "default": 1200,
+                    "help": "",
+                    "key": "horizon",
+                    "label": "Simulation horizon (payments)",
+                    "type": "int"
+                },
+                {
+                    "choices": [
+                        "end",
+                        "beginning"
+                    ],
+                    "default": "end",
+                    "help": "",
+                    "key": "timing",
+                    "label": "Payment timing",
+                    "type": "choice"
+                },
+                {
+                    "default": "2026-01-01",
+                    "help": "",
+                    "key": "start_date",
+                    "label": "Loan start date",
+                    "type": "date"
+                },
+                {
+                    "choices": [
+                        "periodic",
+                        "simple_dated",
+                        "compound_dated"
+                    ],
+                    "default": "periodic",
+                    "help": "Dated models split every rate change and extra payment at its exact date.",
+                    "key": "accrual",
+                    "label": "Interest accrual",
+                    "type": "choice"
+                },
+                {
+                    "choices": [
+                        "actual/365",
+                        "actual/360",
+                        "actual/actual",
+                        "30/360"
+                    ],
+                    "default": "actual/365",
+                    "help": "30/360 means European 30E/360; actual/actual splits calendar years.",
+                    "key": "day_count",
+                    "label": "Dated day-count basis",
+                    "type": "choice"
+                },
+                {
+                    "default": "0",
+                    "help": "",
+                    "key": "upfront_fees",
+                    "label": "Fees paid separately upfront",
+                    "type": "number"
+                },
+                {
+                    "default": "0",
+                    "help": "",
+                    "key": "deducted_fees",
+                    "label": "Fees deducted from advance",
+                    "type": "number"
+                },
+                {
+                    "default": "0",
+                    "help": "",
+                    "key": "financed_fees",
+                    "label": "Fees added to loan balance",
+                    "type": "number"
+                },
+                {
+                    "default": "0",
+                    "help": "Paid separately from loan instalment.",
+                    "key": "recurring_fee",
+                    "label": "Fee per scheduled payment",
+                    "type": "number"
+                },
+                {
+                    "default": 0,
+                    "help": "",
+                    "key": "interest_only",
+                    "label": "Initial interest-only payments",
+                    "type": "int"
+                },
+                {
+                    "default": "0",
+                    "help": "Included in the final scheduled payment.",
+                    "key": "balloon",
+                    "label": "Final balloon",
+                    "type": "number"
+                },
+                {
+                    "default": true,
+                    "help": "Enabled: clear the remaining debt at term end. Disabled: show residual debt.",
+                    "key": "adjust_final",
+                    "label": "Adjust final contractual payment",
+                    "type": "bool"
+                },
+                {
+                    "choices": [
+                        "keep_payment",
+                        "recalculate"
+                    ],
+                    "default": "keep_payment",
+                    "help": "",
+                    "key": "rate_change_policy",
+                    "label": "On interest-rate change",
+                    "type": "choice"
+                },
+                {
+                    "columns": [
+                        {
+                            "help": "",
+                            "key": "date",
+                            "label": "Effective date",
+                            "type": "date"
+                        },
+                        {
+                            "help": "",
+                            "key": "rate",
+                            "label": "New rate",
+                            "type": "number"
+                        }
+                    ],
+                    "help": "Changes on payment dates apply after that payment.",
+                    "key": "rate_changes",
+                    "label": "Dated interest-rate changes",
+                    "type": "table"
+                },
+                {
+                    "default": 0,
+                    "help": "",
+                    "key": "balance_after_payment",
+                    "label": "Query balance after payment (0 disables)",
+                    "type": "int"
+                },
+                {
+                    "help": "",
+                    "key": "balance_date",
+                    "label": "Query balance at date (blank disables)",
+                    "type": "date"
+                },
+                {
+                    "default": "0",
+                    "help": "",
+                    "key": "extra_payment",
+                    "label": "Recurring extra payment",
+                    "type": "number"
+                },
+                {
+                    "columns": [
+                        {
+                            "help": "",
+                            "key": "date",
+                            "label": "Payment date",
+                            "type": "date"
+                        },
+                        {
+                            "help": "",
+                            "key": "amount",
+                            "label": "Extra amount",
+                            "type": "number"
+                        }
+                    ],
+                    "help": "",
+                    "key": "extra_payments",
+                    "label": "Dated one-off extra payments",
+                    "type": "table"
+                },
+                {
+                    "choices": [
+                        "reduce_term",
+                        "recast"
+                    ],
+                    "default": "reduce_term",
+                    "help": "",
+                    "key": "extra_policy",
+                    "label": "Overpayment effect",
+                    "type": "choice"
+                },
+                {
+                    "default": "0",
+                    "help": "",
+                    "key": "extra_charge_fixed",
+                    "label": "Charge per extra-payment event",
+                    "type": "number"
+                },
+                {
+                    "default": "0",
+                    "help": "",
+                    "key": "extra_charge_rate",
+                    "label": "Charge as fraction of extra payment",
+                    "type": "number"
+                },
+                {
+                    "default": 2,
+                    "help": "Choose the required currency precision, including zero, three or four decimal places where applicable.",
+                    "key": "precision",
+                    "label": "Monetary decimal places (explicit override)",
+                    "type": "int"
+                },
+                {
+                    "choices": [
+                        "display",
+                        "transaction"
+                    ],
+                    "default": "display",
+                    "help": "display keeps internal precision and rounds presentation only; transaction rounds each booked monetary amount, half away from zero.",
+                    "key": "rounding",
+                    "label": "Monetary rounding",
+                    "type": "choice"
+                }
+            ],
+            "id": "loanextra",
+            "title": "Overpayment comparison"
+        },
+        {
+            "assumptions": [
+                "End-of-period payments; no new spending. Interest and fees are added to the balance before payment.",
+                "principal_plus_costs means percentage × selected balance + current interest + fees, subject to the fixed floor.",
+                "A fixed-payment rule uses fixed_payment. All final payments are capped at the amount due.",
+                "A constant non-decreasing balance recurrence is identified as proven non-repaying; otherwise an unfinished simulation is only a horizon limit."
+            ],
+            "category": "Loans and borrowing",
+            "description": "Simulate minimum only, fixed payment and minimum plus extra using explicit percentage rules.",
+            "example": {
+                "amount": "3000",
+                "balance_basis": "after_interest_fees",
+                "compounding": 12,
+                "extra_payment": "50",
+                "fixed_minimum": "25",
+                "fixed_payment": "150",
+                "frequency": 12,
+                "horizon": 1200,
+                "minimum_percent": "0.03",
+                "minimum_rule": "balance_percent",
+                "precision": 2,
+                "rate": "0.24",
+                "rate_convention": "nominal",
+                "recurring_fee": "1",
+                "rounding": "transaction",
+                "start_date": "2026-01-01"
+            },
+            "expression_example": "",
+            "fields": [
+                {
+                    "help": "",
+                    "key": "amount",
+                    "label": "Initial credit balance",
+                    "type": "number"
+                },
+                {
+                    "help": "Fraction: 0.24 or 24%.",
+                    "key": "rate",
+                    "label": "Interest rate",
+                    "type": "number"
+                },
+                {
+                    "choices": [
+                        "nominal",
+                        "effective",
+                        "periodic"
+                    ],
+                    "default": "nominal",
+                    "help": "",
+                    "key": "rate_convention",
+                    "label": "Rate convention",
+                    "type": "choice"
+                },
+                {
+                    "default": 12,
+                    "help": "",
+                    "key": "compounding",
+                    "label": "Compounding per year",
+                    "type": "int"
+                },
+                {
+                    "default": 12,
+                    "help": "1, 2, 4, 12, 26, 52 or 365.",
+                    "key": "frequency",
+                    "label": "Payments per year",
+                    "type": "int"
+                },
+                {
+                    "default": "2026-01-01",
+                    "help": "",
+                    "key": "start_date",
+                    "label": "Start date",
+                    "type": "date"
+                },
+                {
+                    "choices": [
+                        "balance_percent",
+                        "principal_plus_costs",
+                        "fixed"
+                    ],
+                    "default": "balance_percent",
+                    "help": "",
+                    "key": "minimum_rule",
+                    "label": "Minimum-payment rule",
+                    "type": "choice"
+                },
+                {
+                    "choices": [
+                        "before_interest_fees",
+                        "after_interest_fees"
+                    ],
+                    "default": "after_interest_fees",
+                    "help": "",
+                    "key": "balance_basis",
+                    "label": "Percentage calculation balance",
+                    "type": "choice"
+                },
+                {
+                    "help": "",
+                    "key": "minimum_percent",
+                    "label": "Minimum-payment fraction",
+                    "type": "number"
+                },
+                {
+                    "default": "25",
+                    "help": "",
+                    "key": "fixed_minimum",
+                    "label": "Fixed minimum floor",
+                    "type": "number"
+                },
+                {
+                    "help": "",
+                    "key": "fixed_payment",
+                    "label": "Fixed scenario payment",
+                    "type": "number"
+                },
+                {
+                    "default": "0",
+                    "help": "",
+                    "key": "extra_payment",
+                    "label": "Recurring extra above minimum",
+                    "type": "number"
+                },
+                {
+                    "default": "0",
+                    "help": "",
+                    "key": "recurring_fee",
+                    "label": "Fee added each period",
+                    "type": "number"
+                },
+                {
+                    "default": 1200,
+                    "help": "",
+                    "key": "horizon",
+                    "label": "Maximum simulated payments",
+                    "type": "int"
+                },
+                {
+                    "default": 2,
+                    "help": "Choose the required currency precision, including zero, three or four decimal places where applicable.",
+                    "key": "precision",
+                    "label": "Monetary decimal places (explicit override)",
+                    "type": "int"
+                },
+                {
+                    "choices": [
+                        "display",
+                        "transaction"
+                    ],
+                    "default": "display",
+                    "help": "display keeps internal precision and rounds presentation only; transaction rounds each booked monetary amount, half away from zero.",
+                    "key": "rounding",
+                    "label": "Monetary rounding",
+                    "type": "choice"
+                }
+            ],
+            "id": "creditpayoff",
+            "title": "Credit minimum-payment comparison"
+        },
+        {
+            "assumptions": [
+                "All rates are fractions, e.g. 0.05 or 5%. Fees paid separately, deducted and financed have distinct cash-flow treatment.",
+                "Simple dated: nominal quote × day fraction; effective/periodic quotes first annualize. Compound dated: exact equivalent annual growth raised to the day fraction.",
+                "Dated changes apply from their date; a change on a payment date follows that payment. Periodic mode accepts only payment-date events.",
+                "Beginning timing starts at the loan start date. A contractual balloon forms part of the last payment. A final adjustment pays any remaining balance.",
+                "No national APR/THM or legal minimum-payment rule is assumed.",
+                "Existing amount is outstanding debt at the common start; historical fees are sunk and excluded.",
+                "Replacement principal pays off existing debt. Financed charges add to the replacement balance; immediate charges are cash outlay.",
+                "Break-even compares cumulative cash paid plus remaining debt every calendar day across both schedules, with no discounting."
+            ],
+            "category": "Loans and borrowing",
+            "description": "Compare existing and replacement loans including fees, optional extras, common-date debt and lasting break-even.",
+            "example": {
+                "arrangement_financed": "0",
+                "arrangement_upfront": "150",
+                "comparison_date": "2028-01-01",
+                "early_repayment_charge": "100",
+                "exit_charge_treatment": "immediate",
+                "new_accrual": "periodic",
+                "new_adjust_final": true,
+                "new_balloon": "0",
+                "new_compounding": 12,
+                "new_day_count": "actual/365",
+                "new_extra_charge_fixed": "0",
+                "new_extra_charge_rate": "0",
+                "new_extra_payment": "0",
+                "new_extra_payments": [],
+                "new_extra_policy": "reduce_term",
+                "new_frequency": 12,
+                "new_interest_only": 0,
+                "new_rate": "0.05",
+                "new_rate_change_policy": "keep_payment",
+                "new_rate_changes": [],
+                "new_rate_convention": "nominal",
+                "new_recurring_fee": "0",
+                "new_term": 48,
+                "new_timing": "end",
+                "old_accrual": "periodic",
+                "old_adjust_final": true,
+                "old_amount": "10000",
+                "old_balloon": "0",
+                "old_compounding": 12,
+                "old_day_count": "actual/365",
+                "old_extra_charge_fixed": "0",
+                "old_extra_charge_rate": "0",
+                "old_extra_payment": "0",
+                "old_extra_payments": [],
+                "old_extra_policy": "reduce_term",
+                "old_frequency": 12,
+                "old_interest_only": 0,
+                "old_rate": "0.08",
+                "old_rate_change_policy": "keep_payment",
+                "old_rate_changes": [],
+                "old_rate_convention": "nominal",
+                "old_recurring_fee": "0",
+                "old_start_date": "2026-01-01",
+                "old_term": 36,
+                "old_timing": "end",
+                "other_financed": "0",
+                "other_upfront": "0",
+                "precision": 2,
+                "rounding": "transaction"
+            },
+            "expression_example": "",
+            "fields": [
+                {
+                    "help": "Advance before deducted fees.",
+                    "key": "old_amount",
+                    "label": "Existing — Loan amount",
+                    "type": "number"
+                },
+                {
+                    "help": "Fractional rate: 0.05 or 5%, not 5.",
+                    "key": "old_rate",
+                    "label": "Existing — Interest rate",
+                    "type": "number"
+                },
+                {
+                    "choices": [
+                        "nominal",
+                        "effective",
+                        "periodic"
+                    ],
+                    "default": "nominal",
+                    "help": "",
+                    "key": "old_rate_convention",
+                    "label": "Existing — Rate convention",
+                    "type": "choice"
+                },
+                {
+                    "default": 12,
+                    "help": "",
+                    "key": "old_compounding",
+                    "label": "Existing — Nominal compounding per year",
+                    "type": "int"
+                },
+                {
+                    "default": 12,
+                    "help": "1, 2, 4, 12, 26, 52 or 365.",
+                    "key": "old_frequency",
+                    "label": "Existing — Payments per year",
+                    "type": "int"
+                },
+                {
+                    "default": 60,
+                    "help": "",
+                    "key": "old_term",
+                    "label": "Existing — Contractual term (payments)",
+                    "type": "int"
+                },
+                {
+                    "choices": [
+                        "end",
+                        "beginning"
+                    ],
+                    "default": "end",
+                    "help": "",
+                    "key": "old_timing",
+                    "label": "Existing — Payment timing",
+                    "type": "choice"
+                },
+                {
+                    "default": "2026-01-01",
+                    "help": "",
+                    "key": "old_start_date",
+                    "label": "Existing — Loan start date",
+                    "type": "date"
+                },
+                {
+                    "choices": [
+                        "periodic",
+                        "simple_dated",
+                        "compound_dated"
+                    ],
+                    "default": "periodic",
+                    "help": "Dated models split every rate change and extra payment at its exact date.",
+                    "key": "old_accrual",
+                    "label": "Existing — Interest accrual",
+                    "type": "choice"
+                },
+                {
+                    "choices": [
+                        "actual/365",
+                        "actual/360",
+                        "actual/actual",
+                        "30/360"
+                    ],
+                    "default": "actual/365",
+                    "help": "30/360 means European 30E/360; actual/actual splits calendar years.",
+                    "key": "old_day_count",
+                    "label": "Existing — Dated day-count basis",
+                    "type": "choice"
+                },
+                {
+                    "default": "0",
+                    "help": "Paid separately from loan instalment.",
+                    "key": "old_recurring_fee",
+                    "label": "Existing — Fee per scheduled payment",
+                    "type": "number"
+                },
+                {
+                    "default": 0,
+                    "help": "",
+                    "key": "old_interest_only",
+                    "label": "Existing — Initial interest-only payments",
+                    "type": "int"
+                },
+                {
+                    "default": "0",
+                    "help": "Included in the final scheduled payment.",
+                    "key": "old_balloon",
+                    "label": "Existing — Final balloon",
+                    "type": "number"
+                },
+                {
+                    "default": true,
+                    "help": "Enabled: clear the remaining debt at term end. Disabled: show residual debt.",
+                    "key": "old_adjust_final",
+                    "label": "Existing — Adjust final contractual payment",
+                    "type": "bool"
+                },
+                {
+                    "choices": [
+                        "keep_payment",
+                        "recalculate"
+                    ],
+                    "default": "keep_payment",
+                    "help": "",
+                    "key": "old_rate_change_policy",
+                    "label": "Existing — On interest-rate change",
+                    "type": "choice"
+                },
+                {
+                    "columns": [
+                        {
+                            "help": "",
+                            "key": "date",
+                            "label": "Effective date",
+                            "type": "date"
+                        },
+                        {
+                            "help": "",
+                            "key": "rate",
+                            "label": "New rate",
+                            "type": "number"
+                        }
+                    ],
+                    "help": "Changes on payment dates apply after that payment.",
+                    "key": "old_rate_changes",
+                    "label": "Existing — Dated interest-rate changes",
+                    "type": "table"
+                },
+                {
+                    "default": "0",
+                    "help": "",
+                    "key": "old_extra_payment",
+                    "label": "Existing — Recurring extra payment",
+                    "type": "number"
+                },
+                {
+                    "columns": [
+                        {
+                            "help": "",
+                            "key": "date",
+                            "label": "Payment date",
+                            "type": "date"
+                        },
+                        {
+                            "help": "",
+                            "key": "amount",
+                            "label": "Extra amount",
+                            "type": "number"
+                        }
+                    ],
+                    "help": "",
+                    "key": "old_extra_payments",
+                    "label": "Existing — Dated one-off extra payments",
+                    "type": "table"
+                },
+                {
+                    "choices": [
+                        "reduce_term",
+                        "recast"
+                    ],
+                    "default": "reduce_term",
+                    "help": "",
+                    "key": "old_extra_policy",
+                    "label": "Existing — Overpayment effect",
+                    "type": "choice"
+                },
+                {
+                    "default": "0",
+                    "help": "",
+                    "key": "old_extra_charge_fixed",
+                    "label": "Existing — Charge per extra-payment event",
+                    "type": "number"
+                },
+                {
+                    "default": "0",
+                    "help": "",
+                    "key": "old_extra_charge_rate",
+                    "label": "Existing — Charge as fraction of extra payment",
+                    "type": "number"
+                },
+                {
+                    "help": "Fractional rate: 0.05 or 5%, not 5.",
+                    "key": "new_rate",
+                    "label": "Replacement — Interest rate",
+                    "type": "number"
+                },
+                {
+                    "choices": [
+                        "nominal",
+                        "effective",
+                        "periodic"
+                    ],
+                    "default": "nominal",
+                    "help": "",
+                    "key": "new_rate_convention",
+                    "label": "Replacement — Rate convention",
+                    "type": "choice"
+                },
+                {
+                    "default": 12,
+                    "help": "",
+                    "key": "new_compounding",
+                    "label": "Replacement — Nominal compounding per year",
+                    "type": "int"
+                },
+                {
+                    "default": 12,
+                    "help": "1, 2, 4, 12, 26, 52 or 365.",
+                    "key": "new_frequency",
+                    "label": "Replacement — Payments per year",
+                    "type": "int"
+                },
+                {
+                    "default": 60,
+                    "help": "",
+                    "key": "new_term",
+                    "label": "Replacement — Contractual term (payments)",
+                    "type": "int"
+                },
+                {
+                    "choices": [
+                        "end",
+                        "beginning"
+                    ],
+                    "default": "end",
+                    "help": "",
+                    "key": "new_timing",
+                    "label": "Replacement — Payment timing",
+                    "type": "choice"
+                },
+                {
+                    "choices": [
+                        "periodic",
+                        "simple_dated",
+                        "compound_dated"
+                    ],
+                    "default": "periodic",
+                    "help": "Dated models split every rate change and extra payment at its exact date.",
+                    "key": "new_accrual",
+                    "label": "Replacement — Interest accrual",
+                    "type": "choice"
+                },
+                {
+                    "choices": [
+                        "actual/365",
+                        "actual/360",
+                        "actual/actual",
+                        "30/360"
+                    ],
+                    "default": "actual/365",
+                    "help": "30/360 means European 30E/360; actual/actual splits calendar years.",
+                    "key": "new_day_count",
+                    "label": "Replacement — Dated day-count basis",
+                    "type": "choice"
+                },
+                {
+                    "default": "0",
+                    "help": "Paid separately from loan instalment.",
+                    "key": "new_recurring_fee",
+                    "label": "Replacement — Fee per scheduled payment",
+                    "type": "number"
+                },
+                {
+                    "default": 0,
+                    "help": "",
+                    "key": "new_interest_only",
+                    "label": "Replacement — Initial interest-only payments",
+                    "type": "int"
+                },
+                {
+                    "default": "0",
+                    "help": "Included in the final scheduled payment.",
+                    "key": "new_balloon",
+                    "label": "Replacement — Final balloon",
+                    "type": "number"
+                },
+                {
+                    "default": true,
+                    "help": "Enabled: clear the remaining debt at term end. Disabled: show residual debt.",
+                    "key": "new_adjust_final",
+                    "label": "Replacement — Adjust final contractual payment",
+                    "type": "bool"
+                },
+                {
+                    "choices": [
+                        "keep_payment",
+                        "recalculate"
+                    ],
+                    "default": "keep_payment",
+                    "help": "",
+                    "key": "new_rate_change_policy",
+                    "label": "Replacement — On interest-rate change",
+                    "type": "choice"
+                },
+                {
+                    "columns": [
+                        {
+                            "help": "",
+                            "key": "date",
+                            "label": "Effective date",
+                            "type": "date"
+                        },
+                        {
+                            "help": "",
+                            "key": "rate",
+                            "label": "New rate",
+                            "type": "number"
+                        }
+                    ],
+                    "help": "Changes on payment dates apply after that payment.",
+                    "key": "new_rate_changes",
+                    "label": "Replacement — Dated interest-rate changes",
+                    "type": "table"
+                },
+                {
+                    "default": "0",
+                    "help": "",
+                    "key": "new_extra_payment",
+                    "label": "Replacement — Recurring extra payment",
+                    "type": "number"
+                },
+                {
+                    "columns": [
+                        {
+                            "help": "",
+                            "key": "date",
+                            "label": "Payment date",
+                            "type": "date"
+                        },
+                        {
+                            "help": "",
+                            "key": "amount",
+                            "label": "Extra amount",
+                            "type": "number"
+                        }
+                    ],
+                    "help": "",
+                    "key": "new_extra_payments",
+                    "label": "Replacement — Dated one-off extra payments",
+                    "type": "table"
+                },
+                {
+                    "choices": [
+                        "reduce_term",
+                        "recast"
+                    ],
+                    "default": "reduce_term",
+                    "help": "",
+                    "key": "new_extra_policy",
+                    "label": "Replacement — Overpayment effect",
+                    "type": "choice"
+                },
+                {
+                    "default": "0",
+                    "help": "",
+                    "key": "new_extra_charge_fixed",
+                    "label": "Replacement — Charge per extra-payment event",
+                    "type": "number"
+                },
+                {
+                    "default": "0",
+                    "help": "",
+                    "key": "new_extra_charge_rate",
+                    "label": "Replacement — Charge as fraction of extra payment",
+                    "type": "number"
+                },
+                {
+                    "default": "0",
+                    "help": "",
+                    "key": "early_repayment_charge",
+                    "label": "Existing-loan exit charge",
+                    "type": "number"
+                },
+                {
+                    "choices": [
+                        "immediate",
+                        "financed"
+                    ],
+                    "default": "immediate",
+                    "help": "",
+                    "key": "exit_charge_treatment",
+                    "label": "Exit-charge payment",
+                    "type": "choice"
+                },
+                {
+                    "default": "0",
+                    "help": "",
+                    "key": "arrangement_upfront",
+                    "label": "Arrangement fee paid immediately",
+                    "type": "number"
+                },
+                {
+                    "default": "0",
+                    "help": "",
+                    "key": "other_upfront",
+                    "label": "Other fees paid immediately",
+                    "type": "number"
+                },
+                {
+                    "default": "0",
+                    "help": "",
+                    "key": "arrangement_financed",
+                    "label": "Arrangement fee financed",
+                    "type": "number"
+                },
+                {
+                    "default": "0",
+                    "help": "",
+                    "key": "other_financed",
+                    "label": "Other fees financed",
+                    "type": "number"
+                },
+                {
+                    "default": "2028-01-01",
+                    "help": "",
+                    "key": "comparison_date",
+                    "label": "Common comparison date",
+                    "type": "date"
+                },
+                {
+                    "default": 2,
+                    "help": "Choose the required currency precision, including zero, three or four decimal places where applicable.",
+                    "key": "precision",
+                    "label": "Monetary decimal places (explicit override)",
+                    "type": "int"
+                },
+                {
+                    "choices": [
+                        "display",
+                        "transaction"
+                    ],
+                    "default": "display",
+                    "help": "display keeps internal precision and rounds presentation only; transaction rounds each booked monetary amount, half away from zero.",
+                    "key": "rounding",
+                    "label": "Monetary rounding",
+                    "type": "choice"
+                }
+            ],
+            "id": "refinancecompare",
+            "title": "Refinancing comparison"
+        },
+        {
+            "assumptions": [
+                "Fractional rates; user-defined tax rules.",
+                "Display-only or transaction rounding at the selected currency precision."
+            ],
+            "category": "Tax, VAT & invoices",
+            "description": "Calculate net, tax and gross using a user-supplied fractional rate.",
+            "example": {
+                "amount": "100",
+                "rate": "0.20"
+            },
+            "expression_example": "taxadd(100,0.20)",
+            "fields": [
+                {
+                    "default": "",
+                    "help": "Negative values represent credits or reversals.",
+                    "key": "amount",
+                    "label": "Net amount",
+                    "type": "number"
+                },
+                {
+                    "default": "",
+                    "help": "0.20 = 20%; rates are not country-specific.",
+                    "key": "rate",
+                    "label": "Tax rate (fraction)",
+                    "type": "number"
+                },
+                {
+                    "default": 2,
+                    "help": "Choose the required currency precision, including zero, three or four decimal places where applicable.",
+                    "key": "precision",
+                    "label": "Monetary decimal places (explicit override)",
+                    "type": "int"
+                },
+                {
+                    "choices": [
+                        "display",
+                        "transaction"
+                    ],
+                    "default": "display",
+                    "help": "display keeps internal precision and rounds presentation only; transaction rounds each booked monetary amount, half away from zero.",
+                    "key": "rounding",
+                    "label": "Monetary rounding",
+                    "type": "choice"
+                }
+            ],
+            "id": "taxadd",
+            "title": "Add tax"
+        },
+        {
+            "assumptions": [
+                "Fractional rates; user-defined tax rules.",
+                "Display-only or transaction rounding at the selected currency precision."
+            ],
+            "category": "Tax, VAT & invoices",
+            "description": "Calculate net, tax and gross using a user-supplied fractional rate.",
+            "example": {
+                "amount": "120",
+                "rate": "0.20"
+            },
+            "expression_example": "taxremove(120,0.20)",
+            "fields": [
+                {
+                    "default": "",
+                    "help": "Negative values represent credits or reversals.",
+                    "key": "amount",
+                    "label": "Gross amount",
+                    "type": "number"
+                },
+                {
+                    "default": "",
+                    "help": "0.20 = 20%; rates are not country-specific.",
+                    "key": "rate",
+                    "label": "Tax rate (fraction)",
+                    "type": "number"
+                },
+                {
+                    "default": 2,
+                    "help": "Choose the required currency precision, including zero, three or four decimal places where applicable.",
+                    "key": "precision",
+                    "label": "Monetary decimal places (explicit override)",
+                    "type": "int"
+                },
+                {
+                    "choices": [
+                        "display",
+                        "transaction"
+                    ],
+                    "default": "display",
+                    "help": "display keeps internal precision and rounds presentation only; transaction rounds each booked monetary amount, half away from zero.",
+                    "key": "rounding",
+                    "label": "Monetary rounding",
+                    "type": "choice"
+                }
+            ],
+            "id": "taxremove",
+            "title": "Remove included tax"
+        },
+        {
+            "assumptions": [
+                "Fractional rates; user-defined tax rules.",
+                "Display-only or transaction rounding at the selected currency precision."
+            ],
+            "category": "Tax, VAT & invoices",
+            "description": "Calculate net, tax and gross using a user-supplied fractional rate.",
+            "example": {
+                "amount": "120",
+                "rate": "0.20"
+            },
+            "expression_example": "taxpart(120,0.20)",
+            "fields": [
+                {
+                    "default": "",
+                    "help": "Negative values represent credits or reversals.",
+                    "key": "amount",
+                    "label": "Gross amount",
+                    "type": "number"
+                },
+                {
+                    "default": "",
+                    "help": "0.20 = 20%; rates are not country-specific.",
+                    "key": "rate",
+                    "label": "Tax rate (fraction)",
+                    "type": "number"
+                },
+                {
+                    "default": 2,
+                    "help": "Choose the required currency precision, including zero, three or four decimal places where applicable.",
+                    "key": "precision",
+                    "label": "Monetary decimal places (explicit override)",
+                    "type": "int"
+                },
+                {
+                    "choices": [
+                        "display",
+                        "transaction"
+                    ],
+                    "default": "display",
+                    "help": "display keeps internal precision and rounds presentation only; transaction rounds each booked monetary amount, half away from zero.",
+                    "key": "rounding",
+                    "label": "Monetary rounding",
+                    "type": "choice"
+                }
+            ],
+            "id": "taxpart",
+            "title": "Extract included tax"
+        },
+        {
+            "assumptions": [
+                "Effective tax rate uses income before deductions as denominator.",
+                "At an exact bracket boundary, the next bracket's rate is marginal."
+            ],
+            "category": "Tax, VAT & invoices",
+            "description": "Apply marginal rates to ordered tax brackets, with separate deductions and credits.",
+            "example": {
+                "brackets": [
+                    {
+                        "rate": "0.10",
+                        "threshold": "0"
+                    },
+                    {
+                        "rate": "0.20",
+                        "threshold": "10000"
+                    },
+                    {
+                        "rate": "0.30",
+                        "threshold": "30000"
+                    }
+                ],
+                "credit": "500",
+                "deduction": "2000",
+                "income": "40000",
+                "refundable": false
+            },
+            "expression_example": "brackettax(40000,[0,0.10;10000,0.20;30000,0.30],2000,500,0)",
+            "fields": [
+                {
+                    "default": "",
+                    "help": "",
+                    "key": "income",
+                    "label": "Income / taxable base before deductions",
+                    "type": "number"
+                },
+                {
+                    "default": "0",
+                    "help": "Reduces taxable base; does not represent an additional cash deduction.",
+                    "key": "deduction",
+                    "label": "Tax-base deduction",
+                    "type": "number"
+                },
+                {
+                    "default": "0",
+                    "help": "Subtracted from tax after applying brackets.",
+                    "key": "credit",
+                    "label": "Tax credit",
+                    "type": "number"
+                },
+                {
+                    "default": false,
+                    "help": "If enabled, excess credit may produce negative tax.",
+                    "key": "refundable",
+                    "label": "Refundable credit",
+                    "type": "bool"
+                },
+                {
+                    "columns": [
+                        {
+                            "default": "",
+                            "help": "First threshold is 0; subsequent thresholds strictly increase.",
+                            "key": "threshold",
+                            "label": "Lower threshold",
+                            "type": "number"
+                        },
+                        {
+                            "default": "",
+                            "help": "0.20 means 20%; the final bracket has no upper limit.",
+                            "key": "rate",
+                            "label": "Marginal rate (fraction)",
+                            "type": "number"
+                        }
+                    ],
+                    "help": "Lower thresholds, ascending from 0. The final bracket is unlimited.",
+                    "key": "brackets",
+                    "label": "Tax brackets",
+                    "type": "table"
+                },
+                {
+                    "default": 2,
+                    "help": "Choose the required currency precision, including zero, three or four decimal places where applicable.",
+                    "key": "precision",
+                    "label": "Monetary decimal places (explicit override)",
+                    "type": "int"
+                },
+                {
+                    "choices": [
+                        "display",
+                        "transaction"
+                    ],
+                    "default": "display",
+                    "help": "display keeps internal precision and rounds presentation only; transaction rounds each booked monetary amount, half away from zero.",
+                    "key": "rounding",
+                    "label": "Monetary rounding",
+                    "type": "choice"
+                }
+            ],
+            "id": "brackettax",
+            "title": "Progressive tax"
+        },
+        {
+            "assumptions": [
+                "All deduction rates apply to gross, except tax applied after its allowance.",
+                "Every bracket's combined marginal deduction rate must remain below 100%.",
+                "Returns the smallest nonnegative gross minor unit achieving at least the target."
+            ],
+            "category": "Tax, VAT & invoices",
+            "description": "Find the smallest gross monetary amount that reaches the requested net, including tax, contributions and fees.",
+            "example": {
+                "brackets": [
+                    {
+                        "rate": "0.10",
+                        "threshold": "0"
+                    },
+                    {
+                        "rate": "0.20",
+                        "threshold": "10000"
+                    },
+                    {
+                        "rate": "0.30",
+                        "threshold": "30000"
+                    }
+                ],
+                "contribution_rate": "0.05",
+                "fixed_deduction": "20",
+                "precision": 2,
+                "rate": "0.20",
+                "rounding": "transaction",
+                "target": "1000",
+                "tax_model": "flat"
+            },
+            "expression_example": "grossup(1000,0.20)",
+            "fields": [
+                {
+                    "default": "",
+                    "help": "",
+                    "key": "target",
+                    "label": "Requested net",
+                    "type": "number"
+                },
+                {
+                    "choices": [
+                        "flat",
+                        "progressive"
+                    ],
+                    "default": "flat",
+                    "help": "",
+                    "key": "tax_model",
+                    "label": "Tax model",
+                    "type": "choice"
+                },
+                {
+                    "default": "",
+                    "help": "Used only for the flat model.",
+                    "key": "rate",
+                    "label": "Flat tax rate (fraction)",
+                    "type": "number"
+                },
+                {
+                    "columns": [
+                        {
+                            "default": "",
+                            "help": "First threshold is 0; subsequent thresholds strictly increase.",
+                            "key": "threshold",
+                            "label": "Lower threshold",
+                            "type": "number"
+                        },
+                        {
+                            "default": "",
+                            "help": "0.20 means 20%; the final bracket has no upper limit.",
+                            "key": "rate",
+                            "label": "Marginal rate (fraction)",
+                            "type": "number"
+                        }
+                    ],
+                    "help": "Used only for the progressive model; starts at 0.",
+                    "key": "brackets",
+                    "label": "Progressive tax brackets",
+                    "type": "table"
+                },
+                {
+                    "default": "0",
+                    "help": "Reduces the tax base only.",
+                    "key": "allowance",
+                    "label": "Tax-base allowance",
+                    "type": "number"
+                },
+                {
+                    "default": "0",
+                    "help": "",
+                    "key": "credit",
+                    "label": "Tax credit",
+                    "type": "number"
+                },
+                {
+                    "default": false,
+                    "help": "",
+                    "key": "refundable",
+                    "label": "Refundable credit",
+                    "type": "bool"
+                },
+                {
+                    "default": "0",
+                    "help": "",
+                    "key": "contribution_rate",
+                    "label": "Contributions / gross (fraction)",
+                    "type": "number"
+                },
+                {
+                    "default": "0",
+                    "help": "",
+                    "key": "deduction_rate",
+                    "label": "Other deductions / gross (fraction)",
+                    "type": "number"
+                },
+                {
+                    "default": "0",
+                    "help": "",
+                    "key": "fixed_deduction",
+                    "label": "Fixed cash deduction / fees",
+                    "type": "number"
+                },
+                {
+                    "default": 2,
+                    "help": "Choose the required currency precision, including zero, three or four decimal places where applicable.",
+                    "key": "precision",
+                    "label": "Monetary decimal places (explicit override)",
+                    "type": "int"
+                },
+                {
+                    "choices": [
+                        "display",
+                        "transaction"
+                    ],
+                    "default": "display",
+                    "help": "display keeps internal precision and rounds presentation only; transaction rounds each booked monetary amount, half away from zero.",
+                    "key": "rounding",
+                    "label": "Monetary rounding",
+                    "type": "choice"
+                }
+            ],
+            "id": "grossup",
+            "title": "Net-to-gross solver"
+        },
+        {
+            "assumptions": [
+                "Nonnegative quantities and prices; fixed discounts cannot exceed available value.",
+                "Fixed line discounts follow price interpretation; fixed invoice discounts are net.",
+                "Largest-remainder allocation, with original line order breaking ties."
+            ],
+            "category": "Tax, VAT & invoices",
+            "description": "Calculate mixed-rate invoices with explicit discount ordering and reconciled rounding.",
+            "example": {
+                "discount_order": "line_then_invoice",
+                "invoice_discount": "23",
+                "invoice_discount_type": "fixed",
+                "invoice_rounding": "invoice",
+                "lines": [
+                    {
+                        "description": "Product A",
+                        "discount": "0.10",
+                        "discount_type": "percentage",
+                        "price": "100",
+                        "price_mode": "net",
+                        "quantity": "2",
+                        "rate": "0.20"
+                    },
+                    {
+                        "description": "Product B",
+                        "discount": "0",
+                        "discount_type": "fixed",
+                        "price": "55",
+                        "price_mode": "inclusive",
+                        "quantity": "1",
+                        "rate": "0.10"
+                    }
+                ],
+                "rounding": "transaction"
+            },
+            "expression_example": "",
+            "fields": [
+                {
+                    "columns": [
+                        {
+                            "default": "Item",
+                            "help": "",
+                            "key": "description",
+                            "label": "Description",
+                            "type": "text"
+                        },
+                        {
+                            "default": "",
+                            "help": "",
+                            "key": "quantity",
+                            "label": "Quantity",
+                            "type": "number"
+                        },
+                        {
+                            "default": "",
+                            "help": "",
+                            "key": "price",
+                            "label": "Unit price",
+                            "type": "number"
+                        },
+                        {
+                            "choices": [
+                                "net",
+                                "inclusive"
+                            ],
+                            "default": "net",
+                            "help": "",
+                            "key": "price_mode",
+                            "label": "Price interpretation",
+                            "type": "choice"
+                        },
+                        {
+                            "choices": [
+                                "percentage",
+                                "fixed"
+                            ],
+                            "default": "percentage",
+                            "help": "",
+                            "key": "discount_type",
+                            "label": "Line discount type",
+                            "type": "choice"
+                        },
+                        {
+                            "default": "0",
+                            "help": "Percentage is a fraction; a fixed amount follows the price's net/inclusive interpretation.",
+                            "key": "discount",
+                            "label": "Line discount",
+                            "type": "number"
+                        },
+                        {
+                            "default": "",
+                            "help": "",
+                            "key": "rate",
+                            "label": "Tax rate (fraction)",
+                            "type": "number"
+                        }
+                    ],
+                    "help": "",
+                    "key": "lines",
+                    "label": "Invoice lines",
+                    "type": "table"
+                },
+                {
+                    "choices": [
+                        "percentage",
+                        "fixed"
+                    ],
+                    "default": "percentage",
+                    "help": "",
+                    "key": "invoice_discount_type",
+                    "label": "Invoice discount type",
+                    "type": "choice"
+                },
+                {
+                    "default": "0",
+                    "help": "Percentage is a fraction. Fixed invoice discount is a net amount allocated across lines.",
+                    "key": "invoice_discount",
+                    "label": "Invoice discount",
+                    "type": "number"
+                },
+                {
+                    "choices": [
+                        "line_then_invoice",
+                        "invoice_then_line"
+                    ],
+                    "default": "line_then_invoice",
+                    "help": "",
+                    "key": "discount_order",
+                    "label": "Discount ordering",
+                    "type": "choice"
+                },
+                {
+                    "choices": [
+                        "line",
+                        "invoice"
+                    ],
+                    "default": "line",
+                    "help": "Invoice scope rounds total net and each tax-rate subtotal; remainders follow input order.",
+                    "key": "invoice_rounding",
+                    "label": "Rounding scope",
+                    "type": "choice"
+                },
+                {
+                    "default": 2,
+                    "help": "Choose the required currency precision, including zero, three or four decimal places where applicable.",
+                    "key": "precision",
+                    "label": "Monetary decimal places (explicit override)",
+                    "type": "int"
+                },
+                {
+                    "choices": [
+                        "display",
+                        "transaction"
+                    ],
+                    "default": "display",
+                    "help": "display keeps internal precision and rounds presentation only; transaction rounds each booked monetary amount, half away from zero.",
+                    "key": "rounding",
+                    "label": "Monetary rounding",
+                    "type": "choice"
+                }
+            ],
+            "id": "invoicetotal",
+            "title": "Invoice calculation"
+        },
+        {
+            "assumptions": [
+                "Deductibility is entirely user-specified; descriptions have no legal effect.",
+                "A positive balance is payable; a negative balance is recoverable.",
+                "Generic worksheet, not an automatically compliant national tax return."
+            ],
+            "category": "Tax, VAT & invoices",
+            "description": "Combine output VAT, explicitly deductible input VAT and signed adjustments.",
+            "example": {
+                "adjustments": [
+                    {
+                        "amount": "-10",
+                        "description": "User adjustment"
+                    }
+                ],
+                "entries": [
+                    {
+                        "base": "1000",
+                        "basis": "net",
+                        "deductible": "1",
+                        "description": "Sales",
+                        "kind": "output",
+                        "rate": "0.20"
+                    },
+                    {
+                        "base": "500",
+                        "basis": "net",
+                        "deductible": "0.50",
+                        "description": "Partially deductible expense",
+                        "kind": "input",
+                        "rate": "0.20"
+                    }
+                ]
+            },
+            "expression_example": "",
+            "fields": [
+                {
+                    "columns": [
+                        {
+                            "default": "Transaction",
+                            "help": "",
+                            "key": "description",
+                            "label": "Description",
+                            "type": "text"
+                        },
+                        {
+                            "choices": [
+                                "output",
+                                "input"
+                            ],
+                            "default": "output",
+                            "help": "",
+                            "key": "kind",
+                            "label": "Kind",
+                            "type": "choice"
+                        },
+                        {
+                            "choices": [
+                                "net",
+                                "vat"
+                            ],
+                            "default": "net",
+                            "help": "",
+                            "key": "basis",
+                            "label": "Amount interpretation",
+                            "type": "choice"
+                        },
+                        {
+                            "default": "",
+                            "help": "Net base multiplied by the rate, or VAT directly when interpretation is vat.",
+                            "key": "base",
+                            "label": "Net base / VAT amount",
+                            "type": "number"
+                        },
+                        {
+                            "default": "",
+                            "help": "",
+                            "key": "rate",
+                            "label": "VAT rate / rate group (fraction)",
+                            "type": "number"
+                        },
+                        {
+                            "default": "1",
+                            "help": "Input VAT only: 1 = fully deductible; 0.5 = half; 0 = none.",
+                            "key": "deductible",
+                            "label": "Deductible input fraction",
+                            "type": "number"
+                        }
+                    ],
+                    "help": "",
+                    "key": "entries",
+                    "label": "VAT entries",
+                    "type": "table"
+                },
+                {
+                    "columns": [
+                        {
+                            "default": "Adjustment",
+                            "help": "",
+                            "key": "description",
+                            "label": "Description",
+                            "type": "text"
+                        },
+                        {
+                            "default": "0",
+                            "help": "Positive increases payable VAT; negative reduces it.",
+                            "key": "amount",
+                            "label": "Signed adjustment",
+                            "type": "number"
+                        }
+                    ],
+                    "help": "",
+                    "key": "adjustments",
+                    "label": "Explicit adjustments",
+                    "type": "table"
+                },
+                {
+                    "default": 2,
+                    "help": "Choose the required currency precision, including zero, three or four decimal places where applicable.",
+                    "key": "precision",
+                    "label": "Monetary decimal places (explicit override)",
+                    "type": "int"
+                },
+                {
+                    "choices": [
+                        "display",
+                        "transaction"
+                    ],
+                    "default": "display",
+                    "help": "display keeps internal precision and rounds presentation only; transaction rounds each booked monetary amount, half away from zero.",
+                    "key": "rounding",
+                    "label": "Monetary rounding",
+                    "type": "choice"
+                }
+            ],
+            "id": "vatsettlement",
+            "title": "VAT settlement worksheet"
+        },
+        {
+            "assumptions": [
+                "Cost and selling price must be positive. Target margin must be less than 100%."
+            ],
+            "category": "Pricing & business",
+            "description": "Compare profit relative to cost (markup) and relative to selling price (margin).",
+            "example": {
+                "cost": "80",
+                "mode": "selling_price",
+                "selling_price": "100"
+            },
+            "expression_example": "markup(80,100)",
+            "fields": [
+                {
+                    "default": "",
+                    "help": "",
+                    "key": "cost",
+                    "label": "Cost per unit",
+                    "type": "number"
+                },
+                {
+                    "choices": [
+                        "selling_price",
+                        "target_markup",
+                        "target_margin"
+                    ],
+                    "default": "selling_price",
+                    "help": "",
+                    "key": "mode",
+                    "label": "Known input",
+                    "type": "choice"
+                },
+                {
+                    "default": "",
+                    "help": "",
+                    "key": "selling_price",
+                    "label": "Selling price (known-input mode)",
+                    "type": "number"
+                },
+                {
+                    "help": "Enter a fractional rate: 0.20 means 20%; expressions such as 20% are accepted.",
+                    "key": "target_rate",
+                    "label": "Target markup or margin",
+                    "type": "number"
+                },
+                {
+                    "default": 2,
+                    "help": "Choose the required currency precision, including zero, three or four decimal places where applicable.",
+                    "key": "precision",
+                    "label": "Monetary decimal places (explicit override)",
+                    "type": "int"
+                },
+                {
+                    "choices": [
+                        "display",
+                        "transaction"
+                    ],
+                    "default": "display",
+                    "help": "display keeps internal precision and rounds presentation only; transaction rounds each booked monetary amount, half away from zero.",
+                    "key": "rounding",
+                    "label": "Monetary rounding",
+                    "type": "choice"
+                }
+            ],
+            "id": "pricing",
+            "title": "Markup, margin & selling price"
+        },
+        {
+            "assumptions": [
+                "Fixed costs, variable cost and target profit are nonnegative; contribution must be positive."
+            ],
+            "category": "Pricing & business",
+            "description": "Find divisible and whole-unit sales requirements from positive contribution per unit.",
+            "example": {
+                "fixed_costs": "1000",
+                "target_profit": "500",
+                "unit_price": "25",
+                "variable_cost": "15"
+            },
+            "expression_example": "targetsales(1000,25,15,500)",
+            "fields": [
+                {
+                    "default": "",
+                    "help": "",
+                    "key": "fixed_costs",
+                    "label": "Fixed costs",
+                    "type": "number"
+                },
+                {
+                    "default": "",
+                    "help": "",
+                    "key": "unit_price",
+                    "label": "Selling price per unit",
+                    "type": "number"
+                },
+                {
+                    "default": "",
+                    "help": "",
+                    "key": "variable_cost",
+                    "label": "Variable cost per unit",
+                    "type": "number"
+                },
+                {
+                    "default": "0",
+                    "help": "",
+                    "key": "target_profit",
+                    "label": "Target profit (0 for break-even)",
+                    "type": "number"
+                },
+                {
+                    "default": 2,
+                    "help": "Choose the required currency precision, including zero, three or four decimal places where applicable.",
+                    "key": "precision",
+                    "label": "Monetary decimal places (explicit override)",
+                    "type": "int"
+                },
+                {
+                    "choices": [
+                        "display",
+                        "transaction"
+                    ],
+                    "default": "display",
+                    "help": "display keeps internal precision and rounds presentation only; transaction rounds each booked monetary amount, half away from zero.",
+                    "key": "rounding",
+                    "label": "Monetary rounding",
+                    "type": "choice"
+                }
+            ],
+            "id": "breakeven",
+            "title": "Break-even & target profit"
+        },
+        {
+            "assumptions": [
+                "Service-year charges use acquisition anniversaries. Calendar allocation respects leap years. This is generic mathematics, not tax-law depreciation."
+            ],
+            "category": "Pricing & business",
+            "description": "Straight-line, declining-balance or sum-of-years'-digits with a residual-value floor.",
+            "example": {
+                "cost": "10000",
+                "life": 5,
+                "method": "straight_line",
+                "proration": "calendar_actual_days",
+                "residual": "1000",
+                "start": "2026-07-01"
+            },
+            "expression_example": "",
+            "fields": [
+                {
+                    "default": "",
+                    "help": "",
+                    "key": "cost",
+                    "label": "Acquisition cost",
+                    "type": "number"
+                },
+                {
+                    "default": "0",
+                    "help": "",
+                    "key": "residual",
+                    "label": "Residual value",
+                    "type": "number"
+                },
+                {
+                    "default": 5,
+                    "help": "",
+                    "key": "life",
+                    "label": "Useful life (whole service years)",
+                    "type": "int"
+                },
+                {
+                    "choices": [
+                        "straight_line",
+                        "declining_balance",
+                        "sum_of_years"
+                    ],
+                    "default": "straight_line",
+                    "help": "",
+                    "key": "method",
+                    "label": "Method",
+                    "type": "choice"
+                },
+                {
+                    "help": "",
+                    "key": "start",
+                    "label": "In-service date",
+                    "type": "date"
+                },
+                {
+                    "choices": [
+                        "anniversary",
+                        "calendar_actual_days"
+                    ],
+                    "default": "calendar_actual_days",
+                    "help": "Calendar mode splits each annual service-year charge by actual days; both table endpoints are inclusive.",
+                    "key": "proration",
+                    "label": "Partial-period convention",
+                    "type": "choice"
+                },
+                {
+                    "choices": [
+                        "factor",
+                        "rate"
+                    ],
+                    "default": "factor",
+                    "help": "",
+                    "key": "declining_basis",
+                    "label": "Declining-balance input",
+                    "type": "choice"
+                },
+                {
+                    "default": "2",
+                    "help": "",
+                    "key": "factor",
+                    "label": "Declining factor (rate = factor ÷ life)",
+                    "type": "number"
+                },
+                {
+                    "help": "Enter a fractional rate: 0.20 means 20%; expressions such as 20% are accepted.",
+                    "key": "rate",
+                    "label": "Explicit declining annual rate",
+                    "type": "number"
+                },
+                {
+                    "default": true,
+                    "help": "For declining balance only; disabled allows the final book value to exceed residual.",
+                    "key": "finish_at_residual",
+                    "label": "Catch up to residual in final period",
+                    "type": "bool"
+                },
+                {
+                    "default": 2,
+                    "help": "Choose the required currency precision, including zero, three or four decimal places where applicable.",
+                    "key": "precision",
+                    "label": "Monetary decimal places (explicit override)",
+                    "type": "int"
+                },
+                {
+                    "choices": [
+                        "display",
+                        "transaction"
+                    ],
+                    "default": "display",
+                    "help": "display keeps internal precision and rounds presentation only; transaction rounds each booked monetary amount, half away from zero.",
+                    "key": "rounding",
+                    "label": "Monetary rounding",
+                    "type": "choice"
+                }
+            ],
+            "id": "depreciation",
+            "title": "Depreciation schedule"
+        },
+        {
+            "assumptions": [
+                "Negative amounts are allowed. Quantity ratios may exceed one; date portions must lie within the full included interval."
+            ],
+            "category": "Pricing & business",
+            "description": "Allocate an amount by an explicit quantity ratio or an included calendar-day ratio.",
+            "example": {
+                "amount": "310",
+                "basis": "dates",
+                "full_end": "2026-01-31",
+                "full_start": "2026-01-01",
+                "part_end": "2026-01-31",
+                "part_start": "2026-01-17"
+            },
+            "expression_example": "prorate(310,15,31)",
+            "fields": [
+                {
+                    "default": "",
+                    "help": "",
+                    "key": "amount",
+                    "label": "Original amount",
+                    "type": "number"
+                },
+                {
+                    "choices": [
+                        "quantity",
+                        "dates"
+                    ],
+                    "default": "dates",
+                    "help": "",
+                    "key": "basis",
+                    "label": "Basis",
+                    "type": "choice"
+                },
+                {
+                    "default": "",
+                    "help": "",
+                    "key": "portion",
+                    "label": "Portion quantity (quantity basis)",
+                    "type": "number"
+                },
+                {
+                    "default": "",
+                    "help": "",
+                    "key": "whole",
+                    "label": "Full quantity (quantity basis)",
+                    "type": "number"
+                },
+                {
+                    "help": "",
+                    "key": "full_start",
+                    "label": "Full interval start",
+                    "type": "date"
+                },
+                {
+                    "help": "",
+                    "key": "full_end",
+                    "label": "Full interval end",
+                    "type": "date"
+                },
+                {
+                    "default": true,
+                    "help": "",
+                    "key": "full_include_start",
+                    "label": "Include full start date",
+                    "type": "bool"
+                },
+                {
+                    "default": true,
+                    "help": "",
+                    "key": "full_include_end",
+                    "label": "Include full end date",
+                    "type": "bool"
+                },
+                {
+                    "help": "",
+                    "key": "part_start",
+                    "label": "Portion interval start",
+                    "type": "date"
+                },
+                {
+                    "help": "",
+                    "key": "part_end",
+                    "label": "Portion interval end",
+                    "type": "date"
+                },
+                {
+                    "default": true,
+                    "help": "",
+                    "key": "part_include_start",
+                    "label": "Include portion start date",
+                    "type": "bool"
+                },
+                {
+                    "default": true,
+                    "help": "",
+                    "key": "part_include_end",
+                    "label": "Include portion end date",
+                    "type": "bool"
+                },
+                {
+                    "default": 2,
+                    "help": "Choose the required currency precision, including zero, three or four decimal places where applicable.",
+                    "key": "precision",
+                    "label": "Monetary decimal places (explicit override)",
+                    "type": "int"
+                },
+                {
+                    "choices": [
+                        "display",
+                        "transaction"
+                    ],
+                    "default": "display",
+                    "help": "display keeps internal precision and rounds presentation only; transaction rounds each booked monetary amount, half away from zero.",
+                    "key": "rounding",
+                    "label": "Monetary rounding",
+                    "type": "choice"
+                }
+            ],
+            "id": "prorate",
+            "title": "Proration"
+        },
+        {
+            "assumptions": [
+                "Original amount must be exactly representable at selected monetary precision. Allocated amounts always sum to that original amount; credits mirror positive allocations."
+            ],
+            "category": "Pricing & business",
+            "description": "Distribute positive amounts or credits exactly at the chosen monetary precision using largest remainders.",
+            "example": {
+                "amount": "100",
+                "recipients": [
+                    {
+                        "name": "A",
+                        "weight": "1"
+                    },
+                    {
+                        "name": "B",
+                        "weight": "1"
+                    },
+                    {
+                        "name": "C",
+                        "weight": "1"
+                    }
+                ],
+                "weight_mode": "weights"
+            },
+            "expression_example": "",
+            "fields": [
+                {
+                    "default": "",
+                    "help": "",
+                    "key": "amount",
+                    "label": "Amount to allocate",
+                    "type": "number"
+                },
+                {
+                    "choices": [
+                        "weights",
+                        "percentages"
+                    ],
+                    "default": "weights",
+                    "help": "",
+                    "key": "weight_mode",
+                    "label": "Weight interpretation",
+                    "type": "choice"
+                },
+                {
+                    "columns": [
+                        {
+                            "help": "",
+                            "key": "name",
+                            "label": "Name",
+                            "type": "text"
+                        },
+                        {
+                            "default": "1",
+                            "help": "",
+                            "key": "weight",
+                            "label": "Weight or percentage",
+                            "type": "number"
+                        }
+                    ],
+                    "help": "Nonnegative weights; percentages must add to 100. Ties use input order.",
+                    "key": "recipients",
+                    "label": "Recipients",
+                    "type": "table"
+                },
+                {
+                    "default": 2,
+                    "help": "Choose the required currency precision, including zero, three or four decimal places where applicable.",
+                    "key": "precision",
+                    "label": "Monetary decimal places (explicit override)",
+                    "type": "int"
+                },
+                {
+                    "choices": [
+                        "display",
+                        "transaction"
+                    ],
+                    "default": "display",
+                    "help": "display keeps internal precision and rounds presentation only; transaction rounds each booked monetary amount, half away from zero.",
+                    "key": "rounding",
+                    "label": "Monetary rounding",
+                    "type": "choice"
+                }
+            ],
+            "id": "allocate",
+            "title": "Monetary allocation"
+        },
+        {
+            "assumptions": [
+                "All same-day flows are netted before testing cash shortfall. Weekly buckets are anchored to forecast start; other multi-day groups follow calendar periods. Display rounding is explicitly separated from actual cash movements."
+            ],
+            "category": "Pricing & business",
+            "description": "Project dated and recurring inflows/outflows, grouped balances, the lowest cash balance and first shortfall.",
+            "example": {
+                "end": "2026-03-31",
+                "period": "monthly",
+                "recurring": [
+                    {
+                        "amount": "600",
+                        "direction": "outflow",
+                        "end": "2026-03-31",
+                        "frequency": "monthly",
+                        "label": "Monthly cost",
+                        "start": "2026-01-31"
+                    }
+                ],
+                "start": "2026-01-01",
+                "starting_cash": "1000",
+                "transactions": [
+                    {
+                        "amount": "500",
+                        "date": "2026-02-15",
+                        "direction": "inflow",
+                        "label": "Receipt"
+                    }
+                ]
+            },
+            "expression_example": "",
+            "fields": [
+                {
+                    "default": "",
+                    "help": "",
+                    "key": "starting_cash",
+                    "label": "Starting cash",
+                    "type": "number"
+                },
+                {
+                    "help": "",
+                    "key": "start",
+                    "label": "Forecast start (inclusive)",
+                    "type": "date"
+                },
+                {
+                    "help": "",
+                    "key": "end",
+                    "label": "Forecast end (inclusive)",
+                    "type": "date"
+                },
+                {
+                    "choices": [
+                        "daily",
+                        "weekly",
+                        "monthly",
+                        "quarterly",
+                        "yearly"
+                    ],
+                    "default": "monthly",
+                    "help": "",
+                    "key": "period",
+                    "label": "Group periods",
+                    "type": "choice"
+                },
+                {
+                    "columns": [
+                        {
+                            "help": "",
+                            "key": "date",
+                            "label": "Date",
+                            "type": "date"
+                        },
+                        {
+                            "help": "",
+                            "key": "label",
+                            "label": "Description",
+                            "type": "text"
+                        },
+                        {
+                            "choices": [
+                                "inflow",
+                                "outflow"
+                            ],
+                            "default": "inflow",
+                            "help": "",
+                            "key": "direction",
+                            "label": "Direction",
+                            "type": "choice"
+                        },
+                        {
+                            "default": "",
+                            "help": "",
+                            "key": "amount",
+                            "label": "Amount",
+                            "type": "number"
+                        }
+                    ],
+                    "help": "",
+                    "key": "transactions",
+                    "label": "Dated transactions",
+                    "type": "table"
+                },
+                {
+                    "columns": [
+                        {
+                            "help": "",
+                            "key": "start",
+                            "label": "First date",
+                            "type": "date"
+                        },
+                        {
+                            "help": "",
+                            "key": "end",
+                            "label": "Last permitted date",
+                            "type": "date"
+                        },
+                        {
+                            "choices": [
+                                "daily",
+                                "weekly",
+                                "monthly",
+                                "quarterly",
+                                "yearly"
+                            ],
+                            "default": "monthly",
+                            "help": "",
+                            "key": "frequency",
+                            "label": "Frequency",
+                            "type": "choice"
+                        },
+                        {
+                            "help": "",
+                            "key": "label",
+                            "label": "Description",
+                            "type": "text"
+                        },
+                        {
+                            "choices": [
+                                "inflow",
+                                "outflow"
+                            ],
+                            "default": "outflow",
+                            "help": "",
+                            "key": "direction",
+                            "label": "Direction",
+                            "type": "choice"
+                        },
+                        {
+                            "default": "",
+                            "help": "",
+                            "key": "amount",
+                            "label": "Amount",
+                            "type": "number"
+                        }
+                    ],
+                    "help": "Each occurrence is anchored to the original date; January 31 monthly becomes February 28 and March 31. Ends are inclusive; only forecast dates are used.",
+                    "key": "recurring",
+                    "label": "Recurring transactions",
+                    "type": "table"
+                },
+                {
+                    "default": 2,
+                    "help": "Choose the required currency precision, including zero, three or four decimal places where applicable.",
+                    "key": "precision",
+                    "label": "Monetary decimal places (explicit override)",
+                    "type": "int"
+                },
+                {
+                    "choices": [
+                        "display",
+                        "transaction"
+                    ],
+                    "default": "display",
+                    "help": "display keeps internal precision and rounds presentation only; transaction rounds each booked monetary amount, half away from zero.",
+                    "key": "rounding",
+                    "label": "Monetary rounding",
+                    "type": "choice"
+                }
+            ],
+            "id": "cashflow",
+            "title": "Cash-flow forecast"
+        },
+        {
+            "assumptions": [
+                "A period may be a month, week or another consistently chosen interval. This simple helper does not predict a calendar date."
+            ],
+            "category": "Pricing & business",
+            "description": "Divide starting cash by net cash burn per user-defined period without inventing exhaustion when burn is zero or negative.",
+            "example": {
+                "burn": "1500",
+                "starting_cash": "10000"
+            },
+            "expression_example": "runway(10000,1500)",
+            "fields": [
+                {
+                    "default": "",
+                    "help": "",
+                    "key": "starting_cash",
+                    "label": "Starting cash",
+                    "type": "number"
+                },
+                {
+                    "default": "",
+                    "help": "",
+                    "key": "burn",
+                    "label": "Net burn per period",
+                    "type": "number"
+                },
+                {
+                    "default": 2,
+                    "help": "Choose the required currency precision, including zero, three or four decimal places where applicable.",
+                    "key": "precision",
+                    "label": "Monetary decimal places (explicit override)",
+                    "type": "int"
+                },
+                {
+                    "choices": [
+                        "display",
+                        "transaction"
+                    ],
+                    "default": "display",
+                    "help": "display keeps internal precision and rounds presentation only; transaction rounds each booked monetary amount, half away from zero.",
+                    "key": "rounding",
+                    "label": "Monetary rounding",
+                    "type": "choice"
+                }
+            ],
+            "id": "runway",
+            "title": "Constant-burn runway"
+        },
+        {
+            "assumptions": [
+                "Same-date receipts precede issues; ties within each type preserve input order. No negative stock is supported, even if later period receipts would cover an earlier shortage. Opening inventory is one cost layer. Periodic average uses all entered receipts; interim valuations are omitted because it is an end-period method."
+            ],
+            "category": "Pricing & business",
+            "description": "Compare FIFO, moving weighted average and periodic weighted average with dated negative-stock validation.",
+            "example": {
+                "issues": [
+                    {
+                        "date": "2026-01-10",
+                        "quantity": "12"
+                    }
+                ],
+                "method": "fifo",
+                "opening_quantity": "10",
+                "opening_unit_cost": "5",
+                "receipts": [
+                    {
+                        "date": "2026-01-05",
+                        "quantity": "10",
+                        "unit_cost": "7"
+                    }
+                ],
+                "start": "2026-01-01"
+            },
+            "expression_example": "",
+            "fields": [
+                {
+                    "choices": [
+                        "fifo",
+                        "moving_average",
+                        "periodic_average"
+                    ],
+                    "default": "fifo",
+                    "help": "",
+                    "key": "method",
+                    "label": "Costing method",
+                    "type": "choice"
+                },
+                {
+                    "help": "",
+                    "key": "start",
+                    "label": "Opening-stock date",
+                    "type": "date"
+                },
+                {
+                    "default": "0",
+                    "help": "",
+                    "key": "opening_quantity",
+                    "label": "Opening quantity",
+                    "type": "number"
+                },
+                {
+                    "default": "0",
+                    "help": "",
+                    "key": "opening_unit_cost",
+                    "label": "Opening unit cost",
+                    "type": "number"
+                },
+                {
+                    "columns": [
+                        {
+                            "help": "",
+                            "key": "date",
+                            "label": "Date",
+                            "type": "date"
+                        },
+                        {
+                            "help": "",
+                            "key": "label",
+                            "label": "Description",
+                            "type": "text"
+                        },
+                        {
+                            "default": "",
+                            "help": "",
+                            "key": "quantity",
+                            "label": "Quantity",
+                            "type": "number"
+                        },
+                        {
+                            "default": "",
+                            "help": "",
+                            "key": "unit_cost",
+                            "label": "Unit cost",
+                            "type": "number"
+                        }
+                    ],
+                    "help": "",
+                    "key": "receipts",
+                    "label": "Dated receipts",
+                    "type": "table"
+                },
+                {
+                    "columns": [
+                        {
+                            "help": "",
+                            "key": "date",
+                            "label": "Date",
+                            "type": "date"
+                        },
+                        {
+                            "help": "",
+                            "key": "label",
+                            "label": "Description",
+                            "type": "text"
+                        },
+                        {
+                            "default": "",
+                            "help": "",
+                            "key": "quantity",
+                            "label": "Quantity",
+                            "type": "number"
+                        }
+                    ],
+                    "help": "",
+                    "key": "issues",
+                    "label": "Dated issues / sales",
+                    "type": "table"
+                },
+                {
+                    "default": 2,
+                    "help": "Choose the required currency precision, including zero, three or four decimal places where applicable.",
+                    "key": "precision",
+                    "label": "Monetary decimal places (explicit override)",
+                    "type": "int"
+                },
+                {
+                    "choices": [
+                        "display",
+                        "transaction"
+                    ],
+                    "default": "display",
+                    "help": "display keeps internal precision and rounds presentation only; transaction rounds each booked monetary amount, half away from zero.",
+                    "key": "rounding",
+                    "label": "Monetary rounding",
+                    "type": "choice"
+                }
+            ],
+            "id": "inventory",
+            "title": "Inventory-cost worksheet"
+        },
+        {
+            "assumptions": [
+                "Initial cash flow is at time zero. Rates are fractions; 0.05 means 5%.",
+                "Rate is per equal cash-flow period.",
+                "Negative = outlay; positive = receipt."
+            ],
+            "category": "Investments, savings and economics",
+            "description": "Discount cash flows with an explicit initial investment at time zero.",
+            "example": {
+                "flows": [
+                    {
+                        "amount": "400"
+                    },
+                    {
+                        "amount": "400"
+                    },
+                    {
+                        "amount": "400"
+                    }
+                ],
+                "frequency": 1,
+                "initial": "-1000",
+                "maximum_rate": "100",
+                "minimum_rate": "-0.9999",
+                "rate": "0.10",
+                "search_steps": 384,
+                "timing": "end"
+            },
+            "expression_example": "npv0(0.1,[-1000,400,400,400])",
+            "fields": [
+                {
+                    "default": "",
+                    "help": "Negative = outlay; positive = receipt.",
+                    "key": "initial",
+                    "label": "Initial cash flow at time zero",
+                    "type": "number"
+                },
+                {
+                    "choices": [
+                        "end",
+                        "beginning"
+                    ],
+                    "default": "end",
+                    "help": "End: subsequent flows at 1,2,...; beginning: at 0,1,...; initial flow always at zero.",
+                    "key": "timing",
+                    "label": "Subsequent flow timing",
+                    "type": "choice"
+                },
+                {
+                    "columns": [
+                        {
+                            "help": "",
+                            "key": "amount",
+                            "label": "Cash flow",
+                            "type": "number"
+                        }
+                    ],
+                    "help": "Negative outlays, positive receipts. One row per equal period.",
+                    "key": "flows",
+                    "label": "Evenly spaced subsequent cash flows",
+                    "type": "table"
+                },
+                {
+                    "default": "",
+                    "help": "Enter 0.05 for 5%; expressions such as 5% are also accepted.",
+                    "key": "rate",
+                    "label": "Discount rate per cash-flow period (fraction)",
+                    "type": "number"
+                },
+                {
+                    "default": 2,
+                    "help": "Choose the required currency precision, including zero, three or four decimal places where applicable.",
+                    "key": "precision",
+                    "label": "Monetary decimal places (explicit override)",
+                    "type": "int"
+                },
+                {
+                    "choices": [
+                        "display",
+                        "transaction"
+                    ],
+                    "default": "display",
+                    "help": "display keeps internal precision and rounds presentation only; transaction rounds each booked monetary amount, half away from zero.",
+                    "key": "rounding",
+                    "label": "Monetary rounding",
+                    "type": "choice"
+                }
+            ],
+            "id": "npv",
+            "title": "Net present value (explicit time zero)"
+        },
+        {
+            "assumptions": [
+                "Initial cash flow is at time zero. Rates are fractions; 0.05 means 5%.",
+                "Rate is per equal cash-flow period.",
+                "A finite numerical search cannot establish uniqueness."
+            ],
+            "category": "Investments, savings and economics",
+            "description": "Find and report converged rates, including multiple and tangent roots found by a bounded search.",
+            "example": {
+                "flows": [
+                    {
+                        "amount": "400"
+                    },
+                    {
+                        "amount": "400"
+                    },
+                    {
+                        "amount": "400"
+                    }
+                ],
+                "frequency": 1,
+                "initial": "-1000",
+                "maximum_rate": "100",
+                "minimum_rate": "-0.9999",
+                "rate": "0.10",
+                "search_steps": 384,
+                "timing": "end"
+            },
+            "expression_example": "irr([-1000,400,400,400])",
+            "fields": [
+                {
+                    "default": "",
+                    "help": "Negative = outlay; positive = receipt.",
+                    "key": "initial",
+                    "label": "Initial cash flow at time zero",
+                    "type": "number"
+                },
+                {
+                    "choices": [
+                        "end",
+                        "beginning"
+                    ],
+                    "default": "end",
+                    "help": "End: subsequent flows at 1,2,...; beginning: at 0,1,...; initial flow always at zero.",
+                    "key": "timing",
+                    "label": "Subsequent flow timing",
+                    "type": "choice"
+                },
+                {
+                    "columns": [
+                        {
+                            "help": "",
+                            "key": "amount",
+                            "label": "Cash flow",
+                            "type": "number"
+                        }
+                    ],
+                    "help": "Negative outlays, positive receipts. One row per equal period.",
+                    "key": "flows",
+                    "label": "Evenly spaced subsequent cash flows",
+                    "type": "table"
+                },
+                {
+                    "default": "-0.9999",
+                    "help": "Enter 0.05 for 5%; expressions such as 5% are also accepted.",
+                    "key": "minimum_rate",
+                    "label": "Minimum search rate (fraction)",
+                    "type": "number"
+                },
+                {
+                    "default": "100",
+                    "help": "Enter 0.05 for 5%; expressions such as 5% are also accepted.",
+                    "key": "maximum_rate",
+                    "label": "Maximum search rate (fraction)",
+                    "type": "number"
+                },
+                {
+                    "default": 384,
+                    "help": "64 to 4096; repeated roots are searched using stationary points.",
+                    "key": "search_steps",
+                    "label": "Search subdivisions",
+                    "type": "int"
+                },
+                {
+                    "default": 1,
+                    "help": "Used only to show the equivalent annual rate.",
+                    "key": "frequency",
+                    "label": "Cash-flow periods per year",
+                    "type": "int"
+                },
+                {
+                    "default": 2,
+                    "help": "Choose the required currency precision, including zero, three or four decimal places where applicable.",
+                    "key": "precision",
+                    "label": "Monetary decimal places (explicit override)",
+                    "type": "int"
+                },
+                {
+                    "choices": [
+                        "display",
+                        "transaction"
+                    ],
+                    "default": "display",
+                    "help": "display keeps internal precision and rounds presentation only; transaction rounds each booked monetary amount, half away from zero.",
+                    "key": "rounding",
+                    "label": "Monetary rounding",
+                    "type": "choice"
+                }
+            ],
+            "id": "irr",
+            "title": "Internal rate of return (IRR)"
+        },
+        {
+            "assumptions": [
+                "Initial cash flow is at time zero. Rates are fractions; 0.05 means 5%.",
+                "Annual effective rate using the selected date basis.",
+                "Negative = outlay; positive = receipt."
+            ],
+            "category": "Investments, savings and economics",
+            "description": "Discount cash flows with an explicit initial investment at time zero.",
+            "example": {
+                "basis": "actual/365",
+                "flows": [
+                    {
+                        "amount": "400",
+                        "date": "2027-01-01"
+                    },
+                    {
+                        "amount": "400",
+                        "date": "2028-01-01"
+                    },
+                    {
+                        "amount": "400",
+                        "date": "2029-01-01"
+                    }
+                ],
+                "frequency": 1,
+                "initial": "-1000",
+                "maximum_rate": "100",
+                "minimum_rate": "-0.9999",
+                "rate": "0.10",
+                "search_steps": 384,
+                "timing": "end",
+                "valuation_date": "2026-01-01"
+            },
+            "expression_example": "xnpv(0.1,[-1000,400,400,400],[datejd(2026,1,1),datejd(2027,1,1),datejd(2028,1,1),datejd(2029,1,1)])",
+            "fields": [
+                {
+                    "default": "",
+                    "help": "Negative = outlay; positive = receipt.",
+                    "key": "initial",
+                    "label": "Initial cash flow at time zero",
+                    "type": "number"
+                },
+                {
+                    "default": "",
+                    "help": "",
+                    "key": "valuation_date",
+                    "label": "Time-zero date",
+                    "type": "date"
+                },
+                {
+                    "choices": [
+                        "actual/365",
+                        "actual/360",
+                        "actual/actual",
+                        "30/360"
+                    ],
+                    "default": "actual/365",
+                    "help": "30/360 means European 30E/360; actual/actual splits calendar years.",
+                    "key": "basis",
+                    "label": "Date basis",
+                    "type": "choice"
+                },
+                {
+                    "columns": [
+                        {
+                            "help": "",
+                            "key": "date",
+                            "label": "Date",
+                            "type": "date"
+                        },
+                        {
+                            "help": "",
+                            "key": "amount",
+                            "label": "Cash flow",
+                            "type": "number"
+                        }
+                    ],
+                    "help": "Ordered dates on or after time zero; duplicate dates are combined for IRR.",
+                    "key": "flows",
+                    "label": "Dated subsequent cash flows",
+                    "type": "table"
+                },
+                {
+                    "default": "",
+                    "help": "Enter 0.05 for 5%; expressions such as 5% are also accepted.",
+                    "key": "rate",
+                    "label": "Annual effective discount rate (fraction)",
+                    "type": "number"
+                },
+                {
+                    "default": 2,
+                    "help": "Choose the required currency precision, including zero, three or four decimal places where applicable.",
+                    "key": "precision",
+                    "label": "Monetary decimal places (explicit override)",
+                    "type": "int"
+                },
+                {
+                    "choices": [
+                        "display",
+                        "transaction"
+                    ],
+                    "default": "display",
+                    "help": "display keeps internal precision and rounds presentation only; transaction rounds each booked monetary amount, half away from zero.",
+                    "key": "rounding",
+                    "label": "Monetary rounding",
+                    "type": "choice"
+                }
+            ],
+            "id": "xnpv",
+            "title": "Dated net present value (XNPV)"
+        },
+        {
+            "assumptions": [
+                "Initial cash flow is at time zero. Rates are fractions; 0.05 means 5%.",
+                "Annual effective rate using the selected date basis.",
+                "A finite numerical search cannot establish uniqueness."
+            ],
+            "category": "Investments, savings and economics",
+            "description": "Find and report converged rates, including multiple and tangent roots found by a bounded search.",
+            "example": {
+                "basis": "actual/365",
+                "flows": [
+                    {
+                        "amount": "400",
+                        "date": "2027-01-01"
+                    },
+                    {
+                        "amount": "400",
+                        "date": "2028-01-01"
+                    },
+                    {
+                        "amount": "400",
+                        "date": "2029-01-01"
+                    }
+                ],
+                "frequency": 1,
+                "initial": "-1000",
+                "maximum_rate": "100",
+                "minimum_rate": "-0.9999",
+                "rate": "0.10",
+                "search_steps": 384,
+                "timing": "end",
+                "valuation_date": "2026-01-01"
+            },
+            "expression_example": "xirr([-1000,400,400,400],[datejd(2026,1,1),datejd(2027,1,1),datejd(2028,1,1),datejd(2029,1,1)])",
+            "fields": [
+                {
+                    "default": "",
+                    "help": "Negative = outlay; positive = receipt.",
+                    "key": "initial",
+                    "label": "Initial cash flow at time zero",
+                    "type": "number"
+                },
+                {
+                    "default": "",
+                    "help": "",
+                    "key": "valuation_date",
+                    "label": "Time-zero date",
+                    "type": "date"
+                },
+                {
+                    "choices": [
+                        "actual/365",
+                        "actual/360",
+                        "actual/actual",
+                        "30/360"
+                    ],
+                    "default": "actual/365",
+                    "help": "30/360 means European 30E/360; actual/actual splits calendar years.",
+                    "key": "basis",
+                    "label": "Date basis",
+                    "type": "choice"
+                },
+                {
+                    "columns": [
+                        {
+                            "help": "",
+                            "key": "date",
+                            "label": "Date",
+                            "type": "date"
+                        },
+                        {
+                            "help": "",
+                            "key": "amount",
+                            "label": "Cash flow",
+                            "type": "number"
+                        }
+                    ],
+                    "help": "Ordered dates on or after time zero; duplicate dates are combined for IRR.",
+                    "key": "flows",
+                    "label": "Dated subsequent cash flows",
+                    "type": "table"
+                },
+                {
+                    "default": "-0.9999",
+                    "help": "Enter 0.05 for 5%; expressions such as 5% are also accepted.",
+                    "key": "minimum_rate",
+                    "label": "Minimum search rate (fraction)",
+                    "type": "number"
+                },
+                {
+                    "default": "100",
+                    "help": "Enter 0.05 for 5%; expressions such as 5% are also accepted.",
+                    "key": "maximum_rate",
+                    "label": "Maximum search rate (fraction)",
+                    "type": "number"
+                },
+                {
+                    "default": 384,
+                    "help": "64 to 4096; repeated roots are searched using stationary points.",
+                    "key": "search_steps",
+                    "label": "Search subdivisions",
+                    "type": "int"
+                },
+                {
+                    "default": 2,
+                    "help": "Choose the required currency precision, including zero, three or four decimal places where applicable.",
+                    "key": "precision",
+                    "label": "Monetary decimal places (explicit override)",
+                    "type": "int"
+                },
+                {
+                    "choices": [
+                        "display",
+                        "transaction"
+                    ],
+                    "default": "display",
+                    "help": "display keeps internal precision and rounds presentation only; transaction rounds each booked monetary amount, half away from zero.",
+                    "key": "rounding",
+                    "label": "Monetary rounding",
+                    "type": "choice"
+                }
+            ],
+            "id": "xirr",
+            "title": "Dated internal rate of return (XIRR)"
+        },
+        {
+            "assumptions": [
+                "No national tax assumptions. Positive growth taxed each period; no tax credits for losses.",
+                "Fixed and percentage fees apply at period end; percentage fee uses the balance after contributions and withdrawals.",
+                "Beginning/end contributions and dated withdrawals split growth accrual. Negative balances are unsupported."
+            ],
+            "category": "Investments, savings and economics",
+            "description": "Project a balance, solve a recurring contribution, or simulate time to a goal with changing contributions and dated withdrawals.",
+            "example": {
+                "contribution": "100",
+                "frequency": 12,
+                "initial": "1000",
+                "periods": 120,
+                "return_rate": "0.05",
+                "start_date": "2026-01-01",
+                "target": "20000"
+            },
+            "expression_example": "",
+            "fields": [
+                {
+                    "choices": [
+                        "future-balance",
+                        "contribution",
+                        "time"
+                    ],
+                    "default": "future-balance",
+                    "help": "",
+                    "key": "solve",
+                    "label": "Calculate",
+                    "type": "choice"
+                },
+                {
+                    "default": "",
+                    "help": "",
+                    "key": "initial",
+                    "label": "Initial balance",
+                    "type": "number"
+                },
+                {
+                    "default": "",
+                    "help": "Enter 0.05 for 5%; expressions such as 5% are also accepted.",
+                    "key": "return_rate",
+                    "label": "Assumed return (fraction)",
+                    "type": "number"
+                },
+                {
+                    "choices": [
+                        "effective-annual",
+                        "nominal-annual",
+                        "periodic"
+                    ],
+                    "default": "effective-annual",
+                    "help": "",
+                    "key": "convention",
+                    "label": "Return convention",
+                    "type": "choice"
+                },
+                {
+                    "default": 12,
+                    "help": "",
+                    "key": "compounding",
+                    "label": "Nominal compounding periods/year",
+                    "type": "int"
+                },
+                {
+                    "default": 12,
+                    "help": "Supported: 1, 2, 3, 4, 6, 12, 26, 52 or 365.",
+                    "key": "frequency",
+                    "label": "Contributions per year",
+                    "type": "int"
+                },
+                {
+                    "choices": [
+                        "end",
+                        "beginning"
+                    ],
+                    "default": "end",
+                    "help": "",
+                    "key": "timing",
+                    "label": "Contribution timing",
+                    "type": "choice"
+                },
+                {
+                    "default": "",
+                    "help": "",
+                    "key": "start_date",
+                    "label": "Start date",
+                    "type": "date"
+                },
+                {
+                    "default": 120,
+                    "help": "1 to 12000. Time-to-goal checks period-end balances.",
+                    "key": "periods",
+                    "label": "Periods / simulation horizon",
+                    "type": "int"
+                },
+                {
+                    "default": "",
+                    "help": "When solving contribution, changes still replace this base on their entered dates.",
+                    "key": "contribution",
+                    "label": "Base recurring contribution",
+                    "type": "number"
+                },
+                {
+                    "default": "",
+                    "help": "",
+                    "key": "target",
+                    "label": "Target balance",
+                    "type": "number"
+                },
+                {
+                    "choices": [
+                        "periodic",
+                        "dated"
+                    ],
+                    "default": "periodic",
+                    "help": "Periodic growth uses the exact fraction of each calendar contribution interval between withdrawals; dated growth uses the selected date basis and annual effective return.",
+                    "key": "accrual",
+                    "label": "Growth accrual",
+                    "type": "choice"
+                },
+                {
+                    "choices": [
+                        "actual/365",
+                        "actual/360",
+                        "actual/actual",
+                        "30/360"
+                    ],
+                    "default": "actual/365",
+                    "help": "30/360 means European 30E/360; actual/actual splits calendar years.",
+                    "key": "basis",
+                    "label": "Date basis",
+                    "type": "choice"
+                },
+                {
+                    "columns": [
+                        {
+                            "help": "",
+                            "key": "date",
+                            "label": "Effective date",
+                            "type": "date"
+                        },
+                        {
+                            "help": "",
+                            "key": "amount",
+                            "label": "New recurring amount",
+                            "type": "number"
+                        }
+                    ],
+                    "help": "Strictly ordered dates; new amount replaces the base at the next contribution on or after that date.",
+                    "key": "contribution_changes",
+                    "label": "Contribution amount changes",
+                    "type": "table"
+                },
+                {
+                    "columns": [
+                        {
+                            "help": "",
+                            "key": "date",
+                            "label": "Date",
+                            "type": "date"
+                        },
+                        {
+                            "help": "",
+                            "key": "amount",
+                            "label": "Withdrawal",
+                            "type": "number"
+                        }
+                    ],
+                    "help": "Strictly ordered dates within the horizon. Combine same-day withdrawals.",
+                    "key": "withdrawals",
+                    "label": "Dated withdrawals",
+                    "type": "table"
+                },
+                {
+                    "default": "0",
+                    "help": "",
+                    "key": "fixed_fee",
+                    "label": "Fixed fee per period",
+                    "type": "number"
+                },
+                {
+                    "default": "0",
+                    "help": "Enter 0.05 for 5%; expressions such as 5% are also accepted.",
+                    "key": "fee_rate",
+                    "label": "Fee on period-end balance (fraction)",
+                    "type": "number"
+                },
+                {
+                    "default": "0",
+                    "help": "Enter 0.05 for 5%; expressions such as 5% are also accepted.",
+                    "key": "tax_rate",
+                    "label": "Modeled tax on positive growth (fraction)",
+                    "type": "number"
+                },
+                {
+                    "choices": [
+                        "positive-growth",
+                        "positive-growth-less-fees"
+                    ],
+                    "default": "positive-growth",
+                    "help": "",
+                    "key": "tax_base",
+                    "label": "Modeled taxable growth",
+                    "type": "choice"
+                },
+                {
+                    "default": 2,
+                    "help": "Choose the required currency precision, including zero, three or four decimal places where applicable.",
+                    "key": "precision",
+                    "label": "Monetary decimal places (explicit override)",
+                    "type": "int"
+                },
+                {
+                    "choices": [
+                        "display",
+                        "transaction"
+                    ],
+                    "default": "display",
+                    "help": "display keeps internal precision and rounds presentation only; transaction rounds each booked monetary amount, half away from zero.",
+                    "key": "rounding",
+                    "label": "Monetary rounding",
+                    "type": "choice"
+                }
+            ],
+            "id": "savingsgoal",
+            "title": "Savings-goal planner"
+        },
+        {
+            "assumptions": [
+                "Start > 0; end ≥ 0; years > 0. Result is a fractional annual rate."
+            ],
+            "category": "Investments, savings and economics",
+            "description": "Annualized growth between two values.",
+            "example": {
+                "end_value": "121",
+                "start_value": "100",
+                "years": "2"
+            },
+            "expression_example": "cagr(100,121,2)",
+            "fields": [
+                {
+                    "default": "",
+                    "help": "",
+                    "key": "start_value",
+                    "label": "Starting value",
+                    "type": "number"
+                },
+                {
+                    "default": "",
+                    "help": "",
+                    "key": "end_value",
+                    "label": "Ending value",
+                    "type": "number"
+                },
+                {
+                    "default": "",
+                    "help": "",
+                    "key": "years",
+                    "label": "Elapsed years",
+                    "type": "number"
+                },
+                {
+                    "default": 2,
+                    "help": "Choose the required currency precision, including zero, three or four decimal places where applicable.",
+                    "key": "precision",
+                    "label": "Monetary decimal places (explicit override)",
+                    "type": "int"
+                },
+                {
+                    "choices": [
+                        "display",
+                        "transaction"
+                    ],
+                    "default": "display",
+                    "help": "display keeps internal precision and rounds presentation only; transaction rounds each booked monetary amount, half away from zero.",
+                    "key": "rounding",
+                    "label": "Monetary rounding",
+                    "type": "choice"
+                }
+            ],
+            "id": "cagr",
+            "title": "Compound annual growth rate"
+        },
+        {
+            "assumptions": [
+                "(1 + nominal return) / (1 + inflation) − 1. Rates use the same period."
+            ],
+            "category": "Investments, savings and economics",
+            "description": "Exact purchasing-power return, using matching periods.",
+            "example": {
+                "inflation_rate": "0.03",
+                "nominal_return": "0.08"
+            },
+            "expression_example": "realreturn(0.08,0.03)",
+            "fields": [
+                {
+                    "default": "",
+                    "help": "Enter 0.05 for 5%; expressions such as 5% are also accepted.",
+                    "key": "nominal_return",
+                    "label": "Nominal return (fraction)",
+                    "type": "number"
+                },
+                {
+                    "default": "",
+                    "help": "Enter 0.05 for 5%; expressions such as 5% are also accepted.",
+                    "key": "inflation_rate",
+                    "label": "Inflation (fraction)",
+                    "type": "number"
+                },
+                {
+                    "default": 2,
+                    "help": "Choose the required currency precision, including zero, three or four decimal places where applicable.",
+                    "key": "precision",
+                    "label": "Monetary decimal places (explicit override)",
+                    "type": "int"
+                },
+                {
+                    "choices": [
+                        "display",
+                        "transaction"
+                    ],
+                    "default": "display",
+                    "help": "display keeps internal precision and rounds presentation only; transaction rounds each booked monetary amount, half away from zero.",
+                    "key": "rounding",
+                    "label": "Monetary rounding",
+                    "type": "choice"
+                }
+            ],
+            "id": "realreturn",
+            "title": "Real return after inflation"
+        },
+        {
+            "assumptions": [
+                "Constant rates compound over the specified number of matching periods.",
+                "Index factor = destination index / starting index; multiply to preserve purchasing power, divide to express a destination amount in starting-period money."
+            ],
+            "category": "Investments, savings and economics",
+            "description": "Project an amount needed to preserve purchasing power, or express a destination-period amount in starting-period purchasing power.",
+            "example": {
+                "amount": "1000",
+                "inflation_rate": "0.03",
+                "periods": "5"
+            },
+            "expression_example": "inflationadjust(1000,0.03,5)",
+            "fields": [
+                {
+                    "default": "",
+                    "help": "",
+                    "key": "amount",
+                    "label": "Amount",
+                    "type": "number"
+                },
+                {
+                    "choices": [
+                        "constant-rate",
+                        "index-series"
+                    ],
+                    "default": "constant-rate",
+                    "help": "",
+                    "key": "mode",
+                    "label": "Price-level source",
+                    "type": "choice"
+                },
+                {
+                    "choices": [
+                        "preserve-purchasing-power",
+                        "express-in-start-period"
+                    ],
+                    "default": "preserve-purchasing-power",
+                    "help": "",
+                    "key": "direction",
+                    "label": "Conversion direction",
+                    "type": "choice"
+                },
+                {
+                    "default": "",
+                    "help": "Enter 0.05 for 5%; expressions such as 5% are also accepted.",
+                    "key": "inflation_rate",
+                    "label": "Inflation per period (fraction)",
+                    "type": "number"
+                },
+                {
+                    "default": "",
+                    "help": "",
+                    "key": "periods",
+                    "label": "Number of periods",
+                    "type": "number"
+                },
+                {
+                    "default": "",
+                    "help": "",
+                    "key": "from_date",
+                    "label": "Starting index date",
+                    "type": "date"
+                },
+                {
+                    "default": "",
+                    "help": "",
+                    "key": "to_date",
+                    "label": "Destination index date",
+                    "type": "date"
+                },
+                {
+                    "columns": [
+                        {
+                            "help": "",
+                            "key": "date",
+                            "label": "Date",
+                            "type": "date"
+                        },
+                        {
+                            "help": "",
+                            "key": "index",
+                            "label": "Index",
+                            "type": "number"
+                        }
+                    ],
+                    "help": "Positive indices, ordered dates. Exact entries for both dates required; no hidden interpolation.",
+                    "key": "indices",
+                    "label": "Price-index series",
+                    "type": "table"
+                },
+                {
+                    "default": 2,
+                    "help": "Choose the required currency precision, including zero, three or four decimal places where applicable.",
+                    "key": "precision",
+                    "label": "Monetary decimal places (explicit override)",
+                    "type": "int"
+                },
+                {
+                    "choices": [
+                        "display",
+                        "transaction"
+                    ],
+                    "default": "display",
+                    "help": "display keeps internal precision and rounds presentation only; transaction rounds each booked monetary amount, half away from zero.",
+                    "key": "rounding",
+                    "label": "Monetary rounding",
+                    "type": "choice"
+                }
+            ],
+            "id": "inflationadjust",
+            "title": "Inflation and purchasing power"
+        },
+        {
+            "assumptions": [
+                "Normalize rate to destination currency per source currency.",
+                "Source fee → convert principal → percentage fee on converted value → destination fee.",
+                "Effective all-in rate = net destination receipt / total source outlay. Offer comparisons use equal source outlay."
+            ],
+            "category": "Investments, savings and economics",
+            "description": "Calculate net proceeds and compare conversion offers at equal total source outlay.",
+            "example": {
+                "amount": "1000",
+                "destination_currency": "HUF",
+                "destination_fee": "100",
+                "rate": "400",
+                "rate_source": "user-entered",
+                "source_currency": "EUR",
+                "source_fee": "2",
+                "spread": "0.01"
+            },
+            "expression_example": "fxnet(1000,400,0.01,2,100)",
+            "fields": [
+                {
+                    "default": "",
+                    "help": "",
+                    "key": "amount",
+                    "label": "Source amount / common offer budget",
+                    "type": "number"
+                },
+                {
+                    "default": "",
+                    "help": "",
+                    "key": "source_currency",
+                    "label": "Source currency",
+                    "type": "text"
+                },
+                {
+                    "default": "",
+                    "help": "",
+                    "key": "destination_currency",
+                    "label": "Destination currency",
+                    "type": "text"
+                },
+                {
+                    "default": "",
+                    "help": "",
+                    "key": "rate",
+                    "label": "Exchange rate",
+                    "type": "number"
+                },
+                {
+                    "choices": [
+                        "destination-per-source",
+                        "source-per-destination"
+                    ],
+                    "default": "destination-per-source",
+                    "help": "",
+                    "key": "rate_direction",
+                    "label": "Rate direction",
+                    "type": "choice"
+                },
+                {
+                    "default": "0",
+                    "help": "Enter 0.05 for 5%; expressions such as 5% are also accepted.",
+                    "key": "spread",
+                    "label": "Spread / conversion fee (fraction)",
+                    "type": "number"
+                },
+                {
+                    "default": "0",
+                    "help": "",
+                    "key": "source_fee",
+                    "label": "Fixed source-currency fee",
+                    "type": "number"
+                },
+                {
+                    "choices": [
+                        "deducted",
+                        "additional"
+                    ],
+                    "default": "deducted",
+                    "help": "In offer comparisons the entered amount is always the same total budget, including this fee.",
+                    "key": "source_fee_mode",
+                    "label": "Source fee treatment",
+                    "type": "choice"
+                },
+                {
+                    "default": "0",
+                    "help": "",
+                    "key": "destination_fee",
+                    "label": "Fixed destination-currency fee",
+                    "type": "number"
+                },
+                {
+                    "default": "user-entered",
+                    "help": "User-entered or the existing cached currency source.",
+                    "key": "rate_source",
+                    "label": "Rate source",
+                    "type": "text"
+                },
+                {
+                    "default": "not supplied",
+                    "help": "Preserved with the result; use the source's actual timestamp.",
+                    "key": "rate_timestamp",
+                    "label": "Available rate timestamp",
+                    "type": "text"
+                },
+                {
+                    "columns": [
+                        {
+                            "help": "",
+                            "key": "label",
+                            "label": "Offer name",
+                            "type": "text"
+                        },
+                        {
+                            "help": "",
+                            "key": "rate",
+                            "label": "Exchange rate",
+                            "type": "number"
+                        },
+                        {
+                            "choices": [
+                                "destination-per-source",
+                                "source-per-destination"
+                            ],
+                            "default": "destination-per-source",
+                            "help": "",
+                            "key": "rate_direction",
+                            "label": "Rate direction",
+                            "type": "choice"
+                        },
+                        {
+                            "default": "0",
+                            "help": "Enter 0.05 for 5%; expressions such as 5% are also accepted.",
+                            "key": "spread",
+                            "label": "Spread (fraction)",
+                            "type": "number"
+                        },
+                        {
+                            "help": "",
+                            "key": "source_fee",
+                            "label": "Source fee",
+                            "type": "number"
+                        },
+                        {
+                            "help": "",
+                            "key": "destination_fee",
+                            "label": "Destination fee",
+                            "type": "number"
+                        },
+                        {
+                            "help": "",
+                            "key": "rate_source",
+                            "label": "Rate source",
+                            "type": "text"
+                        },
+                        {
+                            "help": "",
+                            "key": "rate_timestamp",
+                            "label": "Timestamp",
+                            "type": "text"
+                        }
+                    ],
+                    "help": "All offers spend the same total source amount, including source fees. Empty table calculates the single offer above.",
+                    "key": "offers",
+                    "label": "Optional offers for the same total source outlay",
+                    "type": "table"
+                },
+                {
+                    "default": 2,
+                    "help": "Choose the required currency precision, including zero, three or four decimal places where applicable.",
+                    "key": "precision",
+                    "label": "Monetary decimal places (explicit override)",
+                    "type": "int"
+                },
+                {
+                    "choices": [
+                        "display",
+                        "transaction"
+                    ],
+                    "default": "display",
+                    "help": "display keeps internal precision and rounds presentation only; transaction rounds each booked monetary amount, half away from zero.",
+                    "key": "rounding",
+                    "label": "Monetary rounding",
+                    "type": "choice"
+                }
+            ],
+            "id": "fxnet",
+            "title": "Currency conversion after fees"
+        }
+    ],
+    "version": "1.0.0"
+}

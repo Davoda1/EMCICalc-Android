@@ -1,0 +1,161 @@
+#!/usr/bin/env python3
+"""Regenerate Android vector launcher layers from the unchanged desktop SVG.
+
+No third-party Python dependencies. This deliberately understands only the small
+SVG vocabulary in assets/icon.svg, and fails if a future edit adds unsupported
+geometry rather than silently omitting it. --check validates committed output.
+Optional SVG proofs share the generated Android path data for native rendering.
+"""
+from __future__ import annotations
+
+import argparse
+import hashlib
+from pathlib import Path
+import xml.etree.ElementTree as ET
+
+ROOT = Path(__file__).resolve().parents[1]
+ANDROID = "http://schemas.android.com/apk/res/android"
+AAPT = "http://schemas.android.com/aapt"
+SVG = "http://www.w3.org/2000/svg"
+SCALE = 0.235
+TRANSLATE = 54 - 128 * SCALE
+BACKGROUND = "#DBE6EC"
+
+
+def number(value):
+    return f"{float(value):g}"
+
+
+def rounded_rect(element):
+    x, y, width, height = (float(element.get(key, "0")) for key in ("x", "y", "width", "height"))
+    radius = min(float(element.get("rx", "0")), width / 2, height / 2)
+    right, bottom = x + width, y + height
+    return (f"M{number(x + radius)},{number(y)} H{number(right - radius)} "
+            f"A{number(radius)},{number(radius)} 0,0 1,{number(right)},{number(y + radius)} "
+            f"V{number(bottom - radius)} A{number(radius)},{number(radius)} 0,0 1,{number(right - radius)},{number(bottom)} "
+            f"H{number(x + radius)} A{number(radius)},{number(radius)} 0,0 1,{number(x)},{number(bottom - radius)} "
+            f"V{number(y + radius)} A{number(radius)},{number(radius)} 0,0 1,{number(x + radius)},{number(y)} Z")
+
+
+def source_paths():
+    source = ET.parse(ROOT / "assets/icon.svg").getroot()
+    assert source.get("viewBox") == "0 0 256 256"
+    paths = []
+
+    def visit(element, inherited=None):
+        tag = element.tag.split("}")[-1]
+        attrs = dict(inherited or {})
+        attrs.update(element.attrib)
+        if tag == "defs":
+            return
+        if tag in ("svg", "g"):
+            for child in element:
+                visit(child, attrs)
+        elif tag in ("rect", "path"):
+            paths.append({"d": rounded_rect(element) if tag == "rect" else element.attrib["d"],
+                          **{key: attrs[key] for key in ("fill", "stroke", "stroke-width", "stroke-linecap") if key in attrs}})
+        else:
+            raise ValueError(f"Unsupported icon SVG element: {tag}")
+
+    visit(source)
+    assert len(paths) == 13
+    gradient = source.find(f"{{{SVG}}}defs/{{{SVG}}}linearGradient")
+    assert gradient is not None and gradient.get("id") == "shell"
+    assert [node.get("stop-color") for node in gradient] == ["#233d50", "#101d2b"]
+    return paths
+
+
+def vector(paths, monochrome=False):
+    ET.register_namespace("android", ANDROID)
+    ET.register_namespace("aapt", AAPT)
+    a = lambda key: f"{{{ANDROID}}}{key}"
+    root = ET.Element("vector", {a("width"): "108dp", a("height"): "108dp",
+                                a("viewportWidth"): "108", a("viewportHeight"): "108"})
+    group = ET.SubElement(root, "group", {a("scaleX"): number(SCALE), a("scaleY"): number(SCALE),
+                                        a("translateX"): number(TRANSLATE), a("translateY"): number(TRANSLATE)})
+    if monochrome:
+        # Transparent display/key cutouts preserve the calculator at one tint.
+        # A flattened white silhouette would lose both its graph and key layout.
+        cutouts = [paths[index]["d"] for index in (0, 1, 4, 5, 6, 7, 8, 9, 10, 11)]
+        ET.SubElement(group, "path", {a("fillColor"): "#FFFFFFFF", a("fillType"): "evenOdd", a("pathData"): " ".join(cutouts)})
+        for index in (3, 12):
+            ET.SubElement(group, "path", {a("fillColor"): "#00000000", a("strokeColor"): "#FFFFFFFF",
+                                          a("strokeWidth"): paths[index]["stroke-width"], a("strokeLineCap"): "round",
+                                          a("pathData"): paths[index]["d"]})
+    else:
+        for path in paths:
+            attrs = {a("pathData"): path["d"], a("fillColor"): "#00000000" if path.get("fill") == "none" else path.get("fill", "#000000")}
+            if path.get("fill") == "url(#shell)":
+                del attrs[a("fillColor")]
+            for svg_key, android_key in (("stroke", "strokeColor"), ("stroke-width", "strokeWidth"), ("stroke-linecap", "strokeLineCap")):
+                if svg_key in path:
+                    attrs[a(android_key)] = path[svg_key]
+            node = ET.SubElement(group, "path", attrs)
+            if path.get("fill") == "url(#shell)":
+                attr = ET.SubElement(node, f"{{{AAPT}}}attr", {"name": "android:fillColor"})
+                ET.SubElement(attr, "gradient", {a("type"): "linear", a("startX"): "28", a("startY"): "12",
+                                                a("endX"): "228", a("endY"): "244", a("startColor"): "#233D50", a("endColor"): "#101D2B"})
+    ET.indent(root, space="    ")
+    return '<?xml version="1.0" encoding="utf-8"?>\n<!-- Generated by scripts/generate_android_launcher.py; 108 dp canvas, safe-circle inset. -->\n' + ET.tostring(root, encoding="unicode") + "\n"
+
+
+def proof_svg(vector_xml):
+    """Translate the generated VectorDrawable paths, not a separate artwork copy."""
+    source = ET.fromstring(vector_xml)
+    a = lambda key: f"{{{ANDROID}}}{key}"
+    root = ET.Element("svg", {"xmlns": SVG, "width": "108", "height": "108", "viewBox": "0 0 108 108"})
+    defs = ET.SubElement(root, "defs")
+    gradient = ET.SubElement(defs, "linearGradient", {"id": "shell", "gradientUnits": "userSpaceOnUse", "x1": "28", "y1": "12", "x2": "228", "y2": "244"})
+    ET.SubElement(gradient, "stop", {"offset": "0", "stop-color": "#233D50"})
+    ET.SubElement(gradient, "stop", {"offset": "1", "stop-color": "#101D2B"})
+    source_group = source.find("group")
+    group = ET.SubElement(root, "g", {"transform": f"translate({source_group.get(a('translateX'))},{source_group.get(a('translateY'))}) scale({source_group.get(a('scaleX'))})"})
+    for path in source_group:
+        fill = path.get(a("fillColor"), "url(#shell)")
+        if fill == "#00000000": fill = "none"
+        elif fill == "#FFFFFFFF": fill = "#FFFFFF"
+        attrs = {"d": path.get(a("pathData")), "fill": fill}
+        for android_key, svg_key in (("strokeColor", "stroke"), ("strokeWidth", "stroke-width"), ("strokeLineCap", "stroke-linecap"), ("fillType", "fill-rule")):
+            value = path.get(a(android_key))
+            if value is not None:
+                attrs[svg_key] = "evenodd" if value == "evenOdd" else "#FFFFFF" if value == "#FFFFFFFF" else value
+        ET.SubElement(group, "path", attrs)
+    return ET.tostring(root, encoding="unicode")
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--check", action="store_true", help="validate committed resource bytes without modifying them")
+    parser.add_argument("--proof-dir", type=Path, help="write SVG proofs derived from the generated vector paths")
+    args = parser.parse_args()
+    paths = source_paths()
+    foreground = vector(paths)
+    monochrome = vector(paths, True)
+    outputs = {
+        "android/res/drawable/ic_launcher_foreground.xml": foreground,
+        "android/res/drawable/ic_launcher_monochrome.xml": monochrome,
+        "android/res/mipmap-anydpi-v26/ic_launcher.xml": '<?xml version="1.0" encoding="utf-8"?>\n<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">\n    <background android:drawable="@color/launcher_background" />\n    <foreground android:drawable="@drawable/ic_launcher_foreground" />\n    <monochrome android:drawable="@drawable/ic_launcher_monochrome" />\n</adaptive-icon>\n',
+        "android/res/values/emcicalc.xml": '<?xml version="1.0" encoding="utf-8"?>\n<resources>\n    <color name="launcher_background">' + BACKGROUND + '</color>\n    <string name="emcicalc_name">EMCICalc</string>\n</resources>\n',
+    }
+    for relative, text in outputs.items():
+        target = ROOT / relative
+        expected = text.encode("utf-8")
+        if args.check:
+            assert target.read_bytes() == expected, f"Regenerate {relative}"
+        else:
+            target.write_bytes(expected)
+        print(f"{hashlib.sha256(expected).hexdigest()}  {relative}")
+    old_bitmap = ROOT / "android/res/drawable/ic_launcher_foreground.png"
+    if args.check:
+        assert not old_bitmap.exists(), "Remove duplicate foreground PNG resource"
+    elif old_bitmap.exists():
+        old_bitmap.unlink()
+    if args.proof_dir:
+        args.proof_dir.mkdir(parents=True, exist_ok=True)
+        (args.proof_dir / "launcher-color-layer.svg").write_text(proof_svg(foreground), encoding="utf-8")
+        (args.proof_dir / "launcher-monochrome-layer.svg").write_text(proof_svg(monochrome), encoding="utf-8")
+    print("Android launcher resources match the unchanged source SVG geometry.")
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,38 @@
+[
+  {
+    "component": "gmp",
+    "archive": "gmp-6.3.0.tar.xz",
+    "sha256": "a3c2b80201b89e68616f4ad30bc66aee4927c3ce50e33929ca819d5c43538898",
+    "bytes": 2094196
+  },
+  {
+    "component": "mpfr",
+    "archive": "mpfr-4.2.2.tar.xz",
+    "sha256": "b67ba0383ef7e8a8563734e2e889ef5ec3c3b898a01d00fa0a6869ad81c6ce01",
+    "bytes": 1505596
+  },
+  {
+    "component": "libqalculate",
+    "archive": "libqalculate-5.12.0.tar.gz",
+    "sha256": "f3dfdcf97d5a9e3a5bc0ebe66afd184721b606276eee3ba0ada8c92a5e71d44c",
+    "bytes": 3597692
+  },
+  {
+    "component": "libxml2",
+    "archive": "libxml2-2.15.4.tar.xz",
+    "sha256": "98087fd181d9070724f3fbc65c7377db03038eb92bd882374daff44940138821",
+    "bytes": 3177444
+  },
+  {
+    "component": "openssl",
+    "archive": "openssl-3.5.9.tar.gz",
+    "sha256": "603f5602e2eef00d77fbd429d34dcd5822bb301757a1bc9cdb24c670f1eb859a",
+    "bytes": 53279637
+  },
+  {
+    "component": "qtbase",
+    "archive": "qtbase-everywhere-src-6.10.3.tar.xz",
+    "sha256": "383dc907816338f0cba72088a524c07458dfc69ce684ca9132fcc4fe91c24b0b",
+    "bytes": 50509856
+  }
+]

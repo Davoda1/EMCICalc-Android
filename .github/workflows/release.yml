@@ -1,0 +1,87 @@
+name: Source release files
+run-name: Source release ${{ inputs.version }}
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Product version in the committed CMake configuration
+        required: true
+        default: '1.0.0'
+        type: string
+      create_draft:
+        description: Also create a draft release after successful CI
+        required: true
+        default: false
+        type: boolean
+permissions:
+  contents: read
+concurrency:
+  group: source-release-${{ github.repository }}
+  cancel-in-progress: false
+jobs:
+  source-files:
+    name: Build verified source release files
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Require master workflow dispatch
+        run: |
+          test "$GITHUB_EVENT_NAME" = workflow_dispatch
+          test "$GITHUB_REF" = refs/heads/master
+      - name: Check out the exact source commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Package and verify source files
+        env:
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: |
+          timeout 540 python3 scripts/release_source.py \
+            --version "$RELEASE_VERSION" \
+            --expected-commit "$GITHUB_SHA" \
+            --output "$RUNNER_TEMP/release-files"
+      - name: Keep the reviewable file set
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: source-release-${{ github.sha }}
+          path: ${{ runner.temp }}/release-files/*
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 30
+  draft-release:
+    name: Create an explicitly requested draft
+    needs: source-files
+    if: ${{ inputs.create_draft }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - name: Retrieve only this run's verified files
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: source-release-${{ github.sha }}
+          path: release-files
+      - name: Verify CI, checksums and new release identity
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_VERSION: ${{ inputs.version }}
+        working-directory: release-files
+        run: |
+          python3 -c 'import os,re; assert re.fullmatch(r"(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)", os.environ["RELEASE_VERSION"])'
+          test "$(gh run list --workflow ci.yml --commit "$GITHUB_SHA" --status success --json databaseId --jq length)" -gt 0
+          sha256sum --check SHA256SUM.txt
+          tag="v$RELEASE_VERSION"
+          if gh release view "$tag" >/dev/null 2>&1; then
+            echo 'A release already exists for this version; refusing to overwrite it.' >&2
+            exit 1
+          fi
+          if gh api "repos/$GH_REPO/git/ref/tags/$tag" >/dev/null 2>&1; then
+            echo 'A tag already exists for this version; refusing to reuse it.' >&2
+            exit 1
+          fi
+          gh release create "$tag" ./*.zip ./*.tar.gz RELEASE-NOTES.md SHA256SUM.txt \
+            --target "$GITHUB_SHA" --title "EMCICalc $RELEASE_VERSION — source release" \
+            --notes-file RELEASE-NOTES.md --draft

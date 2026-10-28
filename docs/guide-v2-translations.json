@@ -1,0 +1,122 @@
+{
+  "Result details": [
+    "Eredmény részletei",
+    "Ergebnisdetails",
+    "Détails du résultat",
+    "Detalles del resultado",
+    "Dettagli del risultato",
+    "Подробности результата",
+    "结果详情",
+    "結果の詳細"
+  ],
+  "Input modes": [
+    "Beviteli módok",
+    "Eingabemodi",
+    "Modes de saisie",
+    "Modos de entrada",
+    "Modalità d’inserimento",
+    "Режимы ввода",
+    "输入模式",
+    "入力モード"
+  ],
+  "Percent and grouping": [
+    "Százalék és csoportosítás",
+    "Prozent und Gruppierung",
+    "Pourcentages et regroupement",
+    "Porcentajes y agrupación",
+    "Percentuali e raggruppamento",
+    "Проценты и группировка",
+    "百分比与分组",
+    "パーセントとグループ化"
+  ],
+  "Portable workspaces": [
+    "Hordozható munkaterületek",
+    "Portable Arbeitsbereiche",
+    "Espaces de travail portables",
+    "Espacios de trabajo portátiles",
+    "Spazi di lavoro portabili",
+    "Переносимые рабочие пространства",
+    "可移植工作区",
+    "移行可能なワークスペース"
+  ],
+  "MENU connects Calculate, Details, Steps, Graph/Table, Algebra and calculus, Matrix, Data, Finance, Definitions, History and Settings. Back returns through pages without clearing independent results or registers.": [
+    "A MENU összeköti a Számítás, Részletek, Lépések, Grafikon/táblázat, Algebra és analízis, Mátrix, Adatok, Pénzügyek, Definíciók, Előzmények és Beállítások oldalakat. A Vissza az önálló eredmények és regiszterek törlése nélkül lép vissza az oldalakon.",
+    "MENU verbindet Berechnen, Details, Schritte, Graph/Tabelle, Algebra und Analysis, Matrix, Daten, Finanzen, Definitionen, Verlauf und Einstellungen. Zurück navigiert durch die Seiten, ohne unabhängige Ergebnisse oder Register zu löschen.",
+    "MENU relie Calculer, Détails, Étapes, Graphe/Tableau, Algèbre et analyse, Matrice, Données, Finance, Définitions, Historique et Paramètres. Retour parcourt les pages sans effacer les résultats indépendants ni les registres.",
+    "MENU conecta Calcular, Detalles, Pasos, Gráfico/Tabla, Álgebra y cálculo, Matriz, Datos, Finanzas, Definiciones, Historial y Ajustes. Atrás recorre las páginas sin borrar resultados independientes ni registros.",
+    "MENU collega Calcola, Dettagli, Passaggi, Grafico/Tabella, Algebra e analisi, Matrice, Dati, Finanza, Definizioni, Cronologia e Impostazioni. Indietro attraversa le pagine senza cancellare risultati indipendenti o registri.",
+    "MENU связывает Вычисление, Подробности, Шаги, График/Таблицу, Алгебру и анализ, Матрицу, Данные, Финансы, Определения, Историю и Настройки. Назад возвращает по страницам, не очищая независимые результаты или регистры.",
+    "MENU 连接计算、详情、步骤、图形/表格、代数与微积分、矩阵、数据、财务、定义、历史和设置。返回会逐页后退，不会清除独立结果或寄存器。",
+    "MENU から計算、詳細、手順、グラフ/表、代数と微積分、行列、データ、財務、定義、履歴、設定を開けます。戻る操作は、独立した結果やレジスターを消さずに前のページへ戻ります。"
+  ],
+  "Details keeps the selected result and its frozen evaluation context. Representation changes do not recalculate. Use the explicitly labelled recalculation actions when a new evaluation is intended.": [
+    "A Részletek megőrzi a kiválasztott eredményt és annak rögzített számítási környezetét. Az ábrázolás módosítása nem számol újra. Új számításhoz használd a külön megjelölt újraszámítási műveleteket.",
+    "Details bewahrt das gewählte Ergebnis und seinen eingefrorenen Auswertungskontext. Darstellungsänderungen berechnen nicht neu. Für eine neue Auswertung die ausdrücklich bezeichneten Neuberechnungsaktionen verwenden.",
+    "Détails conserve le résultat sélectionné et son contexte d’évaluation figé. Changer la représentation ne recalcule pas. Pour une nouvelle évaluation, utilisez les actions de recalcul explicitement indiquées.",
+    "Detalles conserva el resultado seleccionado y su contexto de evaluación congelado. Cambiar la representación no recalcula. Usa las acciones de recálculo expresamente indicadas cuando quieras una nueva evaluación.",
+    "Dettagli conserva il risultato selezionato e il contesto di valutazione congelato. Cambiare rappresentazione non ricalcola. Per una nuova valutazione usa le azioni di ricalcolo espressamente indicate.",
+    "Подробности сохраняют выбранный результат и его зафиксированный контекст вычисления. Изменение представления не пересчитывает результат. Для нового вычисления используйте явно обозначенные действия пересчёта.",
+    "详情保留选定结果及冻结的求值上下文。改变表示方式不会重新计算。需要重新求值时，请使用明确标注的重新计算操作。",
+    "詳細は選択した結果と確定済みの評価コンテキストを保持します。表示形式の変更では再計算しません。新たに評価する場合は、明示された再計算操作を使います。"
+  ],
+  "Steps shows supported bounded derivations with assumptions, excluded values and rejected candidates. Unsupported cases remain clearly labelled; a final answer alone is not a derivation. Export the displayed explanation as text, PDF or PNG.": [
+    "A Lépések a támogatott, korlátos levezetéseket mutatja feltevésekkel, kizárt értékekkel és elutasított jelöltekkel. A nem támogatott eseteket egyértelműen jelöli; a végeredmény önmagában nem levezetés. A magyarázat szövegként, PDF-ként vagy PNG-ként exportálható.",
+    "Schritte zeigt unterstützte begrenzte Herleitungen mit Annahmen, ausgeschlossenen Werten und verworfenen Kandidaten. Nicht unterstützte Fälle bleiben klar gekennzeichnet; ein Endergebnis allein ist keine Herleitung. Die Erklärung lässt sich als Text, PDF oder PNG exportieren.",
+    "Étapes affiche les dérivations bornées prises en charge avec hypothèses, valeurs exclues et candidats rejetés. Les cas non pris en charge sont clairement signalés ; une réponse finale seule n’est pas une dérivation. Exportez l’explication en texte, PDF ou PNG.",
+    "Pasos muestra las derivaciones acotadas compatibles con supuestos, valores excluidos y candidatos descartados. Los casos no compatibles quedan claramente señalados; una respuesta final por sí sola no es una derivación. Exporta la explicación como texto, PDF o PNG.",
+    "Passaggi mostra le derivazioni limitate supportate con ipotesi, valori esclusi e candidati scartati. I casi non supportati sono indicati chiaramente; il solo risultato finale non è una derivazione. Esporta la spiegazione come testo, PDF o PNG.",
+    "Шаги показывают поддерживаемые ограниченные выводы с предположениями, исключёнными значениями и отклонёнными кандидатами. Неподдерживаемые случаи явно отмечены; один окончательный ответ не является выводом. Объяснение можно экспортировать как текст, PDF или PNG.",
+    "步骤显示受支持的有界推导，包括假设、排除值和被否决的候选解。不支持的情形会明确标注；仅有最终答案并不等于推导。可将解释导出为文本、PDF 或 PNG。",
+    "手順には対応範囲内の導出と仮定、除外値、棄却された候補を表示します。未対応の場合は明示します。最終結果だけでは導出とはなりません。説明をテキスト、PDF、PNG で出力できます。"
+  ],
+  "Expression preserves algebraic precedence. Classic computes immediate left-to-right operations and repeated equals. RPN uses a visible stack; lower minus top and lower divided by top preserve operand order. Programmer mode has separate signed-width and overflow rules.": [
+    "A Kifejezés mód megtartja az algebrai műveleti sorrendet. A Klasszikus mód azonnali balról jobbra végzett műveleteket és ismételt egyenlőséget használ. Az RPN látható vermet használ; kivonáskor az alsó mínusz felső, osztáskor az alsó osztva felső a sorrend. A Programozó módnak külön előjeles bitszélesség- és túlcsordulási szabályai vannak.",
+    "Ausdruck erhält die algebraische Rangfolge. Klassisch rechnet unmittelbar von links nach rechts und unterstützt wiederholtes Gleich. RPN verwendet einen sichtbaren Stapel: unterer Wert minus oberer bzw. unterer geteilt durch oberen. Der Programmiermodus hat eigene Regeln für Bitbreite, Vorzeichen und Überlauf.",
+    "Expression respecte la priorité algébrique. Classique calcule immédiatement de gauche à droite et répète l’égalité. RPN utilise une pile visible : valeur inférieure moins supérieure, ou divisée par supérieure, conserve l’ordre. Le mode Programmeur a ses propres règles de largeur, signe et dépassement.",
+    "Expresión conserva la precedencia algebraica. Clásico calcula inmediatamente de izquierda a derecha y admite igual repetido. RPN usa una pila visible: inferior menos superior e inferior dividida por superior conservan el orden. Programador tiene reglas separadas de ancho, signo y desbordamiento.",
+    "Espressione conserva la precedenza algebrica. Classico calcola immediatamente da sinistra a destra e ripete l’uguale. RPN usa una pila visibile: inferiore meno superiore e inferiore diviso superiore preservano l’ordine. Programmatore ha regole separate per larghezza, segno e overflow.",
+    "Выражение сохраняет алгебраический приоритет. Классический режим вычисляет сразу слева направо и поддерживает повторное равенство. RPN использует видимый стек: нижнее минус верхнее и нижнее делённое на верхнее сохраняют порядок. У Программиста отдельные правила разрядности, знака и переполнения.",
+    "表达式模式保留代数优先级。经典模式立即从左到右运算并支持重复等号。RPN 使用可见堆栈；减法为下层减顶层，除法为下层除以顶层，以保持操作数顺序。程序员模式采用独立的位宽、符号和溢出规则。",
+    "式モードは代数の優先順位を保ちます。クラシックは左から右への即時計算と等号の繰り返しに対応します。RPN は可視スタックを使い、下段から上段を引き、下段を上段で割ります。プログラマーには独立した符号、ビット幅、オーバーフロー規則があります。"
+  ],
+  "Relative percent preserves the previous default: 50+20% gives 60. Direct gives 50.2. Weak implicit multiplication makes 1/2pi equal pi/2; Strong makes it 1/(2pi). Existing expressions migrate with Adaptive grouping.": [
+    "A Relatív százalék megtartja a korábbi alapértéket: 50+20% eredménye 60. A Közvetlen mód 50.2-t ad. Gyenge implicit szorzásnál 1/2pi = pi/2; Erősnél 1/(2pi). A meglévő kifejezések Adaptív csoportosítással kerülnek át.",
+    "Relatives Prozent erhält den bisherigen Standard: 50+20% ergibt 60. Direkt ergibt 50.2. Schwache implizite Multiplikation interpretiert 1/2pi als pi/2, starke als 1/(2pi). Vorhandene Ausdrücke werden mit adaptiver Gruppierung migriert.",
+    "Le pourcentage relatif conserve le réglage antérieur : 50+20% donne 60. Direct donne 50.2. La multiplication implicite faible interprète 1/2pi comme pi/2, la forte comme 1/(2pi). Les expressions existantes migrent avec le regroupement adaptatif.",
+    "Porcentaje relativo conserva el valor predeterminado anterior: 50+20% da 60. Directo da 50.2. Multiplicación implícita débil interpreta 1/2pi como pi/2; fuerte como 1/(2pi). Las expresiones existentes migran con agrupación adaptativa.",
+    "Percentuale relativa conserva l’impostazione precedente: 50+20% dà 60. Diretta dà 50.2. La moltiplicazione implicita debole interpreta 1/2pi come pi/2; forte come 1/(2pi). Le espressioni esistenti migrano con raggruppamento adattivo.",
+    "Относительный процент сохраняет прежнее поведение: 50+20% даёт 60. Прямой даёт 50.2. Слабое неявное умножение трактует 1/2pi как pi/2, сильное — как 1/(2pi). Старые выражения переносятся с адаптивной группировкой.",
+    "相对百分比保留原默认行为：50+20% 得到 60；直接模式得到 50.2。弱隐式乘法将 1/2pi 解释为 pi/2，强隐式乘法解释为 1/(2pi)。已有表达式使用自适应分组迁移。",
+    "相対パーセントは従来の既定動作を保ち、50+20% は 60 です。直接では 50.2 です。弱い暗黙乗算は 1/2pi を pi/2、強い暗黙乗算は 1/(2pi) と解釈します。既存の式は適応グループ化で移行します。"
+  ],
+  "Export selected sections, then inspect the import preview before choosing merge, replace or conflict renaming. Stored evaluated values restore without executing saved formulas. Custom keypads retain a stock recovery route and separate portrait and landscape layouts.": [
+    "Exportáld a kiválasztott részeket, majd az importelőnézet ellenőrzése után válassz összevonást, cserét vagy ütközésnél átnevezést. A tárolt kiszámított értékek a mentett képletek végrehajtása nélkül állnak vissza. Az egyéni billentyűzeteknél megmarad a gyári visszaállítás és a külön álló/fekvő elrendezés.",
+    "Gewählte Abschnitte exportieren und vor Zusammenführen, Ersetzen oder Umbenennen bei Konflikten die Importvorschau prüfen. Gespeicherte ausgewertete Werte werden ohne Ausführen gespeicherter Formeln wiederhergestellt. Eigene Tastaturen behalten die Wiederherstellung eines Standardlayouts und getrennte Hoch-/Querformate.",
+    "Exportez les sections choisies puis examinez l’aperçu avant de fusionner, remplacer ou renommer les conflits. Les valeurs évaluées sont restaurées sans exécuter les formules enregistrées. Les claviers personnalisés conservent un retour au modèle standard et des dispositions portrait/paysage séparées.",
+    "Exporta secciones seleccionadas y revisa la vista previa antes de fusionar, reemplazar o renombrar conflictos. Los valores evaluados se restauran sin ejecutar fórmulas guardadas. Los teclados personalizados conservan recuperación al diseño estándar y diseños vertical y horizontal separados.",
+    "Esporta le sezioni selezionate e controlla l’anteprima prima di unire, sostituire o rinominare i conflitti. I valori valutati si ripristinano senza eseguire le formule salvate. Le tastiere personalizzate mantengono il recupero del modello standard e layout verticali e orizzontali separati.",
+    "Экспортируйте выбранные разделы и проверьте предпросмотр импорта перед объединением, заменой или переименованием конфликтов. Вычисленные значения восстанавливаются без исполнения сохранённых формул. Пользовательские клавиатуры сохраняют возврат к штатной раскладке и отдельные портретные/альбомные варианты.",
+    "导出选定部分，导入时先检查预览，再选择合并、替换或冲突重命名。已求值的存储值恢复时不会执行保存的公式。自定义键盘保留恢复默认布局的途径，并分别保存竖屏和横屏布局。",
+    "必要な項目を出力し、読み込みプレビューを確認してから結合、置換、競合名の変更を選びます。保存済みの評価値は式を実行せず復元します。カスタムキー配列には標準に戻す手段と、縦横それぞれの配列が残ります。"
+  ],
+  "Manage up to 20 curves: explicit, polar, parametric, implicit, inequalities and interactive 3D surfaces. Use the series controls for ranges and angles; new series use RAD. Drag to pan or rotate 3D, and use zoom controls. Tables have editable inputs and complete CSV export. Numeric annotations and integral shading have bounded accuracy. Clear removes series; Reset view keeps them. PNG, SVG and CSV exports use Android's document picker.": [
+    "Legfeljebb 20 görbét kezelhetsz: explicit, poláris, paraméteres, implicit, egyenlőtlenség és interaktív 3D felület. A sorozatvezérlőkkel állíthatók a tartományok és szögek; az új sorozat RAD módú. Húzással mozgathatsz vagy forgathatsz 3D-ben, és nagyítóvezérlők is vannak. A táblázat bemenete szerkeszthető és teljes CSV-be exportálható. A numerikus jelölések és integrálárnyalás pontossága korlátozott. A Törlés eltávolítja a sorozatokat; a Nézet visszaállítása megtartja őket. A PNG, SVG és CSV export az Android dokumentumválasztóját használja.",
+    "Bis zu 20 Kurven verwalten: explizit, polar, parametrisch, implizit, Ungleichungen und interaktive 3D-Flächen. Seriensteuerungen legen Bereiche und Winkel fest; neue Serien verwenden RAD. Ziehen verschiebt oder dreht 3D; Zoomsteuerungen vergrößern. Tabellen haben bearbeitbare Eingaben und vollständigen CSV-Export. Numerische Markierungen und Integralflächen haben begrenzte Genauigkeit. Löschen entfernt Serien; Ansicht zurücksetzen erhält sie. PNG-, SVG- und CSV-Exporte verwenden Androids Dokumentauswahl.",
+    "Gérez jusqu’à 20 courbes : explicites, polaires, paramétriques, implicites, inéquations et surfaces 3D interactives. Les contrôles de série règlent plages et angles ; les nouvelles séries utilisent RAD. Glissez pour déplacer ou tourner en 3D et utilisez le zoom. Les tables ont des entrées modifiables et un export CSV complet. Les annotations numériques et zones intégrales ont une précision bornée. Effacer supprime les séries ; Réinitialiser la vue les garde. PNG, SVG et CSV utilisent le sélecteur de documents Android.",
+    "Gestiona hasta 20 curvas: explícitas, polares, paramétricas, implícitas, inecuaciones y superficies 3D interactivas. Ajusta rangos y ángulos por serie; las nuevas usan RAD. Arrastra para desplazar o girar 3D y usa el zoom. Las tablas tienen entradas editables y exportación CSV completa. Las anotaciones numéricas y áreas integrales tienen precisión limitada. Borrar elimina series; Restablecer vista las conserva. PNG, SVG y CSV usan el selector de documentos Android.",
+    "Gestisci fino a 20 curve: esplicite, polari, parametriche, implicite, disequazioni e superfici 3D interattive. Imposta intervalli e angoli per serie; le nuove usano RAD. Trascina per spostare o ruotare 3D e usa lo zoom. Le tabelle hanno input modificabili ed esportazione CSV completa. Le annotazioni numeriche e aree integrali hanno precisione limitata. Cancella rimuove le serie; Ripristina vista le conserva. PNG, SVG e CSV usano il selettore documenti Android.",
+    "Управляйте до 20 кривыми: явными, полярными, параметрическими, неявными, неравенствами и интерактивными 3D-поверхностями. Диапазоны и углы задаются по сериям; новые используют RAD. Перетаскивайте для сдвига или поворота 3D, используйте масштабирование. Таблицы имеют редактируемые входы и полный экспорт CSV. Численные отметки и интегральная заливка имеют ограниченную точность. Очистить удаляет серии; Сбросить вид сохраняет их. PNG, SVG и CSV используют выбор документов Android.",
+    "可管理最多 20 条曲线：显式、极坐标、参数、隐式、不等式和交互式三维曲面。通过系列控件设置范围与角度，新系列使用 RAD。拖动可平移或旋转三维视图，并可使用缩放控件。表格输入可编辑并可完整导出 CSV。数值标注与积分阴影精度有界。清除会删除系列；重置视图会保留系列。PNG、SVG 和 CSV 导出使用 Android 文档选择器。",
+    "明示、極座標、媒介変数、陰関数、不等式、対話型 3D 曲面を最大 20 本管理できます。範囲と角度は系列ごとに設定し、新規系列は RAD です。ドラッグで移動や 3D 回転を行い、ズーム操作も使えます。表は入力を編集でき、全体を CSV 出力できます。数値注釈と積分領域の精度には限界があります。消去は系列を削除し、表示のリセットは保持します。PNG、SVG、CSV 出力は Android の文書選択を使います。"
+  ],
+  "Normal, SCI, ENG, FIX and SI control decimal numeric output. FIX uses the selected decimal places; SCI uses powers of ten; ENG uses powers divisible by three; SI uses supported prefixes. These only reformat the committed value and do not reduce calculation precision. Exact fractions and symbolic results remain exact. REAL/CPLX selects the number domain; SHIFT 7 toggles it.": [
+    "A Normál, SCI, ENG, FIX és SI a tizedes számkijelzést szabályozza. FIX a választott tizedesjegyeket használja; SCI tízhatványt, ENG hárommal osztható kitevőt, SI támogatott előtagot. Ezek csak a megerősített értéket formázzák át, a számítás pontosságát nem csökkentik. A pontos törtek és szimbolikus eredmények pontosak maradnak. REAL/CPLX választja a számtartományt; SHIFT 7 váltja.",
+    "Normal, SCI, ENG, FIX und SI steuern die dezimale Ausgabe. FIX verwendet die gewählten Nachkommastellen, SCI Zehnerpotenzen, ENG durch drei teilbare Exponenten und SI unterstützte Präfixe. Sie formatieren nur den bestätigten Wert und mindern nicht die Rechengenauigkeit. Exakte Brüche und symbolische Ergebnisse bleiben exakt. REAL/CPLX wählt den Zahlenbereich; SHIFT 7 schaltet um.",
+    "Normal, SCI, ENG, FIX et SI règlent l’affichage décimal. FIX utilise les décimales choisies ; SCI les puissances de dix ; ENG les exposants multiples de trois ; SI les préfixes pris en charge. Ils reformatent seulement la valeur confirmée sans réduire la précision du calcul. Fractions exactes et résultats symboliques restent exacts. REAL/CPLX choisit le domaine ; SHIFT 7 le bascule.",
+    "Normal, SCI, ENG, FIX y SI controlan la salida decimal. FIX usa los decimales elegidos; SCI potencias de diez; ENG exponentes divisibles por tres; SI prefijos compatibles. Solo reformatean el valor confirmado, sin reducir la precisión de cálculo. Fracciones exactas y resultados simbólicos siguen siendo exactos. REAL/CPLX elige el dominio; SHIFT 7 lo alterna.",
+    "Normale, SCI, ENG, FIX e SI controllano l’uscita decimale. FIX usa i decimali scelti; SCI potenze di dieci; ENG esponenti divisibili per tre; SI prefissi supportati. Riformattano solo il valore confermato senza ridurre la precisione di calcolo. Frazioni esatte e risultati simbolici restano esatti. REAL/CPLX sceglie il dominio; SHIFT 7 lo alterna.",
+    "Обычный, SCI, ENG, FIX и SI управляют десятичным выводом. FIX использует выбранные десятичные разряды, SCI — степени десяти, ENG — показатели, кратные трём, SI — поддерживаемые приставки. Они только форматируют подтверждённое значение, не снижая точность вычислений. Точные дроби и символьные результаты остаются точными. REAL/CPLX выбирает область чисел; SHIFT 7 переключает её.",
+    "普通、SCI、ENG、FIX 和 SI 控制十进制显示。FIX 使用选定的小数位数，SCI 使用十的幂，ENG 使用三的倍数指数，SI 使用受支持的前缀。它们仅重新格式化已确认值，不降低计算精度。精确分数和符号结果仍保持精确。REAL/CPLX 选择数域，SHIFT 7 可切换。",
+    "通常、SCI、ENG、FIX、SI は十進表示を制御します。FIX は指定小数桁、SCI は 10 の累乗、ENG は 3 の倍数の指数、SI は対応する接頭辞を使います。確定値の表示だけを変え、計算精度は下げません。厳密な分数と記号結果は厳密なままです。REAL/CPLX で数の範囲を選び、SHIFT 7 で切り替えます。"
+  ]
+}

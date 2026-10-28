@@ -1,0 +1,74 @@
+[
+  {
+    "url": "https://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt6_6103/qt6_6103/qt.qt6.6103.linux_gcc_64/6.10.3-0-202603310406qtbase-Linux-RHEL_9_4-GCC-Linux-RHEL_9_4-X86_64.7z",
+    "file": "qtbase-Linux-RHEL_9_4-GCC-Linux-RHEL_9_4-X86_64.7z",
+    "bytes": 26106261,
+    "sha1": "88448ff31dbacb33f14ecfe78a28a0ebcb29dbfd",
+    "sha256": "3c12871c69f5350c82a9f04e9a064fc78953008dfa93278a58ebcc622cf401a8",
+    "destination": "6.10.3/gcc_64"
+  },
+  {
+    "url": "https://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt6_6103/qt6_6103/qt.qt6.6103.linux_gcc_64/6.10.3-0-202603310406qtsvg-Linux-RHEL_9_4-GCC-Linux-RHEL_9_4-X86_64.7z",
+    "file": "qtsvg-Linux-RHEL_9_4-GCC-Linux-RHEL_9_4-X86_64.7z",
+    "bytes": 292176,
+    "sha1": "99ac26a1d735967f824221373d179c77f6faa2b6",
+    "sha256": "0993f77ab7efe07df87857cdaefd313759d0fef2949b076b88e92a300d3c6742",
+    "destination": "6.10.3/gcc_64"
+  },
+  {
+    "url": "https://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt6_6103/qt6_6103/qt.qt6.6103.linux_gcc_64/6.10.3-0-202603310406qttools-Linux-RHEL_9_4-GCC-Linux-RHEL_9_4-X86_64.7z",
+    "file": "qttools-Linux-RHEL_9_4-GCC-Linux-RHEL_9_4-X86_64.7z",
+    "bytes": 28516313,
+    "sha1": "229e20f2ea69bb0845dc11c906230e3e2201ef3c",
+    "sha256": "f32a53e2c1569246bffce542497aa44f3eb378ff911c6153cdfcfe22603b1bf5",
+    "destination": "6.10.3/gcc_64"
+  },
+  {
+    "url": "https://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt6_6103/qt6_6103/qt.qt6.6103.linux_gcc_64/6.10.3-0-202603310406qttranslations-Linux-RHEL_9_4-GCC-Linux-RHEL_9_4-X86_64.7z",
+    "file": "qttranslations-Linux-RHEL_9_4-GCC-Linux-RHEL_9_4-X86_64.7z",
+    "bytes": 1924511,
+    "sha1": "6d8e8f3bd1fe7c9000575485ba69d1aef6877c96",
+    "sha256": "adc31beed088e65cfe71388c7673652bb971f73bc68903aa090e693ee411c957",
+    "destination": "6.10.3/gcc_64"
+  },
+  {
+    "url": "https://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt6_6103/qt6_6103/qt.qt6.6103.linux_gcc_64/6.10.3-0-202603310406icu-linux-Rhel8.6-x86_64.7z",
+    "file": "icu-linux-Rhel8.6-x86_64.7z",
+    "bytes": 9660627,
+    "sha1": "cda990c8cf6f997e89e67925de8fc0e065f1b208",
+    "sha256": "513830e56495b5a5d4b74e7b9ec861906cf0938fa5a8b79d08e097d41011eb6c",
+    "destination": "6.10.3/gcc_64/lib"
+  },
+  {
+    "url": "https://download.qt.io/online/qtsdkrepository/all_os/android/qt6_6103/qt6_6103_arm64_v8a/qt.qt6.6103.android_arm64_v8a/6.10.3-0-202603310406qtbase-MacOS-MacOS_14-Clang-Android-Android_ANY-ARM64.7z",
+    "file": "qtbase-MacOS-MacOS_14-Clang-Android-Android_ANY-ARM64.7z",
+    "bytes": 16004278,
+    "sha1": "8cb8c86f0c1f00d612a143577f063d4ea72a9d30",
+    "sha256": "d6e2d5d17b139eed3373fb8cacfb4b515288e9de46d9698fe25a14f2afd5c5ad",
+    "destination": "6.10.3/android_arm64_v8a"
+  },
+  {
+    "url": "https://download.qt.io/online/qtsdkrepository/all_os/android/qt6_6103/qt6_6103_arm64_v8a/qt.qt6.6103.android_arm64_v8a/6.10.3-0-202603310406qtsvg-MacOS-MacOS_14-Clang-Android-Android_ANY-ARM64.7z",
+    "file": "qtsvg-MacOS-MacOS_14-Clang-Android-Android_ANY-ARM64.7z",
+    "bytes": 231598,
+    "sha1": "817616437dc71ed5c747f6d1b0c18aebcd737521",
+    "sha256": "14a1af2d7f97610b5737b8ccdc7dc8e66472b365715e22eb7ffb01ecb3dbac86",
+    "destination": "6.10.3/android_arm64_v8a"
+  },
+  {
+    "url": "https://download.qt.io/online/qtsdkrepository/all_os/android/qt6_6103/qt6_6103_arm64_v8a/qt.qt6.6103.android_arm64_v8a/6.10.3-0-202603310406qttools-MacOS-MacOS_14-Clang-Android-Android_ANY-ARM64.7z",
+    "file": "qttools-MacOS-MacOS_14-Clang-Android-Android_ANY-ARM64.7z",
+    "bytes": 3784976,
+    "sha1": "c3650f05ac0fe81228ed307fde3b7fafbb0e1524",
+    "sha256": "435134c3a0a1ea3512ece0657f4296523afe1fffe38783a48afcc0b0a6e2311a",
+    "destination": "6.10.3/android_arm64_v8a"
+  },
+  {
+    "url": "https://download.qt.io/online/qtsdkrepository/all_os/android/qt6_6103/qt6_6103_arm64_v8a/qt.qt6.6103.android_arm64_v8a/6.10.3-0-202603310406qttranslations-MacOS-MacOS_14-Clang-Android-Android_ANY-ARM64.7z",
+    "file": "qttranslations-MacOS-MacOS_14-Clang-Android-Android_ANY-ARM64.7z",
+    "bytes": 1924221,
+    "sha1": "4795a96e47e2c026b3e0aa03561033bb27180bc9",
+    "sha256": "d7e47ab00b8552c3c3fa55df80b15e6969aaf462b5a7e9d70139cb75fac4637d",
+    "destination": "6.10.3/android_arm64_v8a"
+  }
+]

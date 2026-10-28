@@ -1,0 +1,14 @@
+[
+  {
+    "file": "arrow-left.svg",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/8/8f/U%2B25C0.svg",
+    "sha256": "63560fb54bc431cc3bb8b7e2c9f26b67995d608a98b86e4f13040f6ffa64a157",
+    "bytes": 194
+  },
+  {
+    "file": "arrow-right.svg",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/2/27/U%2B25B6.svg",
+    "sha256": "7f008975590157611202762ddd0bbe8b8fcdae7eb199a4d7f1e66b020092525b",
+    "bytes": 156
+  }
+]

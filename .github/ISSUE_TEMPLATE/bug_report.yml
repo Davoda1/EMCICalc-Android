@@ -1,0 +1,41 @@
+name: Bug report
+description: Report a reproducible calculator, interface, storage, or packaging problem.
+title: "[Bug]: "
+body:
+  - type: input
+    id: version
+    attributes:
+      label: Version and commit
+      description: Include the displayed version and commit or package name.
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      options:
+        - Android ARM64
+        - Linux host tests
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps and expected result
+      description: Use a minimal synthetic calculation or example.
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual result
+      description: Include the error, screenshot, or relevant sanitized log excerpt.
+    validations:
+      required: true
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy
+      options:
+        - label: Attachments contain no credentials, private signing material, or personal calculation data.
+          required: true

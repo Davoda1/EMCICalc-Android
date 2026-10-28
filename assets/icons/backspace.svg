@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SPDX-License-Identifier: MIT. Original EMCICalc backspace key artwork. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-18 -10 35 20">
+  <defs>
+    <mask id="knockout" maskUnits="userSpaceOnUse" x="-18" y="-10" width="35" height="20">
+      <rect x="-18" y="-10" width="35" height="20" fill="white"/>
+      <path id="cutout" d="M -1.76,-4.4 L 7.7,4.4 M 7.7,-4.4 L -1.76,4.4" fill="none" stroke="black" stroke-width="1.8" stroke-linecap="round"/>
+    </mask>
+  </defs>
+  <path d="M -17.6,0 L -7.48,-9.24 L 16.28,-9.24 L 16.28,9.24 L -7.48,9.24 Z" fill="black" mask="url(#knockout)"/>
+</svg>

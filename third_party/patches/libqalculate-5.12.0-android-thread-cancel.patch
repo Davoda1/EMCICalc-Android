@@ -1,0 +1,188 @@
+--- a/libqalculate/util.h
++++ b/libqalculate/util.h
+@@ -13,6 +13,9 @@
+ #define UTIL_H
+ 
+ #include <libqalculate/includes.h>
++#ifdef __ANDROID__
++#include <atomic>
++#endif
+ /* threads */
+ #ifdef _WIN32
+ #	undef WINVER
+@@ -132,8 +135,12 @@
+ #endif
+ 	}
+ 
++#ifdef __ANDROID__
++	std::atomic<bool> running;
++#else
+ 	// FIXME: this is technically wrong -- needs memory barriers (std::atomic?)
+ 	volatile bool running;
++#endif
+ 
+ protected:
+ 	virtual void run() = 0;
+@@ -173,6 +180,10 @@
+ 	static void *doRun(void *data);
+ 
+ 	pthread_t m_thread;
++#ifdef __ANDROID__
++	bool m_joinable;
++	bool openPipe();
++#endif
+ 	pthread_attr_t m_thread_attr;
+ 	FILE *m_pipe_r, *m_pipe_w;
+ #endif
+--- a/libqalculate/util.cc
++++ b/libqalculate/util.cc
+@@ -12,6 +12,9 @@
+ #include "support.h"
+ 
+ #include "util.h"
++#ifdef __ANDROID__
++#include <exception>
++#endif
+ #include <stdarg.h>
+ #include "Number.h"
+ 
+@@ -40,7 +43,7 @@
+ #	include <initguid.h>
+ #	include <shlobj.h>
+ #else
+-#	ifdef HAVE_PIPE2
++#	if defined(HAVE_PIPE2) || defined(__ANDROID__)
+ #		include <fcntl.h>
+ #	endif
+ #	include <utime.h>
+@@ -1132,6 +1135,10 @@
+ 
+ Thread::Thread() : running(false), m_pipe_r(NULL), m_pipe_w(NULL) {
+ 	pthread_attr_init(&m_thread_attr);
++#ifdef __ANDROID__
++	m_joinable = false;
++	openPipe();
++#else
+ 	int pipe_wr[] = {0, 0};
+ #ifdef HAVE_PIPE2
+ 	if(pipe2(pipe_wr, O_CLOEXEC) == 0) {
+@@ -1141,12 +1148,29 @@
+ 		m_pipe_r = fdopen(pipe_wr[0], "r");
+ 		m_pipe_w = fdopen(pipe_wr[1], "w");
+ 	}
+-}
++#endif
++}
++
++#ifdef __ANDROID__
++bool Thread::openPipe() {
++	if(m_pipe_r && m_pipe_w) return true;
++	int descriptors[2];
++	if(pipe2(descriptors, O_CLOEXEC) != 0) return false;
++	m_pipe_r = fdopen(descriptors[0], "r");
++	m_pipe_w = fdopen(descriptors[1], "w");
++	if(m_pipe_r && m_pipe_w) return true;
++	if(m_pipe_r) fclose(m_pipe_r); else close(descriptors[0]);
++	if(m_pipe_w) fclose(m_pipe_w); else close(descriptors[1]);
++	m_pipe_r = NULL;
++	m_pipe_w = NULL;
++	return false;
++}
++#endif
+ 
+ Thread::~Thread() {
+ 	cancel();
+-	fclose(m_pipe_r);
+-	fclose(m_pipe_w);
++	if(m_pipe_r) fclose(m_pipe_r);
++	if(m_pipe_w) fclose(m_pipe_w);
+ 	pthread_attr_destroy(&m_thread_attr);
+ }
+ 
+@@ -1159,8 +1183,10 @@
+ }
+ 
+ void Thread::enableAsynchronousCancel() {
++#ifndef __ANDROID__
+ 	pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
+ 	pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, NULL);
++#endif
+ }
+ 
+ void *Thread::doRun(void *data) {
+@@ -1177,15 +1203,50 @@
+ 
+ bool Thread::start() {
+ 	if(running) return true;
++#ifdef __ANDROID__
++	if(m_joinable) cancel();
++	if(!openPipe()) return false;
++	// Publish running before the worker can finish, never after pthread_create.
++	running = true;
++	m_joinable = pthread_create(&m_thread, &m_thread_attr, &Thread::doRun, this) == 0;
++	if(!m_joinable) running = false;
++	return m_joinable;
++#else
+ 	running = pthread_create(&m_thread, &m_thread_attr, &Thread::doRun, this) == 0;
+ 	return running;
++#endif
+ }
+ 
+ bool Thread::cancel() {
++#ifdef __ANDROID__
++	// Android Bionic deliberately provides no pthread_cancel. Calculator::abort
++	// requests cooperative abort first. This library-only adaptation uses the
++	// CalculateThread bool/void* stop protocol (not the separate qalc CLI).
++	if(!m_joinable) return true;
++	if(pthread_equal(pthread_self(), m_thread)) std::terminate();
++	if(running) {
++		write(false);
++		write(static_cast<void *>(NULL));
++	}
++	// Never let callers reclaim calculator state while its worker is alive.
++	// A non-cooperative GMP/MPFR call may exceed the nominal timeout here.
++	// An unexpected join failure is fatal rather than risking use-after-free.
++	if(pthread_join(m_thread, NULL) != 0) std::terminate();
++	m_joinable = false;
++	running = false;
++	// A naturally exiting worker can race with the stop message. Discard its
++	// old pipe only AFTER join, so a restart cannot consume an unused sentinel.
++	if(m_pipe_r) fclose(m_pipe_r);
++	if(m_pipe_w) fclose(m_pipe_w);
++	m_pipe_r = NULL;
++	m_pipe_w = NULL;
++	return true;
++#else
+ 	if(!running) return true;
+ 	running = pthread_cancel(m_thread) != 0;
+ 	return !running;
+-}
+-
+-
+-#endif
++#endif
++}
++
++
++#endif
+--- a/libqalculate/Calculator-calculate.cc
++++ b/libqalculate/Calculator-calculate.cc
+@@ -202,6 +202,10 @@
+ 	return b_busy;
+ }
+ void Calculator::terminateThreads() {
++#ifdef __ANDROID__
++	// cancel() sends the sentinel and joins; do not enqueue it twice.
++	calculate_thread->cancel();
++#else
+ 	if(calculate_thread->running) {
+ 		if(!calculate_thread->write(false) || !calculate_thread->write(NULL)) calculate_thread->cancel();
+ 		for(size_t i = 0; i < 10 && calculate_thread->running; i++) {
+@@ -209,6 +213,7 @@
+ 		}
+ 		if(calculate_thread->running) calculate_thread->cancel();
+ 	}
++#endif
+ }
+ bool Calculator::calculateRPNRegister(size_t index, int msecs, const EvaluationOptions &eo) {
+ 	if(index <= 0 || index > rpn_stack.size()) return false;

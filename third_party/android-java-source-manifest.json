@@ -1,0 +1,336 @@
+{
+  "schema": 1,
+  "provenance": "Exact source classifiers from official upstream Maven repositories; checksums retrieved from the same HTTPS origin. Local SHA-256 pins and source-only ZIP validation recorded.",
+  "components": [
+    {
+      "component": "androidx.core:core:1.16.0",
+      "archive": "androidx.core.core-1.16.0-sources.jar",
+      "source_url": "https://dl.google.com/dl/android/maven2/androidx/core/core/1.16.0/core-1.16.0-sources.jar",
+      "sha256": "ed8ec0b5d74352b852c5eda44a6f21cdb726fd2a94293dc2609219330136b207",
+      "bytes": 972131,
+      "upstream_checksum": {
+        "algorithm": "sha256",
+        "digest": "ed8ec0b5d74352b852c5eda44a6f21cdb726fd2a94293dc2609219330136b207",
+        "url": "https://dl.google.com/dl/android/maven2/androidx/core/core/1.16.0/core-1.16.0-sources.jar.sha256"
+      },
+      "source_only": true,
+      "files": 302,
+      "source_files": 296
+    },
+    {
+      "component": "androidx.interpolator:interpolator:1.0.0",
+      "archive": "androidx.interpolator.interpolator-1.0.0-sources.jar",
+      "source_url": "https://dl.google.com/dl/android/maven2/androidx/interpolator/interpolator/1.0.0/interpolator-1.0.0-sources.jar",
+      "sha256": "fa13ada71fe7bd9461f622f418e7c16a18e85da7708fb505c75229a9b8830345",
+      "bytes": 6655,
+      "upstream_checksum": {
+        "algorithm": "sha1",
+        "digest": "fefd5e3cbc479b6b4a9532d05688a1e659e8d3d2",
+        "url": "https://dl.google.com/dl/android/maven2/androidx/interpolator/interpolator/1.0.0/interpolator-1.0.0-sources.jar.sha1"
+      },
+      "source_only": true,
+      "files": 5,
+      "source_files": 4
+    },
+    {
+      "component": "androidx.lifecycle:lifecycle-common:2.6.2",
+      "archive": "androidx.lifecycle.lifecycle-common-2.6.2-sources.jar",
+      "source_url": "https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-common/2.6.2/lifecycle-common-2.6.2-sources.jar",
+      "sha256": "9b194a75aa6724bdac277be839eddd5d49192d64389d5ac02d1f6bb6c334124e",
+      "bytes": 24682,
+      "upstream_checksum": {
+        "algorithm": "sha256",
+        "digest": "9b194a75aa6724bdac277be839eddd5d49192d64389d5ac02d1f6bb6c334124e",
+        "url": "https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-common/2.6.2/lifecycle-common-2.6.2-sources.jar.sha256"
+      },
+      "source_only": true,
+      "files": 19,
+      "source_files": 18
+    },
+    {
+      "component": "androidx.lifecycle:lifecycle-runtime:2.6.2",
+      "archive": "androidx.lifecycle.lifecycle-runtime-2.6.2-sources.jar",
+      "source_url": "https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-runtime/2.6.2/lifecycle-runtime-2.6.2-sources.jar",
+      "sha256": "07129c61c68a7c4333aeabe1712827c33677f973db29bc11b99044463899b13d",
+      "bytes": 8601,
+      "upstream_checksum": {
+        "algorithm": "sha256",
+        "digest": "07129c61c68a7c4333aeabe1712827c33677f973db29bc11b99044463899b13d",
+        "url": "https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-runtime/2.6.2/lifecycle-runtime-2.6.2-sources.jar.sha256"
+      },
+      "source_only": true,
+      "files": 5,
+      "source_files": 4
+    },
+    {
+      "component": "androidx.profileinstaller:profileinstaller:1.3.0",
+      "archive": "androidx.profileinstaller.profileinstaller-1.3.0-sources.jar",
+      "source_url": "https://dl.google.com/dl/android/maven2/androidx/profileinstaller/profileinstaller/1.3.0/profileinstaller-1.3.0-sources.jar",
+      "sha256": "1d53d3dd1665143812f7fab691ca25f2f65d6c4daf7b6e607945b8f601d6244c",
+      "bytes": 38647,
+      "upstream_checksum": {
+        "algorithm": "sha256",
+        "digest": "1d53d3dd1665143812f7fab691ca25f2f65d6c4daf7b6e607945b8f601d6244c",
+        "url": "https://dl.google.com/dl/android/maven2/androidx/profileinstaller/profileinstaller/1.3.0/profileinstaller-1.3.0-sources.jar.sha256"
+      },
+      "source_only": true,
+      "files": 14,
+      "source_files": 13
+    },
+    {
+      "component": "androidx.startup:startup-runtime:1.1.1",
+      "archive": "androidx.startup.startup-runtime-1.1.1-sources.jar",
+      "source_url": "https://dl.google.com/dl/android/maven2/androidx/startup/startup-runtime/1.1.1/startup-runtime-1.1.1-sources.jar",
+      "sha256": "53e03bc065b26b2227b5fdca6776cbfa0d1a69afb8f3c1e96c1743fa54320196",
+      "bytes": 6839,
+      "upstream_checksum": {
+        "algorithm": "sha256",
+        "digest": "53e03bc065b26b2227b5fdca6776cbfa0d1a69afb8f3c1e96c1743fa54320196",
+        "url": "https://dl.google.com/dl/android/maven2/androidx/startup/startup-runtime/1.1.1/startup-runtime-1.1.1-sources.jar.sha256"
+      },
+      "source_only": true,
+      "files": 6,
+      "source_files": 5
+    },
+    {
+      "component": "androidx.tracing:tracing:1.2.0",
+      "archive": "androidx.tracing.tracing-1.2.0-sources.jar",
+      "source_url": "https://dl.google.com/dl/android/maven2/androidx/tracing/tracing/1.2.0/tracing-1.2.0-sources.jar",
+      "sha256": "3daf3a210e213f1675e6ea9ae2a9c0b9c837b42805835b65d999eca58fbddc90",
+      "bytes": 6669,
+      "upstream_checksum": {
+        "algorithm": "sha256",
+        "digest": "3daf3a210e213f1675e6ea9ae2a9c0b9c837b42805835b65d999eca58fbddc90",
+        "url": "https://dl.google.com/dl/android/maven2/androidx/tracing/tracing/1.2.0/tracing-1.2.0-sources.jar.sha256"
+      },
+      "source_only": true,
+      "files": 4,
+      "source_files": 3
+    },
+    {
+      "component": "androidx.versionedparcelable:versionedparcelable:1.1.1",
+      "archive": "androidx.versionedparcelable.versionedparcelable-1.1.1-sources.jar",
+      "source_url": "https://dl.google.com/dl/android/maven2/androidx/versionedparcelable/versionedparcelable/1.1.1/versionedparcelable-1.1.1-sources.jar",
+      "sha256": "135016af471acf4cd9583d36ceb779710c6b46812ccaaef7c526d5d60eae6b0b",
+      "bytes": 21164,
+      "upstream_checksum": {
+        "algorithm": "sha1",
+        "digest": "d9085927216387af679d18b6f472bc0fc5c7cc81",
+        "url": "https://dl.google.com/dl/android/maven2/androidx/versionedparcelable/versionedparcelable/1.1.1/versionedparcelable-1.1.1-sources.jar.sha1"
+      },
+      "source_only": true,
+      "files": 11,
+      "source_files": 10
+    },
+    {
+      "component": "androidx.collection:collection-jvm:1.4.2",
+      "archive": "androidx.collection.collection-jvm-1.4.2-sources.jar",
+      "source_url": "https://dl.google.com/dl/android/maven2/androidx/collection/collection-jvm/1.4.2/collection-jvm-1.4.2-sources.jar",
+      "sha256": "9cdb219ee75724515c232ae2bb04403c1fd1b40208c61d92aaa6452836d943c5",
+      "bytes": 235172,
+      "upstream_checksum": {
+        "algorithm": "sha256",
+        "digest": "9cdb219ee75724515c232ae2bb04403c1fd1b40208c61d92aaa6452836d943c5",
+        "url": "https://dl.google.com/dl/android/maven2/androidx/collection/collection-jvm/1.4.2/collection-jvm-1.4.2-sources.jar.sha256"
+      },
+      "source_only": true,
+      "files": 55,
+      "source_files": 54
+    },
+    {
+      "component": "androidx.arch.core:core-runtime:2.2.0",
+      "archive": "androidx.arch.core.core-runtime-2.2.0-sources.jar",
+      "source_url": "https://dl.google.com/dl/android/maven2/androidx/arch/core/core-runtime/2.2.0/core-runtime-2.2.0-sources.jar",
+      "sha256": "4adaab3a8ab711634d566d2e239e199af8b5ac92c1de85540dc34c7040754e96",
+      "bytes": 4715,
+      "upstream_checksum": {
+        "algorithm": "sha256",
+        "digest": "4adaab3a8ab711634d566d2e239e199af8b5ac92c1de85540dc34c7040754e96",
+        "url": "https://dl.google.com/dl/android/maven2/androidx/arch/core/core-runtime/2.2.0/core-runtime-2.2.0-sources.jar.sha256"
+      },
+      "source_only": true,
+      "files": 4,
+      "source_files": 3
+    },
+    {
+      "component": "androidx.arch.core:core-common:2.2.0",
+      "archive": "androidx.arch.core.core-common-2.2.0-sources.jar",
+      "source_url": "https://dl.google.com/dl/android/maven2/androidx/arch/core/core-common/2.2.0/core-common-2.2.0-sources.jar",
+      "sha256": "563d430880d847890029234386ef03adb95403c34f3c9dec3a7002e2f4007ae4",
+      "bytes": 5684,
+      "upstream_checksum": {
+        "algorithm": "sha256",
+        "digest": "563d430880d847890029234386ef03adb95403c34f3c9dec3a7002e2f4007ae4",
+        "url": "https://dl.google.com/dl/android/maven2/androidx/arch/core/core-common/2.2.0/core-common-2.2.0-sources.jar.sha256"
+      },
+      "source_only": true,
+      "files": 4,
+      "source_files": 3
+    },
+    {
+      "component": "androidx.concurrent:concurrent-futures:1.1.0",
+      "archive": "androidx.concurrent.concurrent-futures-1.1.0-sources.jar",
+      "source_url": "https://dl.google.com/dl/android/maven2/androidx/concurrent/concurrent-futures/1.1.0/concurrent-futures-1.1.0-sources.jar",
+      "sha256": "cc06fb6045a6c066f50e237a3c2126bc88c16d358a57b3612ba633c9f530b0a0",
+      "bytes": 19716,
+      "upstream_checksum": {
+        "algorithm": "sha256",
+        "digest": "cc06fb6045a6c066f50e237a3c2126bc88c16d358a57b3612ba633c9f530b0a0",
+        "url": "https://dl.google.com/dl/android/maven2/androidx/concurrent/concurrent-futures/1.1.0/concurrent-futures-1.1.0-sources.jar.sha256"
+      },
+      "source_only": true,
+      "files": 5,
+      "source_files": 4
+    },
+    {
+      "component": "androidx.annotation:annotation-experimental:1.4.1",
+      "archive": "androidx.annotation.annotation-experimental-1.4.1-sources.jar",
+      "source_url": "https://dl.google.com/dl/android/maven2/androidx/annotation/annotation-experimental/1.4.1/annotation-experimental-1.4.1-sources.jar",
+      "sha256": "783a221a7c1093ff8932053998a69a24489f7930806a32b55366108146d29c1d",
+      "bytes": 5257,
+      "upstream_checksum": {
+        "algorithm": "sha256",
+        "digest": "783a221a7c1093ff8932053998a69a24489f7930806a32b55366108146d29c1d",
+        "url": "https://dl.google.com/dl/android/maven2/androidx/annotation/annotation-experimental/1.4.1/annotation-experimental-1.4.1-sources.jar.sha256"
+      },
+      "source_only": true,
+      "files": 5,
+      "source_files": 4
+    },
+    {
+      "component": "androidx.core:core-viewtree:1.0.0",
+      "archive": "androidx.core.core-viewtree-1.0.0-sources.jar",
+      "source_url": "https://dl.google.com/dl/android/maven2/androidx/core/core-viewtree/1.0.0/core-viewtree-1.0.0-sources.jar",
+      "sha256": "7026f2086f667720c43d4ca6bc58ab016d122ae0a404ca94e5fef6a7090e0984",
+      "bytes": 6342,
+      "upstream_checksum": {
+        "algorithm": "sha256",
+        "digest": "7026f2086f667720c43d4ca6bc58ab016d122ae0a404ca94e5fef6a7090e0984",
+        "url": "https://dl.google.com/dl/android/maven2/androidx/core/core-viewtree/1.0.0/core-viewtree-1.0.0-sources.jar.sha256"
+      },
+      "source_only": true,
+      "files": 3,
+      "source_files": 1
+    },
+    {
+      "component": "androidx.annotation:annotation-jvm:1.8.1",
+      "archive": "androidx.annotation.annotation-jvm-1.8.1-sources.jar",
+      "source_url": "https://dl.google.com/dl/android/maven2/androidx/annotation/annotation-jvm/1.8.1/annotation-jvm-1.8.1-sources.jar",
+      "sha256": "5add69d7bb907ade52823bf4b15730a1a32cfce6657bfbe7eb865b00107a6369",
+      "bytes": 67324,
+      "upstream_checksum": {
+        "algorithm": "sha256",
+        "digest": "5add69d7bb907ade52823bf4b15730a1a32cfce6657bfbe7eb865b00107a6369",
+        "url": "https://dl.google.com/dl/android/maven2/androidx/annotation/annotation-jvm/1.8.1/annotation-jvm-1.8.1-sources.jar.sha256"
+      },
+      "source_only": true,
+      "files": 71,
+      "source_files": 70
+    },
+    {
+      "component": "org.jetbrains.kotlin:kotlin-stdlib:1.8.22",
+      "archive": "org.jetbrains.kotlin.kotlin-stdlib-1.8.22-sources.jar",
+      "source_url": "https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-stdlib/1.8.22/kotlin-stdlib-1.8.22-sources.jar",
+      "sha256": "e60342da94ab52368157917916775b7f2f03bbd728aad3c9e86c3f02a93dbeec",
+      "bytes": 255879,
+      "upstream_checksum": {
+        "algorithm": "sha1",
+        "digest": "6a8d4dfebb88f951bcd9f58636f085bf24ff3e8b",
+        "url": "https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-stdlib/1.8.22/kotlin-stdlib-1.8.22-sources.jar.sha1"
+      },
+      "source_only": true,
+      "files": 197,
+      "source_files": 196
+    },
+    {
+      "component": "org.jspecify:jspecify:1.0.0",
+      "archive": "org.jspecify.jspecify-1.0.0-sources.jar",
+      "source_url": "https://repo.maven.apache.org/maven2/org/jspecify/jspecify/1.0.0/jspecify-1.0.0-sources.jar",
+      "sha256": "adf0898191d55937fb3192ba971826f4f294292c4a960740f3c27310e7b70296",
+      "bytes": 11996,
+      "upstream_checksum": {
+        "algorithm": "sha256",
+        "digest": "adf0898191d55937fb3192ba971826f4f294292c4a960740f3c27310e7b70296",
+        "url": "https://repo.maven.apache.org/maven2/org/jspecify/jspecify/1.0.0/jspecify-1.0.0-sources.jar.sha256"
+      },
+      "source_only": true,
+      "files": 6,
+      "source_files": 5
+    },
+    {
+      "component": "com.google.guava:listenablefuture:1.0",
+      "archive": "com.google.guava.listenablefuture-1.0-sources.jar",
+      "source_url": "https://repo.maven.apache.org/maven2/com/google/guava/listenablefuture/1.0/listenablefuture-1.0-sources.jar",
+      "sha256": "3d1bd8d4a39b293612a40e547ec51d9ce34fa638d7adeae83871cdbe2923b161",
+      "bytes": 4021,
+      "upstream_checksum": {
+        "algorithm": "sha1",
+        "digest": "0be1234988ac73d61e52e35a912169b06020caa7",
+        "url": "https://repo.maven.apache.org/maven2/com/google/guava/listenablefuture/1.0/listenablefuture-1.0-sources.jar.sha1"
+      },
+      "source_only": true,
+      "files": 2,
+      "source_files": 1
+    },
+    {
+      "component": "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4",
+      "archive": "org.jetbrains.kotlinx.kotlinx-coroutines-android-1.6.4-sources.jar",
+      "source_url": "https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-android/1.6.4/kotlinx-coroutines-android-1.6.4-sources.jar",
+      "sha256": "cc2c16ed89092c1ccb41db572d9da8e3b2f730fce4ba66687d47f6dc5ed7ec99",
+      "bytes": 7565,
+      "upstream_checksum": {
+        "algorithm": "sha256",
+        "digest": "cc2c16ed89092c1ccb41db572d9da8e3b2f730fce4ba66687d47f6dc5ed7ec99",
+        "url": "https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-android/1.6.4/kotlinx-coroutines-android-1.6.4-sources.jar.sha256"
+      },
+      "source_only": true,
+      "files": 9,
+      "source_files": 2
+    },
+    {
+      "component": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.4",
+      "archive": "org.jetbrains.kotlinx.kotlinx-coroutines-core-jvm-1.6.4-sources.jar",
+      "source_url": "https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-core-jvm/1.6.4/kotlinx-coroutines-core-jvm-1.6.4-sources.jar",
+      "sha256": "aa1335ddb56712a4acca7bb0a2dc0870818b508b6054feb3be253075b6a9ed03",
+      "bytes": 368181,
+      "upstream_checksum": {
+        "algorithm": "sha256",
+        "digest": "aa1335ddb56712a4acca7bb0a2dc0870818b508b6054feb3be253075b6a9ed03",
+        "url": "https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-core-jvm/1.6.4/kotlinx-coroutines-core-jvm-1.6.4-sources.jar.sha256"
+      },
+      "source_only": true,
+      "files": 165,
+      "source_files": 164
+    },
+    {
+      "component": "org.jetbrains.kotlin:kotlin-stdlib-common:1.8.22",
+      "archive": "org.jetbrains.kotlin.kotlin-stdlib-common-1.8.22-sources.jar",
+      "source_url": "https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-stdlib-common/1.8.22/kotlin-stdlib-common-1.8.22-sources.jar",
+      "sha256": "598996a205da366f31854b818b60da3afacb1302902005988c8826eeb2916532",
+      "bytes": 323866,
+      "upstream_checksum": {
+        "algorithm": "sha1",
+        "digest": "0ae313b979b8e620a6497cd323f9c5861f7aebef",
+        "url": "https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-stdlib-common/1.8.22/kotlin-stdlib-common-1.8.22-sources.jar.sha1"
+      },
+      "source_only": true,
+      "files": 161,
+      "source_files": 159
+    },
+    {
+      "component": "org.jetbrains:annotations:13.0",
+      "archive": "org.jetbrains.annotations-13.0-sources.jar",
+      "source_url": "https://repo.maven.apache.org/maven2/org/jetbrains/annotations/13.0/annotations-13.0-sources.jar",
+      "sha256": "42a5e144b8e81d50d6913d1007b695e62e614705268d8cf9f13dbdc478c2c68e",
+      "bytes": 17566,
+      "upstream_checksum": {
+        "algorithm": "sha1",
+        "digest": "5991ca87ef1fb5544943d9abc5a9a37583fabe03",
+        "url": "https://repo.maven.apache.org/maven2/org/jetbrains/annotations/13.0/annotations-13.0-sources.jar.sha1"
+      },
+      "source_only": true,
+      "files": 17,
+      "source_files": 16
+    }
+  ]
+}

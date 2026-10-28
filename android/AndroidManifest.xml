@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="io.github.davoda1.emcicalc"
+    android:installLocation="internalOnly"
+    android:versionCode="1"
+    android:versionName="1.0.0">
+    <uses-sdk android:minSdkVersion="36" android:targetSdkVersion="36" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <supports-screens android:anyDensity="true" android:largeScreens="true"
+        android:normalScreens="true" android:smallScreens="true"
+        android:xlargeScreens="true" />
+    <application
+        android:name="org.qtproject.qt.android.bindings.QtApplication"
+        android:hardwareAccelerated="true"
+        android:label="EMCICalc"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:enableOnBackInvokedCallback="false"
+        android:usesCleartextTraffic="false"
+        android:allowBackup="false"
+        android:fullBackupContent="false">
+        <activity android:name="io.github.davoda1.emcicalc.EMCICalcActivity"
+            android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|layoutDirection|locale|fontScale|keyboard|keyboardHidden|navigation|mcc|mnc|density"
+            android:label="EMCICalc" android:launchMode="singleTop"
+            android:screenOrientation="unspecified" android:resizeableActivity="true"
+            android:windowSoftInputMode="adjustResize" android:exported="true">
+            <meta-data android:name="android.app.lib_name" android:value="-- %%INSERT_APP_LIB_NAME%% --" />
+            <meta-data android:name="android.app.arguments" android:value="-- %%INSERT_APP_ARGUMENTS%% --" />
+        </activity>
+        <!-- Qt-compatible launcher component. -->
+        <activity-alias android:name="org.qtproject.qt.android.bindings.QtActivity"
+            android:targetActivity="io.github.davoda1.emcicalc.EMCICalcActivity"
+            android:label="EMCICalc" android:exported="true">
+            <!-- Android aliases do not inherit target metadata. QtLoader reads
+                 the launched component, so both entry points need these values. -->
+            <meta-data android:name="android.app.lib_name" android:value="-- %%INSERT_APP_LIB_NAME%% --" />
+            <meta-data android:name="android.app.arguments" android:value="-- %%INSERT_APP_ARGUMENTS%% --" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+        <provider android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.qtprovider"
+            android:exported="false" android:grantUriPermissions="true">
+            <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/qtprovider_paths" />
+        </provider>
+    </application>
+</manifest>

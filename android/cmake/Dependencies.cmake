@@ -1,0 +1,11 @@
+# Native Android engine dependencies, built from the included pinned sources.
+foreach(dep gmp mpfr xml2 qalculate)
+ if(NOT EXISTS "${EMCICALC_ANDROID_PREFIX}/lib/lib${dep}.a")
+  message(FATAL_ERROR "Missing Android ${dep}. Run scripts/android-dependencies.sh first.")
+ endif()
+ add_library(emci_android_${dep} STATIC IMPORTED GLOBAL)
+ set_target_properties(emci_android_${dep} PROPERTIES IMPORTED_LOCATION "${EMCICALC_ANDROID_PREFIX}/lib/lib${dep}.a" INTERFACE_INCLUDE_DIRECTORIES "${EMCICALC_ANDROID_PREFIX}/include")
+endforeach()
+set_target_properties(emci_android_mpfr PROPERTIES INTERFACE_LINK_LIBRARIES emci_android_gmp)
+set_target_properties(emci_android_qalculate PROPERTIES INTERFACE_LINK_LIBRARIES "emci_android_mpfr;emci_android_gmp;emci_android_xml2;log")
+add_library(PkgConfig::QALCULATE ALIAS emci_android_qalculate)
