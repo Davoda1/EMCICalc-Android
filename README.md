@@ -1,4 +1,6 @@
-# EMCICalc Android 1.0.0
+![EMCICalc Android — scientific calculator](docs/extras/banner.png)
+
+# EMCICalc Android
 
 EMCICalc is a native C++17 / Qt Widgets calculator for Android, maintained by
 **davoda1**. It supports exact and approximate calculations, symbolic operations,
@@ -10,6 +12,21 @@ Three keypad layouts, eight calculator themes and nine interface languages
 support adaptive portrait/landscape layouts, touch help and accessibility labels.
 Saved calculations and settings use application storage. Currency refresh uses
 ECB HTTPS data; the app has no advertising, telemetry or account service.
+
+## Download and get started
+
+- [Download EMCICalc Android 1.0.0](https://github.com/Davoda1/EMCICalc-Android/releases/tag/v1.0.0) — choose `EMCICalc-1.0.0-Android-arm64-v8a.apk` for an ARM64 device running Android API 36 or later.
+- [Read the online manual](https://davoda1.github.io/EMCICalc-Android-Manual/) for setup, calculator modes, worked examples and feature reference.
+- [Browse all releases](https://github.com/Davoda1/EMCICalc-Android/releases) for release notes, checksums and corresponding source archives.
+
+## Calculator preview
+
+<p align="center">
+  <img src="docs/extras/poster.png" alt="EMCICalc Android in the Classic theme with an empty calculator display" width="320">
+</p>
+
+*Classic theme, shown with an empty display. This screenshot captures the mobile
+interface rendered on a Qt host; it is not an Android device capture.*
 
 ## Build and validation
 
